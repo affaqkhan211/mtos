@@ -1,0 +1,24 @@
+/* Boostrap Buttons Styling */
+
+.btn-default {
+  font-family:Arial, Helvetica, sans-serif;
+  font-size: 18px;
+  color: white;
+  letter-spacing: 1px;
+  line-height: 15px;
+  background: #40B491;
+  transition: all 0.3s ease 0s;
+  padding: 10px;
+  border: #40B491;
+}
+
+.btn-default:hover {
+  color: #FFF;
+  border: #40B491;
+  background: #369276;
+}
+
+.main-heading {
+  font-weight: bold;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}

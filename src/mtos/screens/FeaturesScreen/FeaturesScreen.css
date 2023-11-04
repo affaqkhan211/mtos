@@ -1,0 +1,47 @@
+.mb-3 {
+    color: #40B491;
+    transition: color 0.3s ease; /* Add a smooth color transition on hover */
+}
+
+.h3{
+    font-weight: 600;
+}
+
+.light-bg {
+    background-color: white;
+}
+
+.dark-bg {
+    background-color: rgb(248, 248, 248);
+}
+
+.custom-class:hover {
+    background: #40B491;
+    color: white;
+}
+
+.custom-class:hover .mb-3 {
+    color: white;
+    transition: color 0.5s ease;
+}
+
+.custom-class {
+    transition: background 0.3s ease, color 0.9s ease;
+}
+
+.upper-container {
+    background: #40B491;
+    width: '100%';
+}
+
+.features-screen {
+    width: '100%';
+}
+
+.feature-heading {
+    color: white;
+}
+
+.feature-subHeading {
+    color: white;
+}

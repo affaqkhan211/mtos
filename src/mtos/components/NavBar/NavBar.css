@@ -1,0 +1,91 @@
+.nav-btn {
+  position: relative;
+  color: rgb(0, 0, 0);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.inActive {
+  position: relative;
+  color: gray;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.inActive::after {
+  transition: all 0.2s;
+  opacity: 0;
+  height: 2px;
+  width: 10%;
+  background-color: #40B491;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  content: '';
+}
+
+.inActive:hover::after {
+  width: 100%;
+  opacity: 1;
+  bottom: -10px;
+  transition: all 0.4s;
+
+}
+
+.nav-btn::after {
+  transition: all 0.2s;
+  opacity: 0;
+  height: 2px;
+  width: 10%;
+  background-color: #40B491;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  content: '';
+}
+
+.nav-btn:hover::after {
+  width: 100%;
+  opacity: 1;
+  bottom: -10px;
+  transition: all 0.4s;
+}
+
+#btnWrapper {
+  flex: 1;
+  justify-content: flex-end;
+}
+
+img {
+  height: 40px;
+  width: 40px;
+}
+
+.ml-2 {
+  font-family: Raleway-SemiBold;
+  color: #40B491;
+  font-weight: 800;
+}
+
+.navbar-nav {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Set the initial transparent background */
+#transparent {
+  background: transparent;
+  transition: all 0.9s ease;
+  padding: 30px;
+}
+
+/* Apply a white background when scrolled */
+#scrolled {
+  background: white;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  transition: all 0.9s ease;
+}
