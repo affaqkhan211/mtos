@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavHashLink as NavLink } from 'react-router-hash-link';
-// import './NavBar.css';
+import './NavBar.css';
 import { useLocation } from 'react-router-dom';
 
 const NavBar = () => {
