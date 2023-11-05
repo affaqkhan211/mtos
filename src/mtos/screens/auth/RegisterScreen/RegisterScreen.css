@@ -41,3 +41,12 @@
     justify-content: top;
     align-items: center;
 }
+
+.navLink {
+    color: #2a7c64;
+}
+
+.already {
+    flex-direction: row;
+    margin-bottom: 10px;
+}

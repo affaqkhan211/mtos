@@ -118,7 +118,7 @@ const LoginScreen = () => {
 
                             <MDBRow>
                                 <MDBCol>
-                                    <p className="my-3">New here? <NavLink to={loading ? '#' : '/register'}>Register Now!</NavLink></p>
+                                    <p className="my-3">New here? <NavLink className='navLink' to={loading ? '#' : '/register' }>Register Now!</NavLink></p>
                                 </MDBCol>
                                 <MDBCol>
                                     <p className="my-3  "><NavLink to={loading ? '#' : '/forgotpassword'} style={{

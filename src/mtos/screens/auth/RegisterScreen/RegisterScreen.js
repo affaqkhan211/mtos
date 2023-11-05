@@ -33,7 +33,7 @@ const RegisterScreen = () => {
             const token = await SIGNUP(email, password, firstName, lastName);
             toast.success("User registered successfully");
             navigate("/login")
-              
+
         }
 
         setLoading(false);
@@ -164,7 +164,9 @@ const RegisterScreen = () => {
                                 onBlur={validatePassword}
 
                             />
-                            <p className="my-3">Already have account? <NavLink to={loading ? '#' : '/login'}>Sign In Instead!</NavLink></p>
+                            <div className="already">
+                                <p>Already have account? <NavLink className='navLink' to={loading ? '#' : '/login'}>Sign In Instead!</NavLink></p>
+                            </div>
                             {
                                 loading ?
                                     <button className='register-button w-50 mb-4 ' size='md'>
