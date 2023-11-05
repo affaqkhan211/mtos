@@ -7,7 +7,7 @@ import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { Header, Navbar, Footer, Sidebar, ThemeSettings } from '../components';
 import { useStateContext } from "../contexts/ContextProvider";
 
-const Drivers = () => {
+const Trips = () => {
   const selectionsettings = { persistSelection: true };
   const toolbarOptions = ['Delete'];
   const editing = { allowDeleting: true, allowEditing: true };
@@ -99,4 +99,4 @@ const Drivers = () => {
   );
 };
 
-export default Drivers;
+export default Trips;

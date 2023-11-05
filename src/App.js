@@ -3,18 +3,10 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import MFooter from "./mtos/components/Footer/MFooter"
 import {
   Home,
-  Admins,
+  Trips,
   Calendar,
   Drivers,
-  Stacked,
-  Pyramid,
   Customers,
-  Line,
-  Area,
-  Bar,
-  Pie,
-  Financial,
-  ColorMapping,
 } from "./pages";
 
 import "./App.css";
@@ -111,7 +103,7 @@ const App = () => {
                 <Route path="/home" element={<Home />} />
 
                 {/* pages  */}
-                <Route path="/admins" element={<Admins />} />
+                <Route path="/trips" element={<Trips />} />
                 <Route path="/drivers" element={<Drivers />} />
                 <Route path="/deleteadmin" element={<Customers />} />
 
@@ -120,14 +112,6 @@ const App = () => {
                 <Route path="/calendar" element={<Calendar />} />
 
                 {/* charts  */}
-                <Route path="/line" element={<Line />} />
-                <Route path="/area" element={<Area />} />
-                <Route path="/bar" element={<Bar />} />
-                <Route path="/pie" element={<Pie />} />
-                <Route path="/financial" element={<Financial />} />
-                <Route path="/color-mapping" element={<ColorMapping />} />
-                <Route path="/pyramid" element={<Pyramid />} />
-                <Route path="/stacked" element={<Stacked />} />
 
                 
               </Routes>
