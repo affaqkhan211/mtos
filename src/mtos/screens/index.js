@@ -1,4 +1,4 @@
-export * from './App';
+
 export * from './AboutScreen';
 export * from './ContactScreen';
 export * from './FeaturesScreen';

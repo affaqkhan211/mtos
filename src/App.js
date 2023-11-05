@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { FiSettings } from "react-icons/fi";
-import { TooltipComponent } from "@syncfusion/ej2-react-popups";
-import { Navbar, Footer, Sidebar, ThemeSettings } from "./components";
+import MFooter from "./mtos/components/Footer/MFooter"
 import {
   Ecommerce,
   Admins,
@@ -82,7 +80,7 @@ const App = () => {
                                     <AboutScreen />
                                 </div>
                                 <ScrollToTop smooth color={colors.primary} />
-                                <Footer />
+                                <MFooter />
                             </div>
 
                         }
@@ -121,10 +119,8 @@ const App = () => {
                 <Route path="/deleteadmin" element={<Customers />} />
 
                 {/* apps  */}
-                <Route path="/kanban" element={<Kanban />} />
-                <Route path="/editor" element={<Editor />} />
+
                 <Route path="/calendar" element={<Calendar />} />
-                <Route path="/color-picker" element={<ColorPicker />} />
 
                 {/* charts  */}
                 <Route path="/line" element={<Line />} />

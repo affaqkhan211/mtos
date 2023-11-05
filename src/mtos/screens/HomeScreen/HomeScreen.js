@@ -11,8 +11,8 @@ const HomeScreen = () => {
                 <img src={backgroundImage} alt="Background" className="img-fluid" style={{ width: '100%', objectFit: 'contain' }} />
             </div>
             <div className="col-lg-6 order-lg-1 d-flex flex-column justify-content-center align-items-center p-4">
-                <h1 className="text-center main-heading ">MTOS FOR BUSINESS</h1>
-                <p className="text-center" style={{ width: "50%" }}>
+                <h1 className="text-center main-heading text-3xl pb-3">MTOS FOR BUSINESS</h1>
+                <p className="text-center text-sm pb-3" style={{ width: "50%" }}>
                     Elevate your transport business: more profit, less time, total control
                 </p>
                 <NavLink to='/register' >

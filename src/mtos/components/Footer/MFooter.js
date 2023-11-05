@@ -3,7 +3,7 @@ import { MDBFooter, MDBContainer, MDBRow, MDBCol } from 'mdb-react-ui-kit';
 import { FaFacebook, FaTwitter, FaGoogle, FaInstagram, FaLinkedin, FaGithub } from 'react-icons/fa';
 import { FaGem, FaHome, FaEnvelope, FaPhone } from 'react-icons/fa';
 
-export default function Footer() {
+function MFooter() {
     return (
         <MDBFooter bgColor='light' className='text-center text-lg-start text-muted'>
             <section className='d-flex justify-content-center justify-content-lg-between p-4 border-bottom'>
@@ -73,3 +73,5 @@ export default function Footer() {
         </MDBFooter>
     );
 }
+
+export default MFooter
