@@ -31,12 +31,11 @@ export const SIGNIN = async (email, password) => {
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
-        console.log(user);
-        return user.accessToken;
+        return { uid: user.uid, isSuccess: true };
 
     } catch (error) {
         console.error("Error signing in:", error);
-        return error.message;
+        return { isSuccess: false, uid: null, message: error.message };
     }
 };
 

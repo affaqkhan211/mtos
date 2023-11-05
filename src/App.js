@@ -23,7 +23,8 @@ import {RegisterScreen} from "./mtos/screens";
 import {ForgotPassword} from "./mtos/screens";
 import ScrollToTop from "react-scroll-to-top";
 import colors from "./mtos/utils/colors";
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   const {
@@ -115,6 +116,7 @@ const App = () => {
 
                 
               </Routes>
+              <ToastContainer />
               </BrowserRouter>
   );
 };

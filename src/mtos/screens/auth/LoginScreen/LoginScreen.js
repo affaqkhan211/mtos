@@ -25,13 +25,18 @@ const LoginScreen = () => {
         validatePassword();
 
         if (isValid) {
-            const token = await SIGNIN(email, password);
-            toast.success("User logged in successfully")
-            console.log(token);
-            localStorage.setItem('token', token);
-            navigate("/home")
+            const data = await SIGNIN(email, password);
+            if (data.isSuccess) {
+                toast.success("Logged in successfully")
+                localStorage.setItem('token', data.uid);
+                navigate("/home")
+            } else {
+                toast.error(data.message);
+            }
+            console.log(data);
         }
-
+        setEmail('');
+        setPassword('');
         setLoading(false);
     };
 
@@ -118,7 +123,7 @@ const LoginScreen = () => {
 
                             <MDBRow>
                                 <MDBCol>
-                                    <p className="my-3">New here? <NavLink className='navLink' to={loading ? '#' : '/register' }>Register Now!</NavLink></p>
+                                    <p className="my-3">New here? <NavLink className='navLink' to={loading ? '#' : '/register'}>Register Now!</NavLink></p>
                                 </MDBCol>
                                 <MDBCol>
                                     <p className="my-3  "><NavLink to={loading ? '#' : '/forgotpassword'} style={{
