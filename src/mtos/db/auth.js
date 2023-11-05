@@ -19,10 +19,10 @@ export const SIGNUP = async (email, password, firstName, lastName) => {
         await setDoc(userRef, userData);
         console.log(userData);
 
-        return userRef.id;
+        return { uid: uid, isSuccess: true };
     } catch (error) {
         console.error("Error signing up:", error);
-        return error.message;
+        return { message: error.message, isSuccess: true, uid: null };
     }
 };
 
@@ -47,10 +47,10 @@ export const SIGNIN_WITH_GOOGLE = async () => {
         const provider = new GoogleAuthProvider();
         const userCredential = await signInWithPopup(auth, provider);
         const user = userCredential.user;
-        return user;
+        return { uid: user.uid, isSuccess: true };
     } catch (error) {
         console.error("Error signing in with Google:", error);
-        return null;
+        return { message: error.message, isSuccess: false };
     }
 };
 
@@ -75,12 +75,11 @@ export const SIGNUP_WITH_GOOGLE = async () => {
 
             await setDoc(userRef, userData);
         } else {
-            return "User Already Exists!";
+            return { message: "User Already Exists!", isSuccess: false };
         }
-
-        return userRef.id;
+        return { uid: user.uid, isSuccess: true };
     } catch (error) {
         console.error("Error signing up with Google:", error);
-        return error.message;
+        return { message: error.message, isSuccess: false };
     }
 };

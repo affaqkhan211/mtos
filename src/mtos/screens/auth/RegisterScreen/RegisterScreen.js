@@ -30,12 +30,16 @@ const RegisterScreen = () => {
         validatePassword();
 
         if (isValid) {
-            const token = await SIGNUP(email, password, firstName, lastName);
-            toast.success("User registered successfully");
-            navigate("/login")
-
+            const data = await SIGNUP(email, password, firstName, lastName);
+            if (data.isSuccess) {
+                toast.success("Registered Successfully")
+                localStorage.setItem('token', data.uid);
+                navigate("/home")
+            } else {
+                toast.error(data.message);
+            }
+            console.log(data);
         }
-
         setLoading(false);
     };
 
@@ -74,8 +78,17 @@ const RegisterScreen = () => {
     }
 
     const GoogleSignup = async () => {
-        const isSuccess = await SIGNUP_WITH_GOOGLE();
-        alert(isSuccess);
+        setLoading(true);
+        const data = await SIGNUP_WITH_GOOGLE();
+        if (data.isSuccess) {
+            toast.success("Registered Successfully")
+            localStorage.setItem('token', data.uid);
+            navigate("/home")
+        } else {
+            toast.error(data.message);
+        }
+        setLoading(false);
+        console.log(data);
     }
 
     return (
@@ -169,7 +182,7 @@ const RegisterScreen = () => {
                             </div>
                             {
                                 loading ?
-                                    <button className='register-button w-50 mb-4 ' size='md'>
+                                    <button className='register-button w-50 mb-4 px-3 py-2' size='md'>
                                         <div className='loader' >
                                             <PulseLoader
                                                 color='#ffff'
@@ -187,11 +200,7 @@ const RegisterScreen = () => {
                             }
 
                             <div className="text-center">
-                                <p>or register using:</p>
-                                <button disabled={loading} tag='a' color='none' className='social-buttons btn-transparent btn-outline-0 mx-3'>
-                                    <FaFacebook size="1.5em" color='#000' />
-                                </button>
-
+                                <p>or register using</p>
                                 <button disabled={loading} tag='a' color='none' className='social-buttons btn-transparent btn-outline-0 mx-3' onClick={GoogleSignup} >
                                     <FaGoogle size="1.5em" color='#000' />
                                 </button>

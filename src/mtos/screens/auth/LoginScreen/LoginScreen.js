@@ -27,7 +27,7 @@ const LoginScreen = () => {
         if (isValid) {
             const data = await SIGNIN(email, password);
             if (data.isSuccess) {
-                toast.success("Logged in successfully")
+                toast.success("Logged In Successfully")
                 localStorage.setItem('token', data.uid);
                 navigate("/home")
             } else {
@@ -60,12 +60,21 @@ const LoginScreen = () => {
     }
 
     const GoogleSignIn = async () => {
-        const isSuccess = await SIGNIN_WITH_GOOGLE();
-        alert(isSuccess);
+        setLoading(true);
+        const data = await SIGNIN_WITH_GOOGLE();
+        if (data.isSuccess) {
+            toast.success("Logged in successfully")
+            localStorage.setItem('token', data.uid);
+            navigate("/home")
+        } else {
+            toast.error(data.message);
+        }
+        console.log(data);
+        setLoading(false);
     }
 
     return (
-        <MDBContainer fluid className='p-4 background-radial-gradient overflow-hidden  '
+        <MDBContainer fluid className='p-4 background-radial-gradient overflow-hidden'
         >
             <NavLink
                 to={loading ? '#' : '/#home'}
@@ -133,7 +142,7 @@ const LoginScreen = () => {
                             </MDBRow>
                             {
                                 loading ?
-                                    <button className='register-button w-50 mb-4 ' size='md'>
+                                    <button className='register-button mb-4 ' size='md'>
                                         <div className='loader' >
                                             <PulseLoader
                                                 color='#ffff'
@@ -150,10 +159,10 @@ const LoginScreen = () => {
                                     </button>
                             }
                             <div className="text-center">
-                                <p>or login using:</p>
-                                <button disabled={loading} tag='a' color='none' className='social-buttons btn-transparent btn-outline-0 mx-3'>
+                                <p>or login using</p>
+                                {/* <button disabled={loading} tag='a' color='none' className='social-buttons btn-transparent btn-outline-0 mx-3'>
                                     <FaFacebook size="1.5em" color='#000' />
-                                </button>
+                                </button> */}
 
                                 <button disabled={loading} tag='a' color='none' className='social-buttons btn-transparent btn-outline-0 mx-3' onClick={GoogleSignIn} >
                                     <FaGoogle size="1.5em" color='#000' />
