@@ -2,7 +2,7 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithP
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { auth, db } from './config';
 
-// Create a signup function with email and password
+// Create a signup function with email and password for subowners
 export const SIGNUP = async (email, password, firstName, lastName) => {
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -13,7 +13,6 @@ export const SIGNUP = async (email, password, firstName, lastName) => {
         const userData = {
             fullName: `${firstName} ${lastName}`,
             email: email,
-            role: "subOwner",
             subscriptions: "none",
         };
 
@@ -34,7 +33,7 @@ export const SIGNIN = async (email, password) => {
         const user = userCredential.user;
         console.log(user);
         return user.accessToken;
-        
+
     } catch (error) {
         console.error("Error signing in:", error);
         return error.message;
@@ -72,7 +71,6 @@ export const SIGNUP_WITH_GOOGLE = async () => {
             const userData = {
                 fullName: user.displayName,
                 email: user.email,
-                role: "subOwner",
                 subscriptions: "none",
             };
 
