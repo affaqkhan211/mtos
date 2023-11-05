@@ -24,15 +24,15 @@
 
 .social-buttons {
     background: transparent;
+    justify-content: center;
+    align-items: center;
+    border: none;
     border-radius: 100px;
     margin-top: 10px;
-    border: none;
-    flex-direction: row;
 }
 
 .social-buttons:hover {
-    border: 1px solid #ececec;
-    background: #ececec;
+    border: 1px solid #2a7c64;
     transition: 0.4s;
 }
 

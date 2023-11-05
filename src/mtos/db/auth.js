@@ -22,7 +22,7 @@ export const SIGNUP = async (email, password, firstName, lastName) => {
         return { uid: uid, isSuccess: true };
     } catch (error) {
         console.error("Error signing up:", error);
-        return { message: error.message, isSuccess: true, uid: null };
+        return { message: error.message, isSuccess: false };
     }
 };
 

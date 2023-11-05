@@ -159,11 +159,7 @@ const LoginScreen = () => {
                                     </button>
                             }
                             <div className="text-center">
-                                <p>or login using</p>
-                                {/* <button disabled={loading} tag='a' color='none' className='social-buttons btn-transparent btn-outline-0 mx-3'>
-                                    <FaFacebook size="1.5em" color='#000' />
-                                </button> */}
-
+                                <p>or login using:</p>
                                 <button disabled={loading} tag='a' color='none' className='social-buttons btn-transparent btn-outline-0 mx-3' onClick={GoogleSignIn} >
                                     <FaGoogle size="1.5em" color='#000' />
                                 </button>
