@@ -59,7 +59,7 @@ const NavBar = () => {
                 <span className="navbar-toggler-icon"></span>
             </button>
             <div
-                className={`collapse navbar-collapse${showNav ? ' show' : ''}`}
+                className={` navbar-collapse${showNav ? ' show' : ''}`}
                 id="navbarNav"
             >
                 <ul className="navbar-nav ml-auto w-100">
