@@ -13,7 +13,7 @@ const FeaturesScreen = () => {
                 <h1 className="text-left feature-heading mx-5 mb-5">WE PROVIDE BEST FEATURES//</h1>
 
                 {/* First Row */}
-                <div className="row text-center justify-content-center mx-5 ">
+                <div className="row justify-content-center mx-5 ">
                     <div className="col-lg-4 light-bg custom-class pt-5 pb-5 p-4 ">
                         <FaUser size={48} className="mb-3" />
                         <h3 class='h3' >USER MANAGEMENT</h3>
@@ -38,7 +38,7 @@ const FeaturesScreen = () => {
             {/* Second Row */}
             <div className='container-fluid' >
 
-                <div className="row text-center justify-content-center mx-5">
+                <div className="row justify-content-center mx-5">
                     <div className="col-lg-4 dark-bg custom-class pt-5 pb-5 p-4 ">
                         <GiUpgrade size={48} className="mb-3" />
                         <h3 class='h3'>ROUTE OPTIMIZATION</h3>

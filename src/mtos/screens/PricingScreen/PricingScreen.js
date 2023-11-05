@@ -50,7 +50,7 @@ const PricingScreen = () => {
                 <div class="container">
                     <div class="section-title text-center">
                         <h1>PRICING PLAN</h1>
-                        <p>Use A Predefined Basic Plan With Given Features Or Adjust It According To Your Needs By Choosing Custom Plan. Click On Plus/Minus Button To Increase/Decrease Number Of Accounts.</p>
+                        <p className='price-p' >Use A Predefined Basic Plan With Given Features Or Adjust It According To Your Needs By Choosing Custom Plan. Click On Plus/Minus Button To Increase/Decrease Number Of Accounts.</p>
                     </div>
                     <div class="row text-center justify-content-center">
                         <div class="col-lg-4 col-sm-4 col-xs-12 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.2s" data-wow-offset="0">

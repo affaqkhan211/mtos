@@ -9,6 +9,7 @@
 
 .button-container {
     box-shadow: 0 5px 20px -5px black;
+    transition: 0.5s;
 }
 
 .button-container:hover {
@@ -23,4 +24,9 @@
     /* transition: 0.9s; */
     border-radius: 100px;
 
+}
+
+.h1-responsive {
+    font-size: 40px;
+    font-weight: bold;
 }

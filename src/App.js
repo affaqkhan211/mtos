@@ -21,10 +21,10 @@ import {AboutScreen} from "./mtos/screens";
 import {LoginScreen} from "./mtos/screens";
 import {RegisterScreen} from "./mtos/screens";
 import {ForgotPassword} from "./mtos/screens";
-import ScrollToTop from "react-scroll-to-top";
 import colors from "./mtos/utils/colors";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ScrollToTop from "react-scroll-to-top";
 
 const App = () => {
   const {
@@ -69,8 +69,8 @@ const App = () => {
                                 <div id="about">
                                     <AboutScreen />
                                 </div>
-                                <ScrollToTop smooth color={colors.primary} />
                                 <MFooter />
+                                <ScrollToTop smooth color={colors.primary} />
                             </div>
 
                         }

@@ -1,4 +1,5 @@
 import React from 'react';
+import './AboutScreen.css';
 
 const AboutScreen = () => {
     return (

@@ -11,7 +11,7 @@ function MFooter() {
                     <span>Get connected with us on social networks:</span>
                 </div>
 
-                <div>
+                <div className='d-flex justify-content-center justify-content-lg-between'>
                     <a href='' className='me-4 text-reset'>
                         <FaFacebook />
                     </a>
@@ -38,7 +38,6 @@ function MFooter() {
                     <MDBRow className='mt-3'>
                         <MDBCol md="3" lg="4" xl="3" className='mx-auto mb-4'>
                             <h6 className='text-uppercase fw-bold mb-4'>
-                                <FaGem className="me-3" />
                                 MTOS - Medical Transport Operating System
                             </h6>
                             <p>
@@ -48,15 +47,15 @@ function MFooter() {
 
                         <MDBCol md="4" lg="3" xl="3" className='mx-auto mb-md-0 mb-4'>
                             <h6 className='text-uppercase fw-bold mb-4'>Contact</h6>
-                            <p>
+                            <p className='d-flex my-2' >
                                 <FaHome className="me-2" />
                                 New York, NY 10012, US
                             </p>
-                            <p>
+                            <p className='d-flex my-2'>
                                 <FaEnvelope className="me-3" />
                                 contactwithmtos@gmail.com
                             </p>
-                            <p>
+                            <p className='d-flex my-2'>
                                 <FaPhone className="me-3" /> + 1 (978) 918-6644
                             </p>
                         </MDBCol>

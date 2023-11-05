@@ -44,17 +44,17 @@ const ContactScreen = () => {
                             <div className="status"></div>
                         </form>
                     </div>
-                    <div className="col-md-3 text-center py-5">
-                        <ul className="list-unstyled mb-0 d-flex flex-column align-items-center">
-                            <li class='li-1' >
+                    <div className="col-md-3 py-5">
+                        <ul className="list-unstyled mb-0 d-flex flex-column mx-3">
+                            <li class='li-1 my-3' >
                                 <BiSolidMap size={50} className="mb-3" color='#000' />
                                 <p>San Francisco, CA 94126, USA</p>
                             </li>
-                            <li class='li-1' >
+                            <li class='li-1 my-3' >
                                 <BsFillTelephoneFill size={50} className="mb-3" color='#000' />
                                 <p>+ 1 (978) 918-6644</p>
                             </li>
-                            <li className='li-1' >
+                            <li className='li-1 my-3' >
                                 <BsEnvelopeAtFill size={50} className="mb-3" color='#000' />
                                 <p>contactwithmtos@gmail.com</p>
                             </li>

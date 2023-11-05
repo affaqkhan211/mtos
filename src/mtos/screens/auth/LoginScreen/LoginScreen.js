@@ -142,7 +142,7 @@ const LoginScreen = () => {
                             </MDBRow>
                             {
                                 loading ?
-                                    <button className='register-button mb-4 ' size='md'>
+                                    <button className='register-button w-50 mb-4 ' size='md'>
                                         <div className='loader' >
                                             <PulseLoader
                                                 color='#ffff'

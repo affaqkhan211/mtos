@@ -1,6 +1,7 @@
 .mb-3 {
     color: #40B491;
-    transition: color 0.3s ease; /* Add a smooth color transition on hover */
+    transition: color 0.3s ease;
+    /* align-self: center; */
 }
 
 .h3{
@@ -27,6 +28,8 @@
 
 .custom-class {
     transition: background 0.3s ease, color 0.9s ease;
+    /* align-items: center; */
+    /* justify-content: center */
 }
 
 .upper-container {
@@ -40,8 +43,12 @@
 
 .feature-heading {
     color: white;
+    font-size: 20px;
+    font-weight:600;
 }
 
 .feature-subHeading {
     color: white;
+    font-size: 40px;
+    font-weight:800;
 }

@@ -167,3 +167,12 @@
 .incrementButton:disabled {
 	background-color: #08685e;
 }
+
+h1 {
+	font-size: 40px;
+	font-weight: bold;
+}
+
+.price-p {
+	margin-bottom: 15px;
+}
