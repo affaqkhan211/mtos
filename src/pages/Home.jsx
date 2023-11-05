@@ -18,7 +18,7 @@ const DropDown = ({ currentMode }) => (
   </div>
 );
 
-const Ecommerce = () => {
+const Home = () => {
 
   const {
     setCurrentColor,
@@ -396,4 +396,4 @@ const Ecommerce = () => {
   );
 };
 
-export default Ecommerce;
+export default Home;

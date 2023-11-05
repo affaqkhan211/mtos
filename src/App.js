@@ -2,22 +2,19 @@ import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import MFooter from "./mtos/components/Footer/MFooter"
 import {
-  Ecommerce,
+  Home,
   Admins,
   Calendar,
   Drivers,
   Stacked,
   Pyramid,
   Customers,
-  Kanban,
   Line,
   Area,
   Bar,
   Pie,
   Financial,
-  ColorPicker,
   ColorMapping,
-  Editor,
 } from "./pages";
 
 import "./App.css";
@@ -111,7 +108,7 @@ const App = () => {
                         }
                     />
                 {/* dashboard  */}
-                <Route path="/home" element={<Ecommerce />} />
+                <Route path="/home" element={<Home />} />
 
                 {/* pages  */}
                 <Route path="/admins" element={<Admins />} />

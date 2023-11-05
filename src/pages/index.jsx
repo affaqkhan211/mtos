@@ -1,4 +1,4 @@
-export { default as Ecommerce } from './Ecommerce';
+export { default as Home } from './Home';
 export { default as Admins } from './Admins';
 export { default as Drivers } from './Drivers';
 export { default as Customers } from './Customers';
