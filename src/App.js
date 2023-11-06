@@ -7,7 +7,9 @@ import {
   Subscriptions,
   Drivers,
   Admins,
-  Profile
+  Profile,
+  AddAdmin,
+  AddDriver
 } from "./pages";
 
 import "./App.css";
@@ -31,11 +33,6 @@ const App = () => {
   const {
     setCurrentColor,
     setCurrentMode,
-    currentMode,
-    activeMenu,
-    currentColor,
-    themeSettings,
-    setThemeSettings,
   } = useStateContext();
 
   useEffect(() => {
@@ -106,7 +103,9 @@ const App = () => {
 
                 {/* pages  */}
                 <Route path="/admins" element={<Admins />} />
+                <Route path="/addadmins" element={<AddAdmin />} />
                 <Route path="/drivers" element={<Drivers />} />
+                <Route path="/adddriver" element={<AddDriver />} />
                 <Route path="/trips" element={<Trips />} />
 
                 {/* payments & info  */}

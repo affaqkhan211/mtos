@@ -8,7 +8,7 @@ import { Header, Navbar, Footer, Sidebar, ThemeSettings } from '../components';
 import { useStateContext } from "../contexts/ContextProvider";
 import { useNavigate } from 'react-router-dom';
 
-const AddAdmin = () => {
+const AddDriver = () => {
   const navigate = useNavigate();
   const [token, setToken] = useState(null);
   const selectionsettings = { persistSelection: true };
@@ -113,4 +113,4 @@ const AddAdmin = () => {
   );
 };
 
-export default AddAdmin;
+export default AddDriver;
