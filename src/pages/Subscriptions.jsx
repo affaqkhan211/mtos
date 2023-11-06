@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BsCurrencyDollar } from 'react-icons/bs';
 // import { GoPrimitiveDot } from 'react-icons/go';
 import { IoIosMore } from 'react-icons/io';
@@ -11,6 +11,7 @@ import product9 from '../data/product9.jpg';
 import { FiSettings } from "react-icons/fi";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { Header, Navbar, Footer, Sidebar, ThemeSettings } from '../components';
+import { useNavigate } from 'react-router-dom';
 
 const DropDown = ({ currentMode }) => (
   <div className="w-28 border-1 border-color px-2 py-1 rounded-md">
@@ -19,7 +20,8 @@ const DropDown = ({ currentMode }) => (
 );
 
 const Subscriptions = () => {
-
+  const navigate = useNavigate();
+  const [token, setToken] = useState(null);
   const {
     setCurrentColor,
     setCurrentMode,
@@ -38,6 +40,17 @@ const Subscriptions = () => {
       setCurrentMode(currentThemeMode);
     }
   }, []);
+
+  useEffect(() => {
+    const token = sessionStorage.getItem('token');
+    if (token) {
+      setToken(token);
+    }
+  }, []);
+
+  if (token === null) {
+    navigate('/login');
+  }
 
   return (
     <div className={currentMode === "Dark" ? "dark" : ""}>

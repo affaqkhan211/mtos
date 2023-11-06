@@ -28,7 +28,7 @@ const LoginScreen = () => {
             const data = await SIGNIN(email, password);
             if (data.isSuccess) {
                 toast.success("Logged In Successfully")
-                localStorage.setItem('token', data.uid);
+                sessionStorage.setItem('token', data.uid);
                 navigate("/home")
             } else {
                 toast.error(data.message);

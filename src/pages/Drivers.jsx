@@ -1,16 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GridComponent, ColumnsDirective, ColumnDirective, Page, Selection, Inject, Edit, Toolbar, Sort, Filter } from '@syncfusion/ej2-react-grids';
-
 import { customersData, customersGrid } from '../data/dummy';
 import { FiSettings } from "react-icons/fi";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { Header, Navbar, Footer, Sidebar, ThemeSettings } from '../components';
 import { useStateContext } from "../contexts/ContextProvider";
+import { useNavigate } from 'react-router-dom';
 
 const Drivers = () => {
+  const navigate = useNavigate();
   const selectionsettings = { persistSelection: true };
   const toolbarOptions = ['Delete'];
   const editing = { allowDeleting: true, allowEditing: true };
+  const [token, setToken] = useState(null);
 
   const {
     setCurrentColor,
@@ -21,6 +23,13 @@ const Drivers = () => {
     themeSettings,
     setThemeSettings,
   } = useStateContext();
+
+  useEffect(() => {
+    const token = sessionStorage.getItem('token');
+    if (token) {
+      setToken(token);
+    }
+  }, []);
   
   useEffect(() => {
     const currentThemeColor = localStorage.getItem("colorMode");
@@ -30,6 +39,10 @@ const Drivers = () => {
       setCurrentMode(currentThemeMode);
     }
   }, []);
+
+  if (token === null) {
+    navigate('/login');
+  }
 
   return (
     <div className={currentMode === "Dark" ? "dark" : ""}>
