@@ -6,6 +6,7 @@ const auth = getAuth(); // Initialize Firebase Authentication
 
 // Add admin by subowners
 export const createAdmin = (id, adminData, callback) => {
+    
     if (id) {
         createUserWithEmailAndPassword(auth, adminData.email, adminData.password)
             .then((userCredential) => {
