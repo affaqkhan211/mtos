@@ -50,20 +50,20 @@ export const updateSubOwnerById = (subOwnerId, newData, callback) => {
 }
 
 // delete specifc subowner by document id
-export const deleteSubOwnerById = (subOwnerId, callback) => {
-    const subOwnerRef = doc(db, "subOwners", subOwnerId);
+// export const deleteSubOwnerById = (subOwnerId, callback) => {
+//     const subOwnerRef = doc(db, "subOwners", subOwnerId);
 
-    try {
-        deleteDoc(subOwnerRef)
-            .then(() => {
-                callback({ isSuccess: true });
-            })
-            .catch((error) => {
-                console.error("Error deleting subOwner: ", error);
-                callback({ isSuccess: false });
-            });
-    } catch (error) {
-        console.error("Error: ", error);
-        callback({ isSuccess: false });
-    }
-}
+//     try {
+//         deleteDoc(subOwnerRef)
+//             .then(() => {
+//                 callback({ isSuccess: true });
+//             })
+//             .catch((error) => {
+//                 console.error("Error deleting subOwner: ", error);
+//                 callback({ isSuccess: false });
+//             });
+//     } catch (error) {
+//         console.error("Error: ", error);
+//         callback({ isSuccess: false });
+//     }
+// }

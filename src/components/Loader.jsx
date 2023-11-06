@@ -1,5 +1,5 @@
 import React from 'react';
-import PulseLoader from 'react-spinners/PulseLoader';
+import PulseLoader from 'react-spinners/HashLoader';
 import { useStateContext } from '../contexts/ContextProvider';
 
 const Loader = ({ loading }) => {
@@ -11,7 +11,7 @@ const Loader = ({ loading }) => {
                 <PulseLoader
                     color={currentColor}
                     loading={loading}
-                    size={10}
+                    size={50}
                     aria-label="Loading Spinner"
                     data-testid="loader"
                 />
