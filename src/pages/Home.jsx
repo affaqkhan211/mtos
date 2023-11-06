@@ -12,6 +12,7 @@ import { FiSettings } from "react-icons/fi";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { Header, Navbar, Footer, Sidebar, ThemeSettings } from '../components';
 import { useNavigate } from 'react-router-dom';
+import { getSubOwnerById } from '../db/profile';
 
 const DropDown = ({ currentMode }) => (
   <div className="w-28 border-1 border-color px-2 py-1 rounded-md">
@@ -30,6 +31,7 @@ const Home = () => {
     currentColor,
     themeSettings,
     setThemeSettings,
+    setUserProfile,
   } = useStateContext();
 
 
@@ -48,6 +50,16 @@ const Home = () => {
       setToken(token);
     }
   });
+
+  useEffect(() => {
+    if (token) {
+      getSubOwnerById(token, (result) => {
+        if (result.isSuccess) {
+          setUserProfile(result.data);
+        }
+      })
+    }
+  }, []);
 
   if (token === null) {
     navigate('/login');

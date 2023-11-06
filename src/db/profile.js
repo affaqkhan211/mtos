@@ -1,37 +1,34 @@
-import { collection, query, where, getDocs, documentId, doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { collection, query, where, getDocs, documentId, doc, updateDoc, deleteDoc, onSnapshot } from "firebase/firestore";
 import { db } from '../mtos/db/config';
 
 // get subowner about data
 export const getSubOwnerById = (subOwnerId, callback) => {
     const subOwnersCollection = collection(db, "subOwners");
-    const subOwnersQuery = query(subOwnersCollection, where(documentId(), "==", subOwnerId));
+    const subOwnerDoc = doc(subOwnersCollection, subOwnerId);
 
     try {
-        getDocs(subOwnersQuery)
-            .then((subOwnersSnapshot) => {
+        const unsubscribe = onSnapshot(subOwnerDoc, (docSnapshot) => {
+            if (docSnapshot.exists()) {
+                const subOwnerData = docSnapshot.data();
+                // Include the 'id' field in the data
+                subOwnerData.id = docSnapshot.id;
+
                 const subOwnersData = {
                     isSuccess: true,
-                    data: null, // Initialize data as null
+                    data: subOwnerData,
                 };
 
-                subOwnersSnapshot.forEach((doc) => {
-                    // Include the 'id' field in the data
-                    const subOwnerData = doc.data();
-                    subOwnerData.id = doc.id;
-                    subOwnersData.data = subOwnerData; // Set data to the retrieved document
-                });
-
                 callback(subOwnersData);
-            })
-            .catch((error) => {
-                console.error("Error getting subOwners: ", error);
-                callback({ isSuccess: false });
-            });
+            } else {
+                // Document doesn't exist
+                callback({ isSuccess: false, message: 'User not Found!' });
+            }
+        });
     } catch (error) {
         console.error("Error: ", error);
-        callback({ isSuccess: false });
+        callback({ isSuccess: false, message:error.message });
     }
-}
+};
 
 // update subowner about data
 export const updateSubOwnerById = (subOwnerId, newData, callback) => {

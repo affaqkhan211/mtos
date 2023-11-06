@@ -4,10 +4,16 @@ import { FiSettings } from "react-icons/fi";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { Header, Navbar, Footer, Sidebar, ThemeSettings } from '../components';
 import { useNavigate } from 'react-router-dom';
+import { getSubOwnerById } from '../db/profile';
 
 const Profile = () => {
   const navigate = useNavigate();
   const [token, setToken] = useState(null);
+  const [name, setName] = useState('');
+  const [oragnization, setOrganization] = useState('');
+  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
+  const [image, setImage] = useState('');
   const {
     setCurrentColor,
     setCurrentMode,
@@ -16,6 +22,7 @@ const Profile = () => {
     currentColor,
     themeSettings,
     setThemeSettings,
+    userProfile,
   } = useStateContext();
 
   useEffect(() => {
@@ -34,27 +41,23 @@ const Profile = () => {
     }
   });
 
+  useEffect(() => {
+    if (userProfile) {
+      setName(userProfile?.fullName);
+      setOrganization(userProfile?.organization);
+      setPhone(userProfile?.phone);
+      setEmail(userProfile?.email);
+    }
+  }, []);
+
   if (token === null) {
     navigate('/login');
   }
 
-  const [profile, setProfile] = useState({
-    name: 'John Doe',
-    organization: 'Sample Organization',
-    email: 'johndoe@example.com',
-    phone: '123-456-7890',
-    address: '123 Main St, City, Country',
-    image: 'https://huggingface.co/tasks/assets/image-classification/image-classification-input.jpeg',
-  });
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setProfile({ ...profile, [name]: value });
-  };
 
   const handleSave = () => {
     // You can implement your save logic here
-    console.log('Profile saved:', profile);
+    console.log('Profile saved:');
   };
 
   return (
@@ -99,62 +102,69 @@ const Profile = () => {
             <div className="mt-10 pt-10 mx-10">
               <Header category="Info" title="Profile" />
 
-              <div className="w-full text-center">
+              <div className="w-ful">
                 <img
-                  src={profile.image}
+                  src={image}
                   className="h-40 w-40 rounded-full mx-auto"
                 />
                 <div className="bg-white p-4">
-                  <div className="mb-4">
+
+                  <div className='mb-4' >
+                    <label htmlFor="first_name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                      Full Name
+                    </label>
                     <input
                       type="text"
-                      name="name"
-                      value={profile.name}
-                      onChange={handleInputChange}
-                      className="w-full border-b-2 border-gray-300 p-2 focus:outline-none"
-                      placeholder="Name"
+                      value={name}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      placeholder="John Doe"
+                      required
+                      onChange={(e) => setName(e.target.value)}
                     />
                   </div>
-                  <div className="mb-4">
+
+                  <div className='mb-4' >
+                    <label htmlFor="first_name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                      Organization Name
+                    </label>
                     <input
                       type="text"
-                      name="organization"
-                      value={profile.organization}
-                      onChange={handleInputChange}
-                      className="w-full border-b-2 border-gray-300 p-2 focus:outline-none"
-                      placeholder="Organization Name"
+                      value={oragnization}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      placeholder="MTOS LLC"
+                      required
+                      onChange={(e) => setOrganization(e.target.value)}
                     />
                   </div>
-                  <div className="mb-4">
+
+                  <div className='mb-4' >
+                    <label htmlFor="first_name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                      Email
+                    </label>
                     <input
-                      type="email"
-                      name="email"
-                      value={profile.email}
-                      onChange={handleInputChange}
-                      className="w-full border-b-2 border-gray-300 p-2 focus:outline-none"
-                      placeholder="Email"
+                      type='email'
+                      value={email}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      placeholder="mtos@gmail.com"
+                      required
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                   </div>
-                  <div className="mb-4">
+
+                  <div className='mb-4' >
+                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                      Phone Number
+                    </label>
                     <input
-                      type="text"
-                      name="phone"
-                      value={profile.phone}
-                      onChange={handleInputChange}
-                      className="w-full border-b-2 border-gray-300 p-2 focus:outline-none"
-                      placeholder="Phone Number"
+                      type='phone'
+                      value={phone}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      placeholder="XXX-XXX-XXX"
+                      required
+                      onChange={(e) => setPhone(e.target.value)}
                     />
                   </div>
-                  <div className="mb-4">
-                    <input
-                      type="text"
-                      name="address"
-                      value={profile.address}
-                      onChange={handleInputChange}
-                      className="w-full border-b-2 border-gray-300 p-2 focus:outline-none"
-                      placeholder="Address"
-                    />
-                  </div>
+
                   <div>
                     <button
                       type="button"
