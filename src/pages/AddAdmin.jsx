@@ -85,10 +85,10 @@ const AddAdmin = () => {
     }
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     setLoading(true);
-    try {
 
+    try {
       const isFullNameValid = newData?.fullName?.length > 3; // Name length check
       const isPhoneNumberValid = newData?.phoneNumber?.length > 4; // Phone number check
       const isEmailValid = /\S+@\S+\.\S+/.test(newData?.email); // Email format check
@@ -102,6 +102,9 @@ const AddAdmin = () => {
         isPasswordValid &&
         isAddressValid
       ) {
+        // Simulate an asynchronous operation with a timeout (replace this with your actual async call)
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
         createAdmin(token, newData, (result) => {
           if (result.isSuccess) {
             setNewData({
@@ -123,18 +126,18 @@ const AddAdmin = () => {
         if (!isFullNameValid) errorMessage += '- Name must be at least 4 characters long.\n';
         if (!isPhoneNumberValid) errorMessage += '- Phone number must be at least 5 digits long.\n';
         if (!isEmailValid) errorMessage += '- Please enter a valid email address.\n';
-        if (!isPasswordValid) errorMessage += '- Password must include uppercase, lowercase, number and a special character.\n';
+        if (!isPasswordValid) errorMessage += '- Password must include uppercase, lowercase, number, and a special character.\n';
         if (!isAddressValid) errorMessage += '- Address must be at least 5 characters long.\n';
 
         toast.error(errorMessage);
       }
     } catch (error) {
       toast.error(error.message);
-
     } finally {
       setLoading(false);
     }
   };
+
 
   return (
     <div className={currentMode === "Dark" ? "dark" : ""}>
