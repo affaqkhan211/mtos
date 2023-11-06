@@ -1,12 +1,12 @@
 import React from 'react';
-import { AiOutlineCalendar, AiOutlineShoppingCart, AiOutlineAreaChart, AiOutlineBarChart, AiOutlineStock } from 'react-icons/ai';
+import { AiOutlineCar, AiOutlineShoppingCart, AiOutlineAreaChart, AiOutlineBarChart, AiOutlineStock } from 'react-icons/ai';
 import { FiShoppingBag, FiEdit, FiPieChart, FiBarChart, FiCreditCard, FiStar, FiShoppingCart } from 'react-icons/fi';
-import { BsKanban, BsBarChart, BsBoxSeam, BsCurrencyDollar, BsShield, BsChatLeft } from 'react-icons/bs';
+import { BsPersonDown, BsCurrencyDollar, BsShield, BsChatLeft } from 'react-icons/bs';
 import { FaUserShield, FaCar, FaMap, FaMoneyBill, FaUser, FaChartLine    } from 'react-icons/fa';
-import { BiColorFill } from 'react-icons/bi';
+import { BiTrip } from 'react-icons/bi';
 import { IoMdContacts } from 'react-icons/io';
 import { RiContactsLine, RiStockLine } from 'react-icons/ri';
-import { MdOutlineSupervisorAccount } from 'react-icons/md';
+import { MdOutlineAdminPanelSettings } from 'react-icons/md';
 import { HiOutlineRefresh } from 'react-icons/hi';
 import { TiTick } from 'react-icons/ti';
 import { GiLouvrePyramid } from 'react-icons/gi';
@@ -581,38 +581,38 @@ export const chatData = [
 
 export const earningData = [
   {
-    icon: <MdOutlineSupervisorAccount />,
+    icon: <MdOutlineAdminPanelSettings />,
     amount: '39,354',
     percentage: '-4%',
-    title: 'Customers',
+    title: 'Admins',
     iconColor: '#03C9D7',
     iconBg: '#E5FAFB',
     pcColor: 'red-600',
   },
   {
-    icon: <BsBoxSeam />,
+    icon: <AiOutlineCar />,
     amount: '4,396',
     percentage: '+23%',
-    title: 'Products',
+    title: 'Drivers',
     iconColor: 'rgb(255, 244, 229)',
     iconBg: 'rgb(254, 201, 15)',
     pcColor: 'green-600',
   },
   {
-    icon: <FiBarChart />,
+    icon: <BiTrip />,
     amount: '423,39',
     percentage: '+38%',
-    title: 'Sales',
+    title: 'Trips',
     iconColor: 'rgb(228, 106, 118)',
     iconBg: 'rgb(255, 244, 229)',
 
     pcColor: 'green-600',
   },
   {
-    icon: <HiOutlineRefresh />,
+    icon: <BsPersonDown />,
     amount: '39,354',
     percentage: '-12%',
-    title: 'Refunds',
+    title: 'Clients',
     iconColor: 'rgb(0, 194, 146)',
     iconBg: 'rgb(235, 250, 242)',
     pcColor: 'red-600',

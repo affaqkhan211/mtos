@@ -33,7 +33,7 @@ const RegisterScreen = () => {
             const data = await SIGNUP(email, password, firstName, lastName);
             if (data.isSuccess) {
                 toast.success("Registered Successfully")
-                localStorage.setItem('token', data.uid);
+                sessionStorage.setItem('token', data.uid);
                 navigate("/home")
             } else {
                 toast.error(data.message);

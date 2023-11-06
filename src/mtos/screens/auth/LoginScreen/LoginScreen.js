@@ -64,7 +64,7 @@ const LoginScreen = () => {
         const data = await SIGNIN_WITH_GOOGLE();
         if (data.isSuccess) {
             toast.success("Logged in successfully")
-            localStorage.setItem('token', data.uid);
+            sessionStorage.setItem('token', data.uid);
             navigate("/home")
         } else {
             toast.error(data.message);
