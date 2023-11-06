@@ -6,14 +6,21 @@ import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 
 import { links } from '../data/dummy';
 import { useStateContext } from '../contexts/ContextProvider';
+import { useNavigate } from 'react-router-dom';
 
 const Sidebar = () => {
+  const navigate = useNavigate();
   const { currentColor, activeMenu, setActiveMenu, screenSize } = useStateContext();
 
   const handleCloseSideBar = () => {
     if (activeMenu !== undefined && screenSize <= 900) {
       setActiveMenu(false);
     }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/');
   };
 
   const activeLink = 'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg  text-white  text-md m-2';
@@ -62,6 +69,15 @@ const Sidebar = () => {
               </div>
             ))}
           </div>
+          <button
+            onClick={handleLogout}
+            type="button"
+            style={{ backgroundColor: 'red', color: 'white', borderRadius: '10px' }}
+            className={' text- p-3 w-half hover:drop-shadow-xl hover:bg-red mt-5'}
+          >
+            Logout
+          </button>
+
         </>
       )}
     </div>

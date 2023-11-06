@@ -7,12 +7,12 @@ import { useStateContext } from '../contexts/ContextProvider';
 import avatar from '../data/avatar.jpg';
 import { useNavigate } from 'react-router-dom';
 
-const UserProfile = ({userInfo}) => {
+const UserProfile = ({ userInfo }) => {
   const navigate = useNavigate();
   const { currentColor } = useStateContext();
 
   const handleLogout = () => {
-    sessionStorage.removeItem('token');
+    localStorage.removeItem('token');
     navigate('/');
   };
 
@@ -59,14 +59,14 @@ const UserProfile = ({userInfo}) => {
         ))}
       </div>
       <div className="mt-5">
-        <Button
-          color="white"
-          bgColor={currentColor}
-          text="Logout"
-          borderRadius="10px"
-          width="full"
+        <button
+          type="button"
           onClick={handleLogout}
-        />
+          style={{ backgroundColor: 'red', color: 'white', borderRadius: '10px' }}
+          className={'text- p-3 w-full hover:drop-shadow-xl hover:bg-red'}
+        >
+          Logout
+        </button>
       </div>
     </div>
 
