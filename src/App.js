@@ -4,9 +4,10 @@ import MFooter from "./mtos/components/Footer/MFooter"
 import {
   Home,
   Trips,
-  Calendar,
+  Subscriptions,
   Drivers,
   Customers,
+  Profile
 } from "./pages";
 
 import "./App.css";
@@ -104,17 +105,15 @@ const App = () => {
                 <Route path="/home" element={<Home />} />
 
                 {/* pages  */}
-                <Route path="/trips" element={<Trips />} />
+                <Route path="/admins" element={<Trips />} />
                 <Route path="/drivers" element={<Drivers />} />
-                <Route path="/deleteadmin" element={<Customers />} />
+                <Route path="/trips" element={<Customers />} />
 
-                {/* apps  */}
+                {/* payments & info  */}
 
-                <Route path="/calendar" element={<Calendar />} />
+                <Route path="/subscriptions" element={<Subscriptions />} />
+                <Route path="/profile" element={<Profile />} />
 
-                {/* charts  */}
-
-                
               </Routes>
               <ToastContainer />
               </BrowserRouter>

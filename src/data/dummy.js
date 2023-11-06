@@ -2,6 +2,7 @@ import React from 'react';
 import { AiOutlineCalendar, AiOutlineShoppingCart, AiOutlineAreaChart, AiOutlineBarChart, AiOutlineStock } from 'react-icons/ai';
 import { FiShoppingBag, FiEdit, FiPieChart, FiBarChart, FiCreditCard, FiStar, FiShoppingCart } from 'react-icons/fi';
 import { BsKanban, BsBarChart, BsBoxSeam, BsCurrencyDollar, BsShield, BsChatLeft } from 'react-icons/bs';
+import { FaUserShield, FaCar, FaMap, FaMoneyBill, FaUser, FaChartLine    } from 'react-icons/fa';
 import { BiColorFill } from 'react-icons/bi';
 import { IoMdContacts } from 'react-icons/io';
 import { RiContactsLine, RiStockLine } from 'react-icons/ri';
@@ -474,37 +475,49 @@ export const links = [
     title: 'Dashboard',
     links: [
       {
-        // name: 'ecommerce',
         name : "home",
-        icon: <FiShoppingBag />,
+        icon: <FaChartLine  />,
       },
     ],
   },
 
   {
-    title: 'Pages',
+    title: 'Insights',
     links: [
       {
         // name: 'orders',
-        name : "trips",
-        icon: <AiOutlineShoppingCart />,
+        name : "admins",
+        icon: <FaUserShield  />,
       },
       {
         name: 'drivers',
-        icon: <IoMdContacts />,
+        icon: <FaCar  />,
       },
       {
-        name: 'deleteadmin',
-        icon: <RiContactsLine />,
+        name: 'trips',
+        icon: <FaMap  />,
       },
     ],
   },
+  // {
+  //   title: 'Alerts',
+  //   links: [
+  //     {
+  //       name: 'notifications',
+  //       icon: <AiOutlineCalendar />,
+  //     },
+  //   ],
+  // },
   {
-    title: 'Apps',
+    title: 'Payment & Info',
     links: [
       {
-        name: 'calendar',
-        icon: <AiOutlineCalendar />,
+        name: 'subscriptions',
+        icon: <FaMoneyBill  />,
+      },
+      {
+        name: 'profile',
+        icon: <FaUser  />,
       }
     ],
   },
