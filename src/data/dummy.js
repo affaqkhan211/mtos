@@ -2,7 +2,7 @@ import React from 'react';
 import { AiOutlineCar, AiOutlineShoppingCart, AiOutlineAreaChart, AiOutlineBarChart, AiOutlineStock } from 'react-icons/ai';
 import { FiShoppingBag, FiEdit, FiPieChart, FiBarChart, FiCreditCard, FiStar, FiShoppingCart } from 'react-icons/fi';
 import { BsPersonDown, BsCurrencyDollar, BsShield, BsChatLeft } from 'react-icons/bs';
-import { FaUserShield, FaCar, FaMap, FaMoneyBill, FaUser, FaChartLine } from 'react-icons/fa';
+import { FaUserShield, FaCar, FaMap, FaMoneyBill, FaUser, FaChartLine, FaPlusSquare } from 'react-icons/fa';
 import { BiTrip } from 'react-icons/bi';
 import { IoMdContacts } from 'react-icons/io';
 import { RiContactsLine, RiStockLine } from 'react-icons/ri';
@@ -532,7 +532,7 @@ export const links = [
       {
         name: 'addadmins',
         title: 'add admin',
-        icon: <FaCar />,
+        icon: <FaPlusSquare />,
       },
     ],
   },
@@ -543,7 +543,7 @@ export const links = [
         // name: 'orders',
         name: "drivers",
         title: "drivers",
-        icon: <FaUserShield />,
+        icon: <FaCar />,
       },
       {
         name: 'trips',
