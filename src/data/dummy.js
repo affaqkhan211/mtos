@@ -845,6 +845,7 @@ export const userProfileData = [
     desc: 'Account Settings',
     iconColor: '#03C9D7',
     iconBg: '#E5FAFB',
+    navigateTo: '/profile',
   },
 ];
 
