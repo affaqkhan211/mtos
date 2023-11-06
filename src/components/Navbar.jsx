@@ -26,18 +26,22 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
 );
 
 const Navbar = () => {
-  const { currentColor, activeMenu, setActiveMenu, handleClick, isClicked, setScreenSize, screenSize, userProfile } = useStateContext();
-  // const [userInfo, setUserInfo] = useState(null);
-  // const token = localStorage.getItem('token');
+  const { currentColor, activeMenu, setActiveMenu, handleClick, isClicked, setScreenSize, screenSize, userProfile, setUserProfile } = useStateContext();
+  const [token, setToken] = useState(null);
 
-  // useEffect(() => {
-  //   if (token) {
-  //     getSubOwnerById(token, (result) => {
-  //       setUserInfo(result);
-  //       console.log(result);
-  //     })
-  //   }
-  // },[]);
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setToken(token);
+  }, []);
+
+  useEffect(() => {
+    if (token) {
+      getSubOwnerById(token, (result) => {
+        setUserProfile(result.data);
+        console.log(result.data);
+      })
+    }
+  }, [token]);
 
   useEffect(() => {
     const handleResize = () => setScreenSize(window.innerWidth);

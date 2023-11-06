@@ -51,15 +51,16 @@ const Home = () => {
     }
   });
 
-  useEffect(() => {
-    if (token) {
-      getSubOwnerById(token, (result) => {
-        if (result.isSuccess) {
-          setUserProfile(result.data);
-        }
-      })
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (token) {
+  //     getSubOwnerById(token, (result) => {
+  //       if (result.isSuccess) {
+  //         setUserProfile(result.data);
+  //         console.log(result.data);
+  //       }
+  //     })
+  //   }
+  // }, []);
 
   if (token === null) {
     navigate('/login');
