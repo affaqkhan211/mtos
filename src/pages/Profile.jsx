@@ -67,7 +67,6 @@ const Profile = () => {
         const base64 = event.target.result.split(',')[1]; // Extract base64 data
         setSelectedImage(URL.createObjectURL(file)); // Display the image from the URL
         setNewData({ ...newData, image: base64 }); // Store the base64 data
-        console.log(base64); // Log the base64 data for debugging
       };
       reader.readAsDataURL(file);
     }
@@ -139,7 +138,7 @@ const Profile = () => {
                   <Header category="Info" title="Profile" />
                   <div className="w-full">
                     <img
-                      src={selectedImage? selectedImage : newData.image ? newData.image : avatar}
+                      src={selectedImage ? selectedImage : newData.image ? newData.image : avatar}
                       className="h-40 w-40 rounded-full mx-auto mb-3"
                       onClick={() => document.getElementById('imageInput').click()}
                       style={{ cursor: 'pointer' }}

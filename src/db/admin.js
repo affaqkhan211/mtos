@@ -1,42 +1,51 @@
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc, query, where, getDocs, serverTimestamp, collection } from "firebase/firestore";
+import { doc, setDoc, query, where, getDocs, serverTimestamp, collection, onSnapshot } from "firebase/firestore";
 import { db } from '../mtos/db/config';
 
 const auth = getAuth(); // Initialize Firebase Authentication
 
 // Add admin by subowners
-export const createAdmin = (id, adminData, callback) => {
-    
-    if (id) {
-        createUserWithEmailAndPassword(auth, adminData.email, adminData.password)
-            .then((userCredential) => {
-                const user = userCredential.user;
-                const uid = user.uid; // Get the user's UID
+export const createAdmin = async (id, adminData, callback) => {
+    // upload image
+    try {
+        const imageUrl = await uploadImage(adminData.imageUrl, 'dc9brvvux', 'jbno94oi');
+        adminData.imageUrl = imageUrl;
 
-                // Create a reference to the admin document with the same ID as the user's UID
-                const adminRef = doc(db, "admins", uid);
+        if (id) {
+            createUserWithEmailAndPassword(auth, adminData.email, adminData.password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    const uid = user.uid; // Get the user's UID
 
-                // Add timestamp fields
-                adminData.subOwneruid = id;
-                adminData.createdOn = serverTimestamp();
+                    // Create a reference to the admin document with the same ID as the user's UID
+                    const adminRef = doc(db, "admins", uid);
 
-                // Set the document data
-                setDoc(adminRef, adminData)
-                    .then(() => {
-                        callback({ isSuccess: true, message: "Admin Created Successfully!" });
-                    })
-                    .catch((error) => {
-                        callback({ isSuccess: false, message: "Error adding admin document: " + error.message });
-                    });
-            })
-            .catch((error) => {
-                console.log("Error creating Admin: ", error);
-                callback({ isSuccess: false, message: error.message });
-            });
-    } else {
-        console.log("Session expired! Login again!");
-        callback({ isSuccess: false, message: "User not authenticated." });
+                    // Add timestamp fields
+                    adminData.subOwneruid = id;
+                    adminData.createdOn = serverTimestamp();
+
+                    // Set the document data
+                    setDoc(adminRef, adminData)
+                        .then(() => {
+                            callback({ isSuccess: true, message: "Admin Created Successfully!" });
+                        })
+                        .catch((error) => {
+                            callback({ isSuccess: false, message: "Error adding admin document: " + error.message });
+                        });
+                })
+                .catch((error) => {
+                    console.log("Error creating Admin: ", error);
+                    callback({ isSuccess: false, message: error.message });
+                });
+        } else {
+            console.log("Session expired! Login again!");
+            callback({ isSuccess: false, message: "User not authenticated." });
+        }
+    } catch (error) {
+        callback({ isSuccess: false, message: error.message });
     }
+
+
 }
 
 // update admin
@@ -55,26 +64,54 @@ export const updateAdminById = (adminId, adminData, callback) => {
 
 // get all adfmins related to this subowner
 export const getAllAdmins = (subOwnerUid, callback) => {
-    const adminsCollection = collection(db, "admins");
+    const adminsCollection = collection(db, 'admins');
+    const adminsQuery = query(adminsCollection, where('subOwneruid', '==', subOwnerUid));
 
-    // Create a query to find all admins with the specified subOwnerUid
-    const adminsQuery = query(adminsCollection, where("subOwneruid", "==", subOwnerUid));
+    const unsubscribe = onSnapshot(adminsQuery, (adminsSnapshot) => {
+        const adminsData = [];
 
-    getDocs(adminsQuery)
-        .then((adminsSnapshot) => {
-            const adminsData = [];
-
-            adminsSnapshot.forEach((doc) => {
-                // Include the 'id' field in the data
-                const adminData = doc.data();
-                adminData.id = doc.id;
-                adminsData.push(adminData);
-            });
-
-            callback({ isSuccess: true, data: adminsData });
-        })
-        .catch((error) => {
-            console.error("Error getting admins: ", error);
-            callback({ isSuccess: false, message: error.message });
+        adminsSnapshot.forEach((doc) => {
+            // Include the 'id' field in the data
+            const adminData = doc.data();
+            adminData.id = doc.id;
+            adminsData.push(adminData);
         });
-}
+
+        callback({ isSuccess: true, data: adminsData });
+    }, (error) => {
+        console.error('Error getting admins: ', error);
+        callback({ isSuccess: false, message: error.message });
+    });
+
+};
+
+const uploadImage = async (base64, cloudName, uploadPreset) => {
+    const apiUrl = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
+
+    try {
+        const formData = new FormData();
+        formData.append('file', `data:image/jpg;base64,${base64}`);
+        formData.append('upload_preset', uploadPreset);
+
+        const options = {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json',
+            },
+        };
+
+        const response = await fetch(apiUrl, options);
+        const data = await response.json();
+
+        if (data.secure_url) {
+            return data.secure_url; // Return the URL of the uploaded image
+        } else {
+            console.error('Image upload failed. Cloudinary response:', data);
+            throw new Error('Image upload failed');
+        }
+    } catch (error) {
+        console.error('Error uploading image:', error);
+        throw error;
+    }
+};
