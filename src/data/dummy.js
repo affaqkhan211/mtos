@@ -628,8 +628,7 @@ export const chatData = [
 export const earningData = [
   {
     icon: <MdOutlineAdminPanelSettings />,
-    amount: '39,354',
-    percentage: '-4%',
+    amount: '-',
     title: 'Admins',
     iconColor: '#03C9D7',
     iconBg: '#E5FAFB',
@@ -637,8 +636,7 @@ export const earningData = [
   },
   {
     icon: <AiOutlineCar />,
-    amount: '4,396',
-    percentage: '+23%',
+    amount: '-',
     title: 'Drivers',
     iconColor: 'rgb(255, 244, 229)',
     iconBg: 'rgb(254, 201, 15)',
@@ -646,8 +644,7 @@ export const earningData = [
   },
   {
     icon: <BiTrip />,
-    amount: '423,39',
-    percentage: '+38%',
+    amount: '-',
     title: 'Trips',
     iconColor: 'rgb(228, 106, 118)',
     iconBg: 'rgb(255, 244, 229)',
@@ -656,8 +653,7 @@ export const earningData = [
   },
   {
     icon: <BsPersonDown />,
-    amount: '39,354',
-    percentage: '-12%',
+    amount: '-',
     title: 'Clients',
     iconColor: 'rgb(0, 194, 146)',
     iconBg: 'rgb(235, 250, 242)',

@@ -12,7 +12,8 @@ import { FiSettings } from "react-icons/fi";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { Header, Navbar, Footer, Sidebar, ThemeSettings } from '../components';
 import { useNavigate } from 'react-router-dom';
-import { getSubOwnerById } from '../db/profile';
+import { getAllAdmins } from '../db/admin';
+import { toast } from 'react-toastify';
 
 const DropDown = ({ currentMode }) => (
   <div className="w-28 border-1 border-color px-2 py-1 rounded-md">
@@ -31,7 +32,8 @@ const Home = () => {
     currentColor,
     themeSettings,
     setThemeSettings,
-    setUserProfile,
+    setAllAdmins,
+    allAdmins,
   } = useStateContext();
 
 
@@ -51,16 +53,18 @@ const Home = () => {
     }
   });
 
-  // useEffect(() => {
-  //   if (token) {
-  //     getSubOwnerById(token, (result) => {
-  //       if (result.isSuccess) {
-  //         setUserProfile(result.data);
-  //         console.log(result.data);
-  //       }
-  //     })
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (token) {
+      getAllAdmins(token, (result) => {
+        if (result.isSuccess) {
+          setAllAdmins(result.data);
+          earningData[0].amount = result.data.length;
+        } else {
+          toast.error(result.message);
+        }
+      })
+    }
+  }, [token]);
 
   if (token === null) {
     navigate('/login');
@@ -110,7 +114,7 @@ const Home = () => {
 
                 <div className="flex m-3 flex-wrap justify-center gap-1 items-center">
                   {earningData.map((item) => (
-                    <div key={item.title} className="bg-white h-44 dark:text-gray-200 dark:bg-secondary-dark-bg md:w-56  p-4 pt-9 rounded-2xl">
+                    <div key={item.title} className="bg-white h-44 dark:text-gray-200 dark:bg-secondary-dark-bg md:w-56 p-4 pt-9 rounded-2xl flex flex-col justify-center items-center">
                       <button
                         type="button"
                         style={{ color: item.iconColor, backgroundColor: item.iconBg }}

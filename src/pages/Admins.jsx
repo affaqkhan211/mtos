@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { GridComponent, ColumnsDirective, ColumnDirective, Page, Selection, Inject, Edit, Toolbar, Sort, Filter } from '@syncfusion/ej2-react-grids';
-
-import { customersData, customersGrid } from '../data/dummy';
 import { FiSettings } from "react-icons/fi";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
-import { Header, Navbar, Footer, Sidebar, ThemeSettings } from '../components';
+import { Header, Navbar, Footer, Sidebar, ThemeSettings, CustomGridTemplate } from '../components';
 import { useStateContext } from "../contexts/ContextProvider";
 import { useNavigate } from 'react-router-dom';
+import { getAllAdmins } from '../db/admin';
+import { toast } from 'react-toastify';
 
-const Customers = () => {
+const Admins = () => {
   const navigate = useNavigate();
   const [token, setToken] = useState(null);
   const selectionsettings = { persistSelection: true };
@@ -23,6 +23,7 @@ const Customers = () => {
     currentColor,
     themeSettings,
     setThemeSettings,
+    allAdmins
   } = useStateContext();
 
   useEffect(() => {
@@ -87,7 +88,7 @@ const Customers = () => {
             <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
               <Header category="Admins" title="View Admins" />
               <GridComponent
-                dataSource={customersData}
+                dataSource={allAdmins}
                 enableHover={false}
                 allowPaging
                 pageSettings={{ pageCount: 5 }}
@@ -97,8 +98,12 @@ const Customers = () => {
                 allowSorting
               >
                 <ColumnsDirective>
-                  {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-                  {customersGrid.map((item, index) => <ColumnDirective key={index} {...item} />)}
+                  <ColumnDirective headerText='Delete' type='checkbox' width='70' />
+                  <ColumnDirective template={CustomGridTemplate} headerText='Image' width='120' />
+                  <ColumnDirective field='fullName' headerText='Name' width='120' />
+                  <ColumnDirective field='phoneNumber' headerText='Phone' width='130' />
+                  <ColumnDirective field='email' headerText='Email' width='250' />
+                  <ColumnDirective field='address' headerText='Address' />
                 </ColumnsDirective>
                 <Inject services={[Page, Selection, Toolbar, Edit, Sort, Filter]} />
               </GridComponent>
@@ -113,4 +118,4 @@ const Customers = () => {
   );
 };
 
-export default Customers;
+export default Admins;
