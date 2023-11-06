@@ -6,7 +6,7 @@ import {
   Trips,
   Subscriptions,
   Drivers,
-  Customers,
+  Admins,
   Profile
 } from "./pages";
 
@@ -105,9 +105,9 @@ const App = () => {
                 <Route path="/home" element={<Home />} />
 
                 {/* pages  */}
-                <Route path="/admins" element={<Trips />} />
+                <Route path="/admins" element={<Admins />} />
                 <Route path="/drivers" element={<Drivers />} />
-                <Route path="/trips" element={<Customers />} />
+                <Route path="/trips" element={<Trips />} />
 
                 {/* payments & info  */}
 
