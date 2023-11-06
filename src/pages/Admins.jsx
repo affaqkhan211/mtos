@@ -1,31 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { GridComponent, ColumnsDirective, ColumnDirective, Page, Selection, Inject, Edit, Toolbar, Sort, Filter } from '@syncfusion/ej2-react-grids';
+import { GridComponent, ColumnsDirective, ColumnDirective, Page, Selection, Inject, Edit, Toolbar, Sort, Filter, CommandColumn } from '@syncfusion/ej2-react-grids';
 import { FiSettings } from "react-icons/fi";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { Header, Navbar, Footer, Sidebar, ThemeSettings, CustomGridTemplate } from '../components';
 import { useStateContext } from "../contexts/ContextProvider";
 import { useNavigate } from 'react-router-dom';
-import { getAllAdmins } from '../db/admin';
+import { getAllAdmins, deleteAdmin, updateAdminById } from '../db/admin';
 import { toast } from 'react-toastify';
 
 const Admins = () => {
   const navigate = useNavigate();
   const [token, setToken] = useState(null);
-  const selectionsettings = { persistSelection: true };
-  const toolbarOptions = ['Delete'];
-  const editing = { allowDeleting: true, allowEditing: true };
+  const selectionsettings = { persistSelection: true, type: 'Multiple' };
+  const toolbarOptions = ['Search', 'Print'];
+  const commands = [{ type: 'Edit', buttonOption: { iconCss: ' e-icons e-edit', cssClass: 'e-flat' } },
+  { type: 'Delete', buttonOption: { iconCss: 'e-icons e-delete', cssClass: 'e-flat' } },
+  { type: 'Save', buttonOption: { iconCss: 'e-icons e-update', cssClass: 'e-flat' } },
+  { type: 'Cancel', buttonOption: { iconCss: 'e-icons e-cancel-icon', cssClass: 'e-flat' } }];
 
-  const {
-    setCurrentColor,
-    setCurrentMode,
-    currentMode,
-    activeMenu,
-    currentColor,
-    themeSettings,
-    setThemeSettings,
-    allAdmins
-  } = useStateContext();
-
+  const editing = { allowDeleting: true, allowEditing: true, allowAdding: true, allowEditOnDblClick: false };
+  const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings, allAdmins } = useStateContext();
   useEffect(() => {
     const currentThemeColor = localStorage.getItem("colorMode");
     const currentThemeMode = localStorage.getItem("themeMode");
@@ -46,9 +40,43 @@ const Admins = () => {
     navigate('/login');
   }
 
+  // Event handler for the "actionBegin" event to handle delete action
+  const actionBegin = (args) => {
+    if (args.requestType === 'delete') {
+      const primaryKeyField = 'id';
+      const selectedRecords = args.data;
+
+      selectedRecords.forEach((record) => {
+        const primaryKeyValue = record[primaryKeyField];
+
+        // Call the deleteAdmin function with the primary key value
+        deleteAdmin(primaryKeyValue, (result) => {
+          if (result.isSuccess) {
+            toast.success(result.message);
+          } else {
+            toast.error(result.message);
+          }
+        });
+      });
+    } else if (args.requestType === 'save') {
+      const primaryKeyField = 'id';
+      const record = args.data;
+      const primaryKeyValue = record[primaryKeyField];
+
+      // Call the deleteAdmin function with the primary key value
+      updateAdminById(primaryKeyValue, record, (result) => {
+        if (result.isSuccess) {
+          toast.success(result.message);
+        } else {
+          toast.error(result.message);
+        }
+      });
+    }
+  };
+
+
   return (
     <div className={currentMode === "Dark" ? "dark" : ""}>
-
       <div className="flex relative dark:bg-main-dark-bg">
         <div className="fixed right-4 bottom-4" style={{ zIndex: "1000" }}>
           <TooltipComponent content="Settings" position="Top">
@@ -89,32 +117,30 @@ const Admins = () => {
               <Header category="Admins" title="View Admins" />
               <GridComponent
                 dataSource={allAdmins}
-                enableHover={false}
                 allowPaging
                 pageSettings={{ pageCount: 5 }}
                 selectionSettings={selectionsettings}
                 toolbar={toolbarOptions}
                 editSettings={editing}
                 allowSorting
+                actionBegin={actionBegin}
               >
                 <ColumnsDirective>
-                  <ColumnDirective headerText='Delete' type='checkbox' width='70' />
                   <ColumnDirective template={CustomGridTemplate} headerText='Image' width='120' />
                   <ColumnDirective field='fullName' headerText='Name' width='120' />
                   <ColumnDirective field='phoneNumber' headerText='Phone' width='130' />
-                  <ColumnDirective field='email' headerText='Email' width='250' />
+                  <ColumnDirective field='email' headerText='Email' width='250' isIdentity={true} />
                   <ColumnDirective field='address' headerText='Address' />
+                  <ColumnDirective headerText='Manage Records' width='160' commands={commands}></ColumnDirective>
                 </ColumnsDirective>
-                <Inject services={[Page, Selection, Toolbar, Edit, Sort, Filter]} />
+                <Inject services={[Page, Selection, Toolbar, Edit, Sort, Filter, CommandColumn]} />
               </GridComponent>
             </div>
-
           </div>
           <Footer />
         </div>
       </div>
     </div>
-
   );
 };
 

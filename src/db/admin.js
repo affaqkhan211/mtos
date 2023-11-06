@@ -1,5 +1,5 @@
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc, query, where, getDocs, serverTimestamp, collection, onSnapshot } from "firebase/firestore";
+import { doc, setDoc, query, where, deleteDoc, serverTimestamp, collection, onSnapshot } from "firebase/firestore";
 import { db } from '../mtos/db/config';
 
 const auth = getAuth(); // Initialize Firebase Authentication
@@ -8,12 +8,12 @@ const auth = getAuth(); // Initialize Firebase Authentication
 export const createAdmin = async (id, adminData, callback) => {
     // upload image
     try {
-        const imageUrl = await uploadImage(adminData.imageUrl, 'dc9brvvux', 'jbno94oi');
-        adminData.imageUrl = imageUrl;
 
         if (id) {
             createUserWithEmailAndPassword(auth, adminData.email, adminData.password)
-                .then((userCredential) => {
+                .then( async (userCredential) => {
+                    const imageUrl = await uploadImage(adminData.imageUrl, 'dc9brvvux', 'jbno94oi');
+                    adminData.imageUrl = imageUrl;
                     const user = userCredential.user;
                     const uid = user.uid; // Get the user's UID
 
@@ -35,7 +35,7 @@ export const createAdmin = async (id, adminData, callback) => {
                 })
                 .catch((error) => {
                     console.log("Error creating Admin: ", error);
-                    callback({ isSuccess: false, message: error.message });
+                    callback({ isSuccess: false, message: error.code });
                 });
         } else {
             console.log("Session expired! Login again!");
@@ -83,6 +83,19 @@ export const getAllAdmins = (subOwnerUid, callback) => {
         callback({ isSuccess: false, message: error.message });
     });
 
+};
+
+export const deleteAdmin = (adminId, callback) => {
+    const adminDocRef = doc(db, 'admins', adminId);
+
+    deleteDoc(adminDocRef)
+        .then(() => {
+            callback({ isSuccess: true, message: 'Admin deleted successfully' });
+        })
+        .catch((error) => {
+            console.error('Error deleting admin: ', error);
+            callback({ isSuccess: false, message: error.message });
+        });
 };
 
 const uploadImage = async (base64, cloudName, uploadPreset) => {
