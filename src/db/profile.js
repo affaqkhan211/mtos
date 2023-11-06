@@ -37,15 +37,15 @@ export const updateSubOwnerById = (subOwnerId, newData, callback) => {
     try {
         updateDoc(subOwnerRef, newData)
             .then(() => {
-                callback({ isSuccess: true });
+                callback({ isSuccess: true,  message: 'Profile Updated Successfully!' });
             })
             .catch((error) => {
                 console.error("Error updating subOwner: ", error);
-                callback({ isSuccess: false });
+                callback({ isSuccess: false, message: error.message });
             });
     } catch (error) {
         console.error("Error: ", error);
-        callback({ isSuccess: false });
+        callback({ isSuccess: false, message: error.message });
     }
 }
 
