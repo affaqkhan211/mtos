@@ -9,7 +9,6 @@ import {
   Admins,
   Profile,
   AddAdmin,
-  AddDriver
 } from "./pages";
 
 import "./App.css";
@@ -105,7 +104,6 @@ const App = () => {
                 <Route path="/admins" element={<Admins />} />
                 <Route path="/addadmins" element={<AddAdmin />} />
                 <Route path="/drivers" element={<Drivers />} />
-                <Route path="/adddriver" element={<AddDriver />} />
                 <Route path="/trips" element={<Trips />} />
 
                 {/* payments & info  */}

@@ -537,7 +537,7 @@ export const links = [
     ],
   },
   {
-    title: 'Drivers',
+    title: 'More',
     links: [
       {
         // name: 'orders',
@@ -546,16 +546,6 @@ export const links = [
         icon: <FaUserShield />,
       },
       {
-        name: 'adddriver',
-        title: 'Add Driver',
-        icon: <FaCar />,
-      },
-    ],
-  },
-  {
-    title: 'Trips',
-    links: [
-      {
         name: 'trips',
         title: 'trips',
         icon: <FaMap />,
@@ -563,7 +553,7 @@ export const links = [
     ],
   },
   {
-    title: 'Payment & Info',
+    title: 'Payments & Info',
     links: [
       {
         name: 'subscriptions',
