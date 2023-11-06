@@ -1,5 +1,5 @@
 import { collection, query, where, getDocs, documentId, doc, updateDoc, deleteDoc } from "firebase/firestore";
-import { db } from '../config';
+import { db } from '../mtos/db/config';
 
 // get subowner about data
 export const getSubOwnerById = (subOwnerId, callback) => {

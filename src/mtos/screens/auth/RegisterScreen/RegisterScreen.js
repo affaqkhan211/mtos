@@ -33,7 +33,7 @@ const RegisterScreen = () => {
             const data = await SIGNUP(email, password, firstName, lastName);
             if (data.isSuccess) {
                 toast.success("Registered Successfully")
-                sessionStorage.setItem('token', data.uid);
+                localStorage.setItem('token', data.uid);
                 navigate("/home")
             } else {
                 toast.error(data.message);
@@ -82,7 +82,7 @@ const RegisterScreen = () => {
         const data = await SIGNUP_WITH_GOOGLE();
         if (data.isSuccess) {
             toast.success("Registered Successfully")
-            sessionStorage.setItem('token', data.uid);
+            localStorage.setItem('token', data.uid);
             navigate("/home")
         } else {
             toast.error(data.message);

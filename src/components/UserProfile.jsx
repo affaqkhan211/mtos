@@ -5,9 +5,16 @@ import { Button } from '.';
 import { userProfileData } from '../data/dummy';
 import { useStateContext } from '../contexts/ContextProvider';
 import avatar from '../data/avatar.jpg';
+import { useNavigate } from 'react-router-dom';
 
-const UserProfile = () => {
+const UserProfile = ({userInfo}) => {
+  const navigate = useNavigate();
   const { currentColor } = useStateContext();
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('token');
+    navigate('/');
+  };
 
   return (
     <div className="nav-item absolute right-1 top-16 bg-white dark:bg-[#42464D] p-8 rounded-lg w-96">
@@ -24,13 +31,13 @@ const UserProfile = () => {
       <div className="flex gap-5 items-center mt-6 border-color border-b-1 pb-6">
         <img
           className="rounded-full h-24 w-24"
-          src={avatar}
+          src={userInfo?.data?.image ? userInfo.data.image : avatar}
           alt="user-profile"
         />
         <div>
-          <p className="font-semibold text-xl dark:text-gray-200"> Michael Roberts </p>
-          <p className="text-gray-500 text-sm dark:text-gray-400">  Administrator   </p>
-          <p className="text-gray-500 text-sm font-semibold dark:text-gray-400"> info@shop.com </p>
+          <p className="font-semibold text-xl dark:text-gray-200"> {userInfo?.data?.fullName} </p>
+          <p className="text-gray-500 text-sm dark:text-gray-400"> Account  Owner   </p>
+          <p className="text-gray-500 text-sm font-semibold dark:text-gray-400"> {userInfo?.data?.email} </p>
         </div>
       </div>
       <div>
@@ -58,6 +65,7 @@ const UserProfile = () => {
           text="Logout"
           borderRadius="10px"
           width="full"
+          onClick={handleLogout}
         />
       </div>
     </div>

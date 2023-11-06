@@ -35,11 +35,11 @@ const Trips = () => {
   }, []);
 
   useEffect(() => {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     if (token) {
       setToken(token);
     }
-  }, []);
+  });
 
   if (token === null) {
     navigate('/login');

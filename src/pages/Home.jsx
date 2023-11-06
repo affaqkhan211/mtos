@@ -32,12 +32,6 @@ const Home = () => {
     setThemeSettings,
   } = useStateContext();
 
-  useEffect(() => {
-    const token = sessionStorage.getItem('token');
-    if (token) {
-      setToken(token);
-    }
-  }, []);
 
   useEffect(() => {
     const currentThemeColor = localStorage.getItem("colorMode");
@@ -47,6 +41,13 @@ const Home = () => {
       setCurrentMode(currentThemeMode);
     }
   }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      setToken(token);
+    }
+  });
 
   if (token === null) {
     navigate('/login');
@@ -107,7 +108,7 @@ const Home = () => {
                       <p className="mt-3">
                         <span className="text-lg font-semibold">{item.amount}</span>
                       </p>
-                      <p className="text-sm text-gray-400  mt-1">{item.title}</p>
+                      <p className="text-sm text-gray-400 mt-1">{item.title}</p>
                     </div>
                   ))}
                 </div>

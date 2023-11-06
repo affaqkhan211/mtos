@@ -28,7 +28,7 @@ const LoginScreen = () => {
             const data = await SIGNIN(email, password);
             if (data.isSuccess) {
                 toast.success("Logged In Successfully")
-                sessionStorage.setItem('token', data.uid);
+                localStorage.setItem('token', data.uid);
                 navigate("/home")
             } else {
                 toast.error(data.message);
@@ -64,7 +64,7 @@ const LoginScreen = () => {
         const data = await SIGNIN_WITH_GOOGLE();
         if (data.isSuccess) {
             toast.success("Logged in successfully")
-            sessionStorage.setItem('token', data.uid);
+            localStorage.setItem('token', data.uid);
             navigate("/home")
         } else {
             toast.error(data.message);

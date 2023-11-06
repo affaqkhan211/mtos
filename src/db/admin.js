@@ -1,6 +1,6 @@
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc, query, where, getDocs, serverTimestamp, collection } from "firebase/firestore";
-import { db } from '../config';
+import { db } from '../mtos/db/config';
 
 const auth = getAuth(); // Initialize Firebase Authentication
 
