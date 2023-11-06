@@ -26,18 +26,18 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
 );
 
 const Navbar = () => {
-  const { currentColor, activeMenu, setActiveMenu, handleClick, isClicked, setScreenSize, screenSize } = useStateContext();
-  const [userInfo, setUserInfo] = useState(null);
-  const token = localStorage.getItem('token');
+  const { currentColor, activeMenu, setActiveMenu, handleClick, isClicked, setScreenSize, screenSize, userProfile } = useStateContext();
+  // const [userInfo, setUserInfo] = useState(null);
+  // const token = localStorage.getItem('token');
 
-  useEffect(() => {
-    if (token) {
-      getSubOwnerById(token, (result) => {
-        setUserInfo(result);
-        console.log(result);
-      })
-    }
-  },[]);
+  // useEffect(() => {
+  //   if (token) {
+  //     getSubOwnerById(token, (result) => {
+  //       setUserInfo(result);
+  //       console.log(result);
+  //     })
+  //   }
+  // },[]);
 
   useEffect(() => {
     const handleResize = () => setScreenSize(window.innerWidth);
@@ -72,13 +72,13 @@ const Navbar = () => {
           >
             <img
               className="rounded-full w-8 h-8"
-              src={userInfo?.data?.image ? userInfo.data.image : avatar}
+              src={userProfile?.image ? userProfile.image : avatar}
               alt="user-profile"
             />
             <p>
               <span className="text-gray-400 text-14">Hi,</span>{' '}
               <span className="text-gray-400 font-bold ml-1 text-14">
-                {userInfo?.data?.fullName}
+                {userProfile?.fullName}
               </span>
             </p>
             <MdKeyboardArrowDown className="text-gray-400 text-14" />
@@ -86,7 +86,7 @@ const Navbar = () => {
         </TooltipComponent>
 
         {isClicked.notification && (<Notification />)}
-        {isClicked.userProfile && (<UserProfile userInfo={userInfo} />)}
+        {isClicked.userProfile && (<UserProfile userProfile={userProfile} />)}
       </div>
     </div>
   );

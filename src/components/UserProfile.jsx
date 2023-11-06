@@ -7,7 +7,7 @@ import { useStateContext } from '../contexts/ContextProvider';
 import avatar from '../data/avatar.jpg';
 import { useNavigate } from 'react-router-dom';
 
-const UserProfile = ({ userInfo }) => {
+const UserProfile = ({ userProfile }) => {
   const navigate = useNavigate();
   const { currentColor } = useStateContext();
 
@@ -31,13 +31,13 @@ const UserProfile = ({ userInfo }) => {
       <div className="flex gap-5 items-center mt-6 border-color border-b-1 pb-6">
         <img
           className="rounded-full h-24 w-24"
-          src={userInfo?.data?.image ? userInfo.data.image : avatar}
+          src={userProfile?.image ? userProfile.image : avatar}
           alt="user-profile"
         />
         <div>
-          <p className="font-semibold text-xl dark:text-gray-200"> {userInfo?.data?.fullName} </p>
+          <p className="font-semibold text-xl dark:text-gray-200"> {userProfile?.fullName} </p>
           <p className="text-gray-500 text-sm dark:text-gray-400"> Account  Owner   </p>
-          <p className="text-gray-500 text-sm font-semibold dark:text-gray-400"> {userInfo?.data?.email} </p>
+          <p className="text-gray-500 text-sm font-semibold dark:text-gray-400"> {userProfile?.email} </p>
         </div>
       </div>
       <div>
