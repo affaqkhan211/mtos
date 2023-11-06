@@ -26,18 +26,27 @@ export const getSubOwnerById = (subOwnerId, callback) => {
         });
     } catch (error) {
         console.error("Error: ", error);
-        callback({ isSuccess: false, message:error.message });
+        callback({ isSuccess: false, message: error.message });
     }
 };
 
 // update subowner about data
-export const updateSubOwnerById = (subOwnerId, newData, callback) => {
+export const updateSubOwnerById = async (subOwnerId, newData, callback) => {
     const subOwnerRef = doc(db, "subOwners", subOwnerId);
 
+    // upload image
     try {
-        updateDoc(subOwnerRef, newData)
+        const imageUrl = await uploadImage(newData.image, 'dc9brvvux', 'jbno94oi');
+        newData.image = imageUrl;
+    } catch (error) {
+        callback({ isSuccess: false, message: error.message });
+    }
+
+
+    try {
+        await updateDoc(subOwnerRef, newData)
             .then(() => {
-                callback({ isSuccess: true,  message: 'Profile Updated Successfully!' });
+                callback({ isSuccess: true, message: 'Profile Updated Successfully!' });
             })
             .catch((error) => {
                 console.error("Error updating subOwner: ", error);
@@ -48,6 +57,39 @@ export const updateSubOwnerById = (subOwnerId, newData, callback) => {
         callback({ isSuccess: false, message: error.message });
     }
 }
+
+const uploadImage = async (base64, cloudName, uploadPreset) => {
+    const apiUrl = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
+
+    try {
+        const formData = new FormData();
+        formData.append('file', `data:image/jpg;base64,${base64}`);
+        formData.append('upload_preset', uploadPreset);
+
+        const options = {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json',
+            },
+        };
+
+        const response = await fetch(apiUrl, options);
+        const data = await response.json();
+
+        if (data.secure_url) {
+            return data.secure_url; // Return the URL of the uploaded image
+        } else {
+            console.error('Image upload failed. Cloudinary response:', data);
+            throw new Error('Image upload failed');
+        }
+    } catch (error) {
+        console.error('Error uploading image:', error);
+        throw error;
+    }
+};
+
+
 
 // delete specifc subowner by document id
 // export const deleteSubOwnerById = (subOwnerId, callback) => {

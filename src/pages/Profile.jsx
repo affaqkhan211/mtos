@@ -12,6 +12,7 @@ const Profile = () => {
   const navigate = useNavigate();
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [selectedImage, setSelectedImage] = useState(null);
   const [newData, setNewData] = useState({});
   const {
     setCurrentColor,
@@ -47,6 +48,7 @@ const Profile = () => {
         organization: userProfile?.organization,
         phone: userProfile?.phone,
         email: userProfile?.email,
+        image: userProfile?.image
       });
       setLoading(false);
     }
@@ -56,13 +58,29 @@ const Profile = () => {
     navigate('/login');
   }
 
+  // Function to handle image selection
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = async (event) => {
+        const base64 = event.target.result.split(',')[1]; // Extract base64 data
+        setSelectedImage(URL.createObjectURL(file)); // Display the image from the URL
+        setNewData({ ...newData, image: base64 }); // Store the base64 data
+        console.log(base64); // Log the base64 data for debugging
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSave = () => {
     setLoading(true);
     if (
       newData.fullName !== userProfile.fullName ||
       newData.email !== userProfile.email ||
       newData.organization !== userProfile.organization ||
-      newData.phone !== userProfile.phone
+      newData.phone !== userProfile.phone ||
+      newData.image !== userProfile.image
     ) {
       updateSubOwnerById(token, newData, (result) => {
         if (result.isSuccess) {
@@ -121,8 +139,17 @@ const Profile = () => {
                   <Header category="Info" title="Profile" />
                   <div className="w-full">
                     <img
-                      src={newData?.image ? newData.image : avatar}
+                      src={selectedImage? selectedImage : newData.image ? newData.image : avatar}
                       className="h-40 w-40 rounded-full mx-auto mb-3"
+                      onClick={() => document.getElementById('imageInput').click()}
+                      style={{ cursor: 'pointer' }}
+                    />
+                    <input
+                      id="imageInput"
+                      type="file"
+                      accept="image/*"
+                      style={{ display: 'none' }}
+                      onChange={handleImageChange}
                     />
                     <div className="bg-white p-4">
                       <div className='mb-4' >
