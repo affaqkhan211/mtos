@@ -6,16 +6,6 @@ import { Header, Navbar, Footer, Sidebar, ThemeSettings } from '../components';
 import { useStateContext } from "../contexts/ContextProvider";
 import { useNavigate } from 'react-router-dom';
 
-const CustomGridTemplate = (props) => {
-  return (
-      <img
-          src={props.signature} // Make sure the field name is correct
-          alt="Customer Image"
-          style={{ width: '50px', height: '50px', borderRadius:'100px' }} // Adjust the size as needed
-      />
-  );
-};
-
 const Trips = () => {
   const navigate = useNavigate();
   const [token, setToken] = useState(null);
@@ -94,7 +84,6 @@ const Trips = () => {
                 allowSorting
               >
                 <ColumnsDirective>
-                  <ColumnDirective template={CustomGridTemplate} headerText='signature' width='100' />
                   <ColumnDirective field='PU Time Request' headerText='PU Time Request' />
                   <ColumnDirective field='ApptTime' headerText='ApptTime' />
                   <ColumnDirective field='Client Name' headerText='Client Name'/>

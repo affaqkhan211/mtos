@@ -57,6 +57,7 @@ const Home = () => {
       endpoint(token, (result) => {
         if (result.isSuccess) {
           setter(result.data);
+          console.log(result.data)
           earningData[amountIndex].amount = result.data.length;
         } else {
           toast.error(result.message);

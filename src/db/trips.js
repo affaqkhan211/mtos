@@ -24,7 +24,7 @@ export const getTripsUploadedToday = (subOwneruid, callback) => {
             });
 
             // Call the provided callback with the updated data
-            callback({ isSuccess: false, data: trips });
+            callback({ isSuccess: true, data: trips });
         });
 
         // Return the unsubscribe function in case you want to stop listening to updates
