@@ -1,28 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { useStateContext } from "../../contexts/ContextProvider";
+import { GridComponent, ColumnsDirective, ColumnDirective, Page, Selection, Inject, Resize, Toolbar, Sort, Filter, ExcelExport, PdfExport } from '@syncfusion/ej2-react-grids';
 import { FiSettings } from "react-icons/fi";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
-import { Header, Navbar, Footer, Sidebar, ThemeSettings, Loader } from '../components';
+import { Header, Navbar, Footer, Sidebar, ThemeSettings } from '../components';
+import { useStateContext } from "../../contexts/ContextProvider";
 import { useNavigate } from 'react-router-dom';
-import { updateSubOwnerById } from '../../db/profile';
-import { toast } from 'react-toastify';
-import avatar from '../data/avatar.jpg';
 
 const OwnerTrips = () => {
+  let grid;
   const navigate = useNavigate();
   const [token, setToken] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [newData, setNewData] = useState({});
-  const {
-    setCurrentColor,
-    setCurrentMode,
-    currentMode,
-    activeMenu,
-    currentColor,
-    themeSettings,
-    userProfile,
-    setThemeSettings,
-  } = useStateContext();
+  const selectionsettings = { persistSelection: true, type: 'Multiple' };
+  const toolbarOptions = ['Search', 'Print', 'ExcelExport', 'PdfExport'];
+
+  const editing = { allowDeleting: false, allowEditing: false, allowAdding: false, allowEditOnDblClick: false };
+  const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings, pastTrips } = useStateContext();
 
   useEffect(() => {
     const currentThemeColor = localStorage.getItem("colorMode");
@@ -38,42 +30,17 @@ const OwnerTrips = () => {
     if (token) {
       setToken(token);
     }
-  }, []);
-
-  useEffect(() => {
-    if (userProfile) {
-      setNewData({
-        fullName: userProfile?.fullName,
-        organization: userProfile?.organization,
-        phone: userProfile?.phone,
-        email: userProfile?.email,
-      });
-      setLoading(false);
-    }
-  }, [userProfile]);
+  });
 
   if (token === null) {
     navigate('/login');
   }
 
-  const handleSave = () => {
-    setLoading(true);
-    if (
-      newData.fullName !== userProfile.fullName ||
-      newData.email !== userProfile.email ||
-      newData.organization !== userProfile.organization ||
-      newData.phone !== userProfile.phone
-    ) {
-      updateSubOwnerById(token, newData, (result) => {
-        if (result.isSuccess) {
-          toast.success(result.message);
-        } else {
-          toast.error(result.message);
-        }
-        setLoading(false);
-      });
-    } else {
-      setLoading(false);
+  const toolbarClick = (args) => {
+    if (grid && args.item.id === 'grid_excelexport') {
+      grid.excelExport();
+    } else if (grid && args.item.id === 'grid_pdfexport') {
+      grid.pdfExport();
     }
   };
 
@@ -92,8 +59,9 @@ const OwnerTrips = () => {
             </button>
           </TooltipComponent>
         </div>
+
         {activeMenu ? (
-          <div className="w-72 fixed sidebar dark:bg-secondary-dark-bg bg-white">
+          <div className="w-72 fixed sidebar dark:bg-secondary-dark-bg bg-white ">
             <Sidebar />
           </div>
         ) : (
@@ -104,90 +72,49 @@ const OwnerTrips = () => {
         <div
           className={
             activeMenu
-              ? "dark:bg-main-dark-bg  bg-main-bg min-h-screen md:ml-72 w-full"
-              : "bg-main-bg dark:bg-main-dark-bg  w-full min-h-screen flex-2"
+              ? "dark:bg-main-dark-bg  bg-main-bg min-h-screen md:ml-72 w-full  "
+              : "bg-main-bg dark:bg-main-dark-bg  w-full min-h-screen flex-2 "
           }
         >
-          <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg navbar w-full">
+          <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg navbar w-full ">
             <Navbar />
           </div>
           <div>
             {themeSettings && <ThemeSettings />}
-            {
-              loading ?
-                <Loader loading={loading} />
-                :
-                <div className="mt-10 pt-10 mx-10">
-                  <Header category="Info" title="Profile" />
-                  <div className="w-full">
-                    <img
-                      src={newData?.image ? newData.image : avatar}
-                      className="h-40 w-40 rounded-full mx-auto mb-3"
-                    />
-                    <div className="bg-white p-4">
-                      <div className='mb-4' >
-                        <label htmlFor="first_name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                          Full Name
-                        </label>
-                        <input
-                          type="text"
-                          value={newData.fullName || ''}
-                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                          placeholder="John Doe"
-                          onChange={(e) => setNewData({ ...newData, fullName: e.target.value })}
-                        />
-                      </div>
-                      <div className='mb-4' >
-                        <label htmlFor="first_name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                          Organization Name
-                        </label>
-                        <input
-                          type="text"
-                          value={newData.organization || ''}
-                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                          placeholder="MTOS LLC"
-                          onChange={(e) => setNewData({ ...newData, organization: e.target.value })}
-                        />
-                      </div>
-                      <div className='mb-4' >
-                        <label htmlFor="first_name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                          Email
-                        </label>
-                        <input
-                          type='email'
-                          value={newData.email || ''}
-                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                          placeholder="mtos@gmail.com"
-                          onChange={(e) => setNewData({ ...newData, email: e.target.value })}
-                        />
-                      </div>
-                      <div className='mb-4' >
-                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                          Phone Number
-                        </label>
-                        <input
-                          type='number'
-                          value={newData.phone || ''}
-                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                          placeholder="XXX-XXX-XXX"
-                          onChange={(e) => setNewData({ ...newData, phone: e.target.value })}
-                        />
-                      </div>
-                      <div>
-                        <button
-                          type="button"
-                          onClick={handleSave}
-                          style={{ backgroundColor: currentColor, color: 'white', borderRadius: '10px' }}
-                          className={'text- p-3 w-half hover:drop-shadow-xl hover:bg-red'}
-                          disabled={!userProfile || JSON.stringify(newData) === JSON.stringify(userProfile)}
-                        >
-                          Save Profile
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-            }
+
+            <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
+              <Header category="Trips Info" title="All Trips" />
+              <GridComponent
+                id='grid'
+                ref={g => grid = g}
+                dataSource={pastTrips}
+                allowPaging
+                pageSettings={{ pageCount: 5 }}
+                selectionSettings={selectionsettings}
+                toolbar={toolbarOptions}
+                editSettings={editing}
+                allowSorting
+                enableAdaptiveUI={true}
+                allowExcelExport={true}
+                toolbarClick={toolbarClick}
+                allowPdfExport={true}
+              >
+                <ColumnsDirective>
+                  <ColumnDirective field='PU Time Request' headerText='PU Time Request' width='130' />
+                  <ColumnDirective field='ApptTime' headerText='ApptTime' width='130' />
+                  <ColumnDirective field='Client Name' headerText='Client Name' width='130' />
+                  <ColumnDirective field='Client Mob' headerText='Client Mob' width='130' />
+                  <ColumnDirective field='Client Dis' headerText='Client Dis' width='130' />
+                  <ColumnDirective field='From Address' headerText='From Address' width='200' />
+                  <ColumnDirective field='From Phone' headerText='From Phone' width='150' />
+                  <ColumnDirective field='To Address' headerText='To Address' width='200' />
+                  <ColumnDirective field='To Phone' headerText='To Phone' width='150' />
+                  <ColumnDirective field='Miles' headerText='Miles' width='100' />
+                  <ColumnDirective field='Booking Comments' headerText='Booking Comments' width='250' />
+                </ColumnsDirective>
+                <Inject services={[Page, Selection, Toolbar, Sort, Filter, Resize, ExcelExport, PdfExport]} />
+              </GridComponent>
+            </div>
           </div>
           <Footer />
         </div>

@@ -1,29 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { GridComponent, ColumnsDirective, ColumnDirective, Page, Selection, Inject, Edit, Toolbar, Sort, Filter } from '@syncfusion/ej2-react-grids';
-import { customersData, customersGrid } from '../data/dummy';
 import { FiSettings } from "react-icons/fi";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
-import { Header, Navbar, Footer, Sidebar, ThemeSettings } from '../components';
+import { Header, Navbar, Footer, Sidebar, ThemeSettings, CustomGridTemplate } from '../components';
 import { useStateContext } from "../../contexts/ContextProvider";
 import { useNavigate } from 'react-router-dom';
 
-const OwnerAdmins = () => {
+const Admins = () => {
   const navigate = useNavigate();
   const [token, setToken] = useState(null);
-  const selectionsettings = { persistSelection: true };
-  const toolbarOptions = ['Delete'];
-  const editing = { allowDeleting: true, allowEditing: true };
+  const selectionsettings = { persistSelection: true, type: 'Multiple' };
+  const toolbarOptions = ['Search', 'Print'];
 
-  const {
-    setCurrentColor,
-    setCurrentMode,
-    currentMode,
-    activeMenu,
-    currentColor,
-    themeSettings,
-    setThemeSettings,
-  } = useStateContext();
-
+  const editing = { allowDeleting: false, allowEditing: false, allowAdding: false, allowEditOnDblClick: false };
+  const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings, allAdmins } = useStateContext();
   useEffect(() => {
     const currentThemeColor = localStorage.getItem("colorMode");
     const currentThemeMode = localStorage.getItem("themeMode");
@@ -46,7 +36,6 @@ const OwnerAdmins = () => {
 
   return (
     <div className={currentMode === "Dark" ? "dark" : ""}>
-
       <div className="flex relative dark:bg-main-dark-bg">
         <div className="fixed right-4 bottom-4" style={{ zIndex: "1000" }}>
           <TooltipComponent content="Settings" position="Top">
@@ -84,10 +73,9 @@ const OwnerAdmins = () => {
             {themeSettings && <ThemeSettings />}
 
             <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
-              <Header category="Page" title="Customers" />
+              <Header category="Admins" title="View Admins" />
               <GridComponent
-                dataSource={customersData}
-                enableHover={false}
+                dataSource={allAdmins}
                 allowPaging
                 pageSettings={{ pageCount: 5 }}
                 selectionSettings={selectionsettings}
@@ -96,20 +84,21 @@ const OwnerAdmins = () => {
                 allowSorting
               >
                 <ColumnsDirective>
-                  {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-                  {customersGrid.map((item, index) => <ColumnDirective key={index} {...item} />)}
+                  <ColumnDirective template={CustomGridTemplate} headerText='Image' width='120' />
+                  <ColumnDirective field='fullName' headerText='Name' width='120' />
+                  <ColumnDirective field='phoneNumber' headerText='Phone' width='130' />
+                  <ColumnDirective field='email' headerText='Email' width='250' isIdentity={true} />
+                  <ColumnDirective field='address' headerText='Address' />
                 </ColumnsDirective>
                 <Inject services={[Page, Selection, Toolbar, Edit, Sort, Filter]} />
               </GridComponent>
             </div>
-
           </div>
           <Footer />
         </div>
       </div>
     </div>
-
   );
 };
 
-export default OwnerAdmins;
+export default Admins;

@@ -6,7 +6,7 @@ import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 import avatar from '../data/avatar.jpg';
 import { Notification, UserProfile } from '.';
 import { useStateContext } from '../../contexts/ContextProvider';
-import { getSubOwnerById } from '../../db/profile';
+import { getOwnerById } from '../db/profile';
 
 const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
   <TooltipComponent content={title} position="BottomCenter">
@@ -36,7 +36,7 @@ const Navbar = () => {
 
   useEffect(() => {
     if (token) {
-      getSubOwnerById(token, (result) => {
+      getOwnerById(token, (result) => {
         setUserProfile(result.data);
         console.log(result.data);
       })
@@ -68,7 +68,7 @@ const Navbar = () => {
 
       <NavButton title="Menu" customFunc={handleActiveMenu} color={currentColor} icon={<AiOutlineMenu />} />
       <div className="flex self-center md:self-end">
-        <NavButton title="Notification" dotColor="rgb(254, 201, 15)" customFunc={() => handleClick('notification')} color={currentColor} icon={<RiNotification3Line />} />
+        {/* <NavButton title="Notification" dotColor="rgb(254, 201, 15)" customFunc={() => handleClick('notification')} color={currentColor} icon={<RiNotification3Line />} /> */}
         <TooltipComponent content="Profile" position="BottomCenter">
           <div
             className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"

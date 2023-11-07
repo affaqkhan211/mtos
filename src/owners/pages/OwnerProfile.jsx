@@ -4,7 +4,7 @@ import { FiSettings } from "react-icons/fi";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { Header, Navbar, Footer, Sidebar, ThemeSettings, Loader } from '../components';
 import { useNavigate } from 'react-router-dom';
-import { updateSubOwnerById } from '../../db/profile';
+import { updateOwnerById } from '../db/profile';
 import { toast } from 'react-toastify';
 import avatar from '../data/avatar.jpg';
 
@@ -51,6 +51,8 @@ const OwnerProfile = () => {
         image: userProfile?.image
       });
       setLoading(false);
+    } else {
+      setLoading(false);
     }
   }, [userProfile]);
 
@@ -81,7 +83,7 @@ const OwnerProfile = () => {
       newData.phone !== userProfile.phone ||
       newData.image !== userProfile.image
     ) {
-      updateSubOwnerById(token, newData, (result) => {
+      updateOwnerById(token, newData, (result) => {
         if (result.isSuccess) {
           toast.success(result.message);
         } else {

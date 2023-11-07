@@ -1,5 +1,5 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc, collection } from "firebase/firestore";
 import { auth, db } from './config';
 
 // Create a signup function with email and password for subowners
@@ -31,11 +31,23 @@ export const SIGNIN = async (email, password) => {
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
-        return { uid: user.uid, isSuccess: true };
+        const uid = user.uid;
+
+        // User not found in subOwners, check in the owners collection
+        const ownersRef = collection(db, "owners");
+        const ownerDoc = doc(ownersRef, uid);
+        const ownerSnapshot = await getDoc(ownerDoc);
+
+        if (ownerSnapshot.exists()) {
+            // User found in owners, return their document
+            return { uid, isSuccess: true, isOwner: true };
+        }
+
+        // User not found in subOwners or owners
+        return { isSuccess: true, uid, isOwner: false };
 
     } catch (error) {
-        console.error("Error signing in:", error);
-        return { isSuccess: false, uid: null, message: error.message };
+        return { isSuccess: false, message: error.message };
     }
 };
 
