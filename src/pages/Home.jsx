@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { IoIosMore } from 'react-icons/io';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
-import { Stacked, Pie, Button, LineChart, SparkLine } from '../components';
-import { earningData, medicalproBranding, recentTransactions, weeklyStats, dropdownData, SparklineAreaData, ecomPieChartData } from '../data/dummy';
+import { Button } from '../components';
+import { earningData, recentTransactions, dropdownData } from '../data/dummy';
 import { useStateContext } from '../contexts/ContextProvider';
-import product9 from '../data/product9.jpg';
 import { FiSettings } from "react-icons/fi";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { Navbar, Footer, Sidebar, ThemeSettings } from '../components';
@@ -35,6 +33,8 @@ const Home = () => {
     setAllDrivers,
     setTrips,
     setPastTrips,
+    setClients,
+    clients
   } = useStateContext();
 
   useEffect(() => {
@@ -52,13 +52,20 @@ const Home = () => {
   }, [setCurrentColor, setCurrentMode, setToken]);
 
   // fetchData
-  const fetchData = (token, setter, amountIndex, endpoint) => {
+  const fetchData = (token, setter, amountIndex, endpoint, assignToEarning, assignClients) => {
     if (token) {
       endpoint(token, (result) => {
         if (result.isSuccess) {
           setter(result.data);
           console.log(result.data)
-          earningData[amountIndex].amount = result.data.length;
+          if (assignToEarning) {
+            earningData[amountIndex].amount = result.data.length;
+          }
+          if (assignClients) {
+            const uniqueClients = new Set(result.data.map(trip => trip['Client Name']));
+            earningData[3].amount = uniqueClients.size;
+            setClients(uniqueClients.size);
+          }
         } else {
           toast.error(result.message);
         }
@@ -67,10 +74,10 @@ const Home = () => {
   };
 
   useEffect(() => {
-    fetchData(token, setAllAdmins, 0, getAllAdmins);
-    fetchData(token, setAllDrivers, 1, getAllDrivers);
-    fetchData(token, setTrips, 2, getTripsUploadedToday);
-    fetchData(token, setPastTrips, 2, getPastTrips);
+    fetchData(token, setAllAdmins, 0, getAllAdmins, true, false);
+    fetchData(token, setAllDrivers, 1, getAllDrivers, true, false);
+    fetchData(token, setPastTrips, 2, getPastTrips, true, true);
+    fetchData(token, setTrips, 0, getTripsUploadedToday, false, false);
   }, [token, setAllAdmins, setAllDrivers, setTrips, setPastTrips]);
 
   if (token === null) {

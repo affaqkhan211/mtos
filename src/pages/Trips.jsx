@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { GridComponent, ColumnsDirective, ColumnDirective, Page, Selection, Inject, Edit, Toolbar, Sort, Filter } from '@syncfusion/ej2-react-grids';
+import { GridComponent, ColumnsDirective, ColumnDirective, Page, Selection, Inject, Resize, Toolbar, Sort, Filter, ExcelExport, PdfExport } from '@syncfusion/ej2-react-grids';
 import { FiSettings } from "react-icons/fi";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { Header, Navbar, Footer, Sidebar, ThemeSettings } from '../components';
@@ -7,13 +7,15 @@ import { useStateContext } from "../contexts/ContextProvider";
 import { useNavigate } from 'react-router-dom';
 
 const Trips = () => {
+  let grid;
   const navigate = useNavigate();
   const [token, setToken] = useState(null);
   const selectionsettings = { persistSelection: true, type: 'Multiple' };
-  const toolbarOptions = ['Search', 'Print'];
+  const toolbarOptions = ['Search', 'Print', 'ExcelExport', 'PdfExport'];
 
   const editing = { allowDeleting: false, allowEditing: false, allowAdding: false, allowEditOnDblClick: false };
   const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings, trips } = useStateContext();
+
   useEffect(() => {
     const currentThemeColor = localStorage.getItem("colorMode");
     const currentThemeMode = localStorage.getItem("themeMode");
@@ -33,6 +35,14 @@ const Trips = () => {
   if (token === null) {
     navigate('/login');
   }
+
+  const toolbarClick = (args) => {
+    if (grid && args.item.id === 'grid_excelexport') {
+      grid.excelExport();
+    } else if (grid && args.item.id === 'grid_pdfexport') {
+      grid.pdfExport();
+    }
+  };
 
   return (
     <div className={currentMode === "Dark" ? "dark" : ""}>
@@ -75,6 +85,8 @@ const Trips = () => {
             <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
               <Header category="Trips" title="Trips Today" />
               <GridComponent
+                id='grid'
+                ref={g => grid = g}
                 dataSource={trips}
                 allowPaging
                 pageSettings={{ pageCount: 5 }}
@@ -82,23 +94,25 @@ const Trips = () => {
                 toolbar={toolbarOptions}
                 editSettings={editing}
                 allowSorting
+                enableAdaptiveUI={true}
+                allowExcelExport={true}
+                toolbarClick={toolbarClick}
+                allowPdfExport={true}
               >
                 <ColumnsDirective>
-                  <ColumnDirective field='PU Time Request' headerText='PU Time Request' />
-                  <ColumnDirective field='ApptTime' headerText='ApptTime' />
-                  <ColumnDirective field='Client Name' headerText='Client Name'/>
-                  <ColumnDirective field='Client Mob' headerText='Client Mob' />
-                  <ColumnDirective field='Client Dis' headerText='Client Dis' />
-                  <ColumnDirective field='Client Dis' headerText='Client Dis' />
-                  <ColumnDirective field='From Address' headerText='From Address' />
-                  <ColumnDirective field='From Phone' headerText='From Phone' />
-                  <ColumnDirective field='To Address' headerText='To Address' />
-                  <ColumnDirective field='To Phone' headerText='To Phone' />
-                  <ColumnDirective field='To Phone' headerText='To Phone' />
-                  <ColumnDirective field='Miles' headerText='Miles' />
-                  <ColumnDirective field='Booking Comments' headerText='Booking Comments' />
+                  <ColumnDirective field='PU Time Request' headerText='PU Time Request' width='130' />
+                  <ColumnDirective field='ApptTime' headerText='ApptTime' width='130' />
+                  <ColumnDirective field='Client Name' headerText='Client Name' width='130' />
+                  <ColumnDirective field='Client Mob' headerText='Client Mob' width='130' />
+                  <ColumnDirective field='Client Dis' headerText='Client Dis' width='130' />
+                  <ColumnDirective field='From Address' headerText='From Address' width='200' />
+                  <ColumnDirective field='From Phone' headerText='From Phone' width='150' />
+                  <ColumnDirective field='To Address' headerText='To Address' width='200' />
+                  <ColumnDirective field='To Phone' headerText='To Phone' width='150' />
+                  <ColumnDirective field='Miles' headerText='Miles' width='100' />
+                  <ColumnDirective field='Booking Comments' headerText='Booking Comments' width='250' />
                 </ColumnsDirective>
-                <Inject services={[Page, Selection, Toolbar, Sort, Filter]} />
+                <Inject services={[Page, Selection, Toolbar, Sort, Filter, Resize, ExcelExport, PdfExport]} />
               </GridComponent>
             </div>
           </div>
