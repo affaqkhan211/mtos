@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import { getAllAdmins } from '../db/admin';
 import { toast } from 'react-toastify';
 import { getAllDrivers } from '../db/driver';
+import { getPastTrips, getTripsUploadedToday } from '../db/trips';
 
 const DropDown = ({ currentMode }) => (
   <div className="w-28 border-1 border-color px-2 py-1 rounded-md">
@@ -35,6 +36,8 @@ const Home = () => {
     setThemeSettings,
     setAllAdmins,
     setAllDrivers,
+    setTrips,
+    setPastTrips,
   } = useStateContext();
 
 
@@ -54,6 +57,7 @@ const Home = () => {
     }
   });
 
+  // fetching data
   useEffect(() => {
     if (token) {
       getAllAdmins(token, (result) => {
@@ -64,13 +68,43 @@ const Home = () => {
           toast.error(result.message);
         }
       })
+    }
+  }, [token]);
 
+  useEffect(() => {
+    if (token) {
       getAllDrivers(token, (result) => {
         if (result.isSuccess) {
           setAllDrivers(result.data);
           earningData[1].amount = result.data.length;
         } else {
           toast.error(result.message);
+        }
+      })
+    }
+  }, [token]);
+
+  useEffect(() => {
+    if (token) {
+      getTripsUploadedToday(token, (result) => {
+        if (result.isSuccess) {
+          setTrips(result.data);
+        } else {
+          toast.error(result.message);
+        }
+      })
+    }
+  }, [token]);
+
+  useEffect(() => {
+    if (token) {
+      getPastTrips(token, (result) => {
+        if (result.isSuccess) {
+          setPastTrips(result.data);
+          earningData[2].amount = result.data.length;
+        } else {
+          toast.error(result.message);
+          console.log(result.message);
         }
       })
     }

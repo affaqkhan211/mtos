@@ -2,18 +2,28 @@ import React, { useEffect, useState } from 'react';
 import { GridComponent, ColumnsDirective, ColumnDirective, Page, Selection, Inject, Edit, Toolbar, Sort, Filter } from '@syncfusion/ej2-react-grids';
 import { FiSettings } from "react-icons/fi";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
-import { Header, Navbar, Footer, Sidebar, ThemeSettings, CustomGridTemplate } from '../components';
+import { Header, Navbar, Footer, Sidebar, ThemeSettings } from '../components';
 import { useStateContext } from "../contexts/ContextProvider";
 import { useNavigate } from 'react-router-dom';
 
-const Drivers = () => {
+const CustomGridTemplate = (props) => {
+  return (
+      <img
+          src={props.signature} // Make sure the field name is correct
+          alt="Customer Image"
+          style={{ width: '50px', height: '50px', borderRadius:'100px' }} // Adjust the size as needed
+      />
+  );
+};
+
+const Trips = () => {
   const navigate = useNavigate();
   const [token, setToken] = useState(null);
   const selectionsettings = { persistSelection: true, type: 'Multiple' };
   const toolbarOptions = ['Search', 'Print'];
 
   const editing = { allowDeleting: false, allowEditing: false, allowAdding: false, allowEditOnDblClick: false };
-  const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings, allDrivers } = useStateContext();
+  const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings, pastTrips } = useStateContext();
   useEffect(() => {
     const currentThemeColor = localStorage.getItem("colorMode");
     const currentThemeMode = localStorage.getItem("themeMode");
@@ -73,9 +83,9 @@ const Drivers = () => {
             {themeSettings && <ThemeSettings />}
 
             <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
-              <Header category="More" title="View Drivers" />
+              <Header category="Trips" title="Past Trips" />
               <GridComponent
-                dataSource={allDrivers}
+                dataSource={pastTrips}
                 allowPaging
                 pageSettings={{ pageCount: 5 }}
                 selectionSettings={selectionsettings}
@@ -84,12 +94,20 @@ const Drivers = () => {
                 allowSorting
               >
                 <ColumnsDirective>
-                  <ColumnDirective template={CustomGridTemplate} headerText='Image' width='100' />
-                  <ColumnDirective field='fullName' headerText='Name' width='100' />
-                  <ColumnDirective field='phoneNumber' headerText='Phone' width='130' />
-                  <ColumnDirective field='email' headerText='Email' width='250' isIdentity={true} />
-                  <ColumnDirective field='idCard' headerText='ID' />
-                  <ColumnDirective field='address' headerText='Address' />
+                  <ColumnDirective template={CustomGridTemplate} headerText='signature' width='100' />
+                  <ColumnDirective field='PU Time Request' headerText='PU Time Request' />
+                  <ColumnDirective field='ApptTime' headerText='ApptTime' />
+                  <ColumnDirective field='Client Name' headerText='Client Name'/>
+                  <ColumnDirective field='Client Mob' headerText='Client Mob' />
+                  <ColumnDirective field='Client Dis' headerText='Client Dis' />
+                  <ColumnDirective field='Client Dis' headerText='Client Dis' />
+                  <ColumnDirective field='From Address' headerText='From Address' />
+                  <ColumnDirective field='From Phone' headerText='From Phone' />
+                  <ColumnDirective field='To Address' headerText='To Address' />
+                  <ColumnDirective field='To Phone' headerText='To Phone' />
+                  <ColumnDirective field='To Phone' headerText='To Phone' />
+                  <ColumnDirective field='Miles' headerText='Miles' />
+                  <ColumnDirective field='Booking Comments' headerText='Booking Comments' />
                 </ColumnsDirective>
                 <Inject services={[Page, Selection, Toolbar, Sort, Filter]} />
               </GridComponent>
@@ -102,4 +120,4 @@ const Drivers = () => {
   );
 };
 
-export default Drivers;
+export default Trips;

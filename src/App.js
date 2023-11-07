@@ -9,6 +9,7 @@ import {
   Admins,
   Profile,
   AddAdmin,
+  PastTrips
 } from "./pages";
 
 import "./App.css";
@@ -106,11 +107,16 @@ const App = () => {
                 {/* dashboard  */}
                 <Route path="/home" element={<Home />} />
 
-                {/* pages  */}
+                {/* admins  */}
                 <Route path="/admins" element={<Admins />} />
                 <Route path="/addadmins" element={<AddAdmin />} />
+
+                {/* drivers  */}
                 <Route path="/drivers" element={<Drivers />} />
+
+                {/* drivers  */}
                 <Route path="/trips" element={<Trips />} />
+                <Route path="/pasttrips" element={<PastTrips />} />
 
                 {/* payments & info  */}
 
