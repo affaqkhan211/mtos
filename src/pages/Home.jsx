@@ -14,6 +14,7 @@ import { Header, Navbar, Footer, Sidebar, ThemeSettings } from '../components';
 import { useNavigate } from 'react-router-dom';
 import { getAllAdmins } from '../db/admin';
 import { toast } from 'react-toastify';
+import { getAllDrivers } from '../db/driver';
 
 const DropDown = ({ currentMode }) => (
   <div className="w-28 border-1 border-color px-2 py-1 rounded-md">
@@ -33,7 +34,7 @@ const Home = () => {
     themeSettings,
     setThemeSettings,
     setAllAdmins,
-    allAdmins,
+    setAllDrivers,
   } = useStateContext();
 
 
@@ -59,6 +60,15 @@ const Home = () => {
         if (result.isSuccess) {
           setAllAdmins(result.data);
           earningData[0].amount = result.data.length;
+        } else {
+          toast.error(result.message);
+        }
+      })
+
+      getAllDrivers(token, (result) => {
+        if (result.isSuccess) {
+          setAllDrivers(result.data);
+          earningData[1].amount = result.data.length;
         } else {
           toast.error(result.message);
         }
