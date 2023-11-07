@@ -2,9 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { GridComponent, ColumnsDirective, ColumnDirective, Page, Selection, Inject, Edit, Toolbar, Sort, Filter } from '@syncfusion/ej2-react-grids';
 import { FiSettings } from "react-icons/fi";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
-import { Header, Navbar, Footer, Sidebar, ThemeSettings, CustomGridTemplate } from '../components';
+import { Header, Navbar, Footer, Sidebar, ThemeSettings } from '../components';
 import { useStateContext } from "../contexts/ContextProvider";
 import { useNavigate } from 'react-router-dom';
+
+const CustomGridTemplate = (props) => {
+  return (
+      <img
+          src={props.imageUri} // Make sure the field name is correct
+          alt="Customer Image"
+          style={{ width: '50px', height: '50px', borderRadius:'100px' }} // Adjust the size as needed
+      />
+  );
+};
 
 const Drivers = () => {
   const navigate = useNavigate();

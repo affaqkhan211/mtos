@@ -94,13 +94,15 @@ const AddAdmin = () => {
       const isEmailValid = /\S+@\S+\.\S+/.test(newData?.email); // Email format check
       const isPasswordValid = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,}$/.test(newData?.password); // Password strength check
       const isAddressValid = newData?.address?.length >= 5; // Address length check
+      const isImageValid = newData?.imageUrl?.length >= 1; // Address length check
 
       if (
         isFullNameValid &&
         isPhoneNumberValid &&
         isEmailValid &&
         isPasswordValid &&
-        isAddressValid
+        isAddressValid &&
+        isImageValid
       ) {
         // Simulate an asynchronous operation with a timeout (replace this with your actual async call)
         await new Promise(resolve => setTimeout(resolve, 1000));
@@ -128,6 +130,7 @@ const AddAdmin = () => {
         if (!isEmailValid) errorMessage += '- Please enter a valid email address.\n';
         if (!isPasswordValid) errorMessage += '- Password must include uppercase, lowercase, number, and a special character.\n';
         if (!isAddressValid) errorMessage += '- Address must be at least 5 characters long.\n';
+        if (!isImageValid) errorMessage += '- Image must be attached.\n';
 
         toast.error(errorMessage);
       }
