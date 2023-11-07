@@ -28,12 +28,13 @@ import colors from "./mtos/utils/colors";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ScrollToTop from "react-scroll-to-top";
-import { OwnerAdmins } from "./owners/pages";
+import { OwnerAdmins, OwnerHome } from "./owners/pages";
 import { OwnerDrivers } from "./owners/pages";
 import { OwnerSubscriptions } from "./owners/pages";
 import { OwnerTrips } from "./owners/pages";
 import { SubOwners } from "./owners/pages";
 import { Revenue } from "./owners/pages";
+import OwnerProfile from "./owners/pages/OwnerProfile";
 
 const App = () => {
   const {
@@ -126,12 +127,15 @@ const App = () => {
                 
                 {/* owner view  */}
 
+                <Route path = "/ownerhome" element = {<OwnerHome/>}/>
                 <Route path = "/revenue" element = {<Revenue/>}/>
                 <Route path = "/owneradmins" element = {<OwnerAdmins/>}/>
                 <Route path = "/ownerdrivers" element = {<OwnerDrivers/>}/>
                 <Route path = "/ownersubscriptions" element = {<OwnerSubscriptions/>}/>
                 <Route path = "/ownertrips" element = {<OwnerTrips/>}/>
                 <Route path = "/subowners" element = {<SubOwners/>}/>
+                <Route path = "/ownerprofile" element = {<OwnerProfile/>}/>
+                
               </Routes>
               <ToastContainer />
               </BrowserRouter>

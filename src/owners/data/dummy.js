@@ -475,6 +475,10 @@ export const links = [
     title: 'Dashboard',
     links: [
       {
+        name : "ownerhome",
+        icon: <FaChartLine  />,
+      },
+      {
         name : "revenue",
         icon: <FaChartLine  />,
       },
@@ -513,6 +517,7 @@ export const links = [
   //     },
   //   ],
   // },
+  // alerts
   {
     title: 'Payment & Info',
     links: [
@@ -521,7 +526,7 @@ export const links = [
         icon: <FaMap  />,
       },
       {
-        name: 'profile',
+        name: 'ownerprofile',
         icon: <FaUser  />,
       }
     ],
