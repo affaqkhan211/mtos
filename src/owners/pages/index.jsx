@@ -4,3 +4,4 @@ export { default as OwnerSubscriptions } from './OwnerSubscriptions';
 export { default as OwnerTrips } from './OwnerTrips';
 export { default as Revenue } from './Revenue';
 export { default as SubOwners } from './SubOwners';
+export { default as OwnerHome } from "./OwnerHome"
