@@ -78,7 +78,7 @@ const OwnerSubscriptions = () => {
           <div>
             {themeSettings && <ThemeSettings />}
             <div className="mt-25 mx-10">
-              <Header category="Admins" title="View Admins" />
+              <Header category="Payments" title="Subscriptions" />
 
               <div className="flex gap-10 m-4 flex-wrap justify-center">
                 <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-6 rounded-2xl">
