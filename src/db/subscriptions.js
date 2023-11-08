@@ -1,4 +1,4 @@
-import { collection, addDoc, doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { collection, addDoc, doc, setDoc, serverTimestamp, query, where, onSnapshot } from "firebase/firestore";
 import { db } from '../mtos/db/config';
 
 // Add a new document to a Firestore collection and update 'subOwners' collection
@@ -31,4 +31,27 @@ export const addDocToCollection = async (attachedData, data, callback) => {
         console.error("Error adding document to collection or updating 'subOwners' document: ", error);
         callback({ isSuccess: false, message: error.message });
     }
+};
+
+// Listen for real-time updates to subscriptions for a specific UID
+export const getSubscriptionDataByuid = (uid, callback) => {
+    const subscriptionsCollectionRef = collection(db, 'subscriptions');
+
+    // Create a query to retrieve subscriptions with a matching UID
+    const q = query(subscriptionsCollectionRef, where("uid", "==", uid));
+
+    // Create a real-time listener using onSnapshot
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const subscriptions = [];
+        querySnapshot.forEach((doc) => {
+            // Extract subscription data from each document
+            subscriptions.push(doc.data());
+        });
+
+        // Call the callback function with the updated subscriptions
+        callback(subscriptions);
+    });
+
+    // Return the unsubscribe function to stop listening for updates
+    return unsubscribe;
 };

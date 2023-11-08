@@ -115,6 +115,8 @@ const Subscriptions = () => {
     navigate('/login');
   }
 
+  console.log(subscriptionData);
+
   return (
     <div className={currentMode === "Dark" ? "dark" : ""}>
 

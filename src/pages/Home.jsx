@@ -11,12 +11,7 @@ import { getAllAdmins } from '../db/admin';
 import { toast } from 'react-toastify';
 import { getAllDrivers } from '../db/driver';
 import { getPastTrips, getTripsUploadedToday } from '../db/trips';
-
-const DropDown = ({ currentMode }) => (
-  <div className="w-28 border-1 border-color px-2 py-1 rounded-md">
-    <DropDownListComponent id="time" fields={{ text: 'Time', value: 'Id' }} style={{ border: 'none', color: (currentMode === 'Dark') && 'white' }} value="1" dataSource={dropdownData} popupHeight="220px" popupWidth="120px" />
-  </div>
-);
+import { getSubscriptionDataByuid } from '../db/subscriptions';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -35,6 +30,7 @@ const Home = () => {
     setPastTrips,
     setClients,
     userProfile,
+    setSubscriptionData
   } = useStateContext();
 
   useEffect(() => {
@@ -82,6 +78,7 @@ const Home = () => {
     fetchData(token, setAllDrivers, 1, getAllDrivers, true, false, true);
     fetchData(token, setPastTrips, 2, getPastTrips, true, true, false);
     fetchData(token, setTrips, 0, getTripsUploadedToday, false, false, false);
+    fetchData(token, setSubscriptionData, 0, getSubscriptionDataByuid, false, false, false);
   }, [token, setAllAdmins, setAllDrivers, setTrips, setPastTrips]);
 
   if (token === null) {
