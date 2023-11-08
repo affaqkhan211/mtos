@@ -1,8 +1,8 @@
 import { collection, onSnapshot } from "firebase/firestore";
-import { db } from '../mtos/db/config';
+import { db } from '../../mtos/db/config';
 
 // Listen for real-time updates to all subscriptions
-export const listenForAllSubscriptions = (callback) => {
+export const getAllSubscriptions = (callback) => {
     const subscriptionsCollectionRef = collection(db, 'subscriptions');
 
     // Create a real-time listener for the entire collection

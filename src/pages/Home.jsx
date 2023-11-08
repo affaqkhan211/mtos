@@ -79,7 +79,7 @@ const Home = () => {
     fetchData(token, setPastTrips, 2, getPastTrips, true, true, false);
     fetchData(token, setTrips, 0, getTripsUploadedToday, false, false, false);
     fetchData(token, setSubscriptionData, 0, getSubscriptionDataByuid, false, false, false);
-  }, [token, setAllAdmins, setAllDrivers, setTrips, setPastTrips]);
+  }, [token, setAllAdmins, setAllDrivers, setTrips, setPastTrips, setSubscriptionData]);
 
   if (token === null) {
     navigate('/login');

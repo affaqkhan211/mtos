@@ -11,6 +11,7 @@ import { getAllAdmins } from '../db/admin';
 import { getAllDrivers } from '../db/driver';
 import { getPastTrips } from '../db/trips';
 import { getAllSubOwners } from '../db/subOwner';
+import { getAllSubscriptions } from '../db/subscriptions';
 import { toast } from 'react-toastify';
 
 const DropDown = ({ currentMode }) => (
@@ -34,6 +35,7 @@ const OwnerHome = () => {
     setAllDrivers,
     setPastTrips,
     setSubOwners,
+    setSubscriptionData
   } = useStateContext();
 
   useEffect(() => {
@@ -70,7 +72,8 @@ const OwnerHome = () => {
     fetchData(token, setAllAdmins, 1, getAllAdmins);
     fetchData(token, setAllDrivers, 2, getAllDrivers);
     fetchData(token, setPastTrips, 3, getPastTrips);
-  }, [token, setAllAdmins, setAllDrivers, setSubOwners, setPastTrips]);
+    fetchData(token, setSubscriptionData, 0, getAllSubscriptions, false, false, false);
+  }, [token, setAllAdmins, setAllDrivers, setSubOwners, setPastTrips, setSubscriptionData]);
 
   if (token === null) {
     navigate('/login');
