@@ -31,7 +31,8 @@ const AddAdmin = () => {
     currentColor,
     themeSettings,
     setThemeSettings,
-    userProfile
+    userProfile,
+    allAdmins,
   } = useStateContext();
 
   useEffect(() => {
@@ -88,6 +89,12 @@ const AddAdmin = () => {
 
   const handleSave = async () => {
     setLoading(true);
+    if (userProfile.adminAccounts >= allAdmins.length) {
+      toast.error("Admins Account Limit Reached! \n Purchase more admin acoounts to add admin.");
+      console.log("possible");
+      setLoading(false);
+      return;
+    }
 
     try {
       const isFullNameValid = newData?.fullName?.length > 3; // Name length check
@@ -184,7 +191,7 @@ const AddAdmin = () => {
                 <Loader loading={loading} />
                 :
                 <div className="mt-10 pt-10 mx-10">
-                  <Header category="Admins" title="Add Admin" />
+                  <Header category={"Admins (Remaining " + (userProfile?.adminAccounts - allAdmins?.length) + ")"} title="Add Admin " />
                   {
                     userProfile.subscriptions ?
                       <div className="w-full">

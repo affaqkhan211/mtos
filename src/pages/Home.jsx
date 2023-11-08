@@ -48,7 +48,6 @@ const Home = () => {
   }, [setCurrentColor, setCurrentMode, setToken]);
 
   // fetchData
-  const limitData = [userProfile.adminAccounts, userProfile.driverAccounts];
   const fetchData = (token, setter, amountIndex, endpoint, assignToEarning, assignClients, assignLimit) => {
     if (token) {
       endpoint(token, (result) => {
@@ -64,7 +63,18 @@ const Home = () => {
             setClients(uniqueClients.size);
           }
           if (assignLimit) {
-            earningData[amountIndex].limit = limitData[amountIndex];
+            switch (amountIndex) {
+              case 0:
+                earningData[amountIndex].limit = userProfile?.adminAccounts || '0';
+                break;
+              case 1:
+                earningData[amountIndex].limit = userProfile?.driverAccounts || '0';
+
+                break;
+
+              default:
+                break;
+            }
           }
         } else {
           toast.error(result.message);
@@ -79,7 +89,7 @@ const Home = () => {
     fetchData(token, setPastTrips, 2, getPastTrips, true, true, false);
     fetchData(token, setTrips, 0, getTripsUploadedToday, false, false, false);
     fetchData(token, setSubscriptionData, 0, getSubscriptionDataByuid, false, false, false);
-  }, [token, setAllAdmins, setAllDrivers, setTrips, setPastTrips, setSubscriptionData]);
+  }, [token, setAllAdmins, setAllDrivers, setTrips, setPastTrips, setSubscriptionData, userProfile]);
 
   if (token === null) {
     navigate('/login');
