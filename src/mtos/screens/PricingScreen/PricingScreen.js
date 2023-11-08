@@ -75,7 +75,7 @@ const PricingScreen = () => {
                                     <li>Umlimited Access Monthly</li>
                                     <li>Admin + Driver Mobile App</li>
                                 </ul>
-                                <a href="#/">SUBSCRIBE NOW!</a>
+                                <a href="/login">SUBSCRIBE NOW!</a>
                             </div>
                         </div>
                         <div class="col-lg-4 col-sm-4 col-xs-12 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.3s" data-wow-offset="0">
@@ -140,7 +140,7 @@ const PricingScreen = () => {
                                     <li>Unlimited Access Monthly</li>
                                     <li>Admin + Driver Mobile App</li>
                                 </ul>
-                                <a href="#/">SUBSCRIBE NOW!</a>
+                                <a href="/login">SUBSCRIBE NOW!</a>
                             </div>
                         </div>
                     </div>
