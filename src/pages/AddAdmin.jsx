@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import avatar from '../data/avatar.jpg';
 import { createAdmin } from '../db/admin';
+import LockView from '../components/LockedView';
 
 const AddAdmin = () => {
   const navigate = useNavigate();
@@ -29,8 +30,8 @@ const AddAdmin = () => {
     activeMenu,
     currentColor,
     themeSettings,
-    userProfile,
     setThemeSettings,
+    userProfile
   } = useStateContext();
 
   useEffect(() => {
@@ -184,114 +185,119 @@ const AddAdmin = () => {
                 :
                 <div className="mt-10 pt-10 mx-10">
                   <Header category="Admins" title="Add Admin" />
-                  <div className="w-full">
-                    <img
-                      src={selectedImage ? selectedImage : newData.imageUrl ? newData.imageUrl : avatar}
-                      className="h-40 w-40 rounded-full mx-auto mb-3"
-                      onClick={() => document.getElementById('imageInput').click()}
-                      style={{ cursor: 'pointer' }}
-                    />
-                    <input
-                      id="imageInput"
-                      type="file"
-                      accept="image/*"
-                      style={{ display: 'none' }}
-                      onChange={handleImageChange}
-                    />
-
-                    <div className="bg-white p-4">
-                      <div className='mb-4' >
-                        <label htmlFor="first_name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                          Admin Full Name
-                        </label>
-                        <input
-                          type="text"
-                          value={newData.fullName}
-                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                          placeholder="John Doe"
-                          onChange={(e) => setNewData({ ...newData, fullName: e.target.value })}
+                  {
+                    userProfile.subscriptions ?
+                      <div className="w-full">
+                        <img
+                          src={selectedImage ? selectedImage : newData.imageUrl ? newData.imageUrl : avatar}
+                          className="h-40 w-40 rounded-full mx-auto mb-3"
+                          onClick={() => document.getElementById('imageInput').click()}
+                          style={{ cursor: 'pointer' }}
                         />
-                      </div>
-
-                      <div className='mb-4' >
-                        <label htmlFor="first_name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                          Admin Organization Name (default)
-                        </label>
                         <input
-                          disabled={true}
-                          type="text"
-                          value={newData.organization}
-                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                          placeholder="MTOS LLC"
-                          onChange={(e) => setNewData({ ...newData, organization: e.target.value })}
+                          id="imageInput"
+                          type="file"
+                          accept="image/*"
+                          style={{ display: 'none' }}
+                          onChange={handleImageChange}
                         />
-                      </div>
 
-                      <div className='mb-4' >
-                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                          Admin Phone Number
-                        </label>
-                        <input
-                          type='number'
-                          value={newData.phoneNumber}
-                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                          placeholder="XXX-XXX-XXX"
-                          onChange={(e) => setNewData({ ...newData, phoneNumber: e.target.value })}
-                        />
-                      </div>
+                        <div className="bg-white p-4">
+                          <div className='mb-4' >
+                            <label htmlFor="first_name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                              Admin Full Name
+                            </label>
+                            <input
+                              type="text"
+                              value={newData.fullName}
+                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              placeholder="John Doe"
+                              onChange={(e) => setNewData({ ...newData, fullName: e.target.value })}
+                            />
+                          </div>
 
-                      <div className='mb-4' >
-                        <label htmlFor="first_name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                          Admin Login Email
-                        </label>
-                        <input
-                          type='email'
-                          value={newData.email}
-                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                          placeholder="admin@gmail.com"
-                          onChange={(e) => setNewData({ ...newData, email: e.target.value })}
-                        />
-                      </div>
+                          <div className='mb-4' >
+                            <label htmlFor="first_name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                              Admin Organization Name (default)
+                            </label>
+                            <input
+                              disabled={true}
+                              type="text"
+                              value={newData.organization}
+                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              placeholder="MTOS LLC"
+                              onChange={(e) => setNewData({ ...newData, organization: e.target.value })}
+                            />
+                          </div>
 
-                      <div className='mb-4' >
-                        <label htmlFor="first_name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                          Admin Login Password
-                        </label>
-                        <input
-                          type='text'
-                          value={newData.password}
-                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                          placeholder="XXXXXXXXX"
-                          onChange={(e) => setNewData({ ...newData, password: e.target.value })}
-                        />
-                      </div>
+                          <div className='mb-4' >
+                            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                              Admin Phone Number
+                            </label>
+                            <input
+                              type='number'
+                              value={newData.phoneNumber}
+                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              placeholder="XXX-XXX-XXX"
+                              onChange={(e) => setNewData({ ...newData, phoneNumber: e.target.value })}
+                            />
+                          </div>
 
-                      <div className='mb-4' >
-                        <label htmlFor="first_name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                          Admin Address
-                        </label>
-                        <input
-                          type='text'
-                          value={newData.address}
-                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                          placeholder="123 Main St, Anytown, USA 12345"
-                          onChange={(e) => setNewData({ ...newData, address: e.target.value })}
-                        />
-                      </div>
+                          <div className='mb-4' >
+                            <label htmlFor="first_name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                              Admin Login Email
+                            </label>
+                            <input
+                              type='email'
+                              value={newData.email}
+                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              placeholder="admin@gmail.com"
+                              onChange={(e) => setNewData({ ...newData, email: e.target.value })}
+                            />
+                          </div>
 
-                      <div>
-                        <button
-                          type="button"
-                          onClick={handleSave}
-                          style={{ backgroundColor: currentColor, color: 'white', borderRadius: '10px' }}
-                          className={'text- p-3 w-half hover:drop-shadow-xl hover:bg-red'}
-                          disabled={!userProfile || JSON.stringify(newData) === JSON.stringify(userProfile)}
-                        >
-                          Add Admin
-                        </button>
+                          <div className='mb-4' >
+                            <label htmlFor="first_name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                              Admin Login Password
+                            </label>
+                            <input
+                              type='text'
+                              value={newData.password}
+                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              placeholder="XXXXXXXXX"
+                              onChange={(e) => setNewData({ ...newData, password: e.target.value })}
+                            />
+                          </div>
+
+                          <div className='mb-4' >
+                            <label htmlFor="first_name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                              Admin Address
+                            </label>
+                            <input
+                              type='text'
+                              value={newData.address}
+                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              placeholder="123 Main St, Anytown, USA 12345"
+                              onChange={(e) => setNewData({ ...newData, address: e.target.value })}
+                            />
+                          </div>
+
+                          <div>
+                            <button
+                              type="button"
+                              onClick={handleSave}
+                              style={{ backgroundColor: currentColor, color: 'white', borderRadius: '10px' }}
+                              className={'text- p-3 w-half hover:drop-shadow-xl hover:bg-red'}
+                              disabled={!userProfile || JSON.stringify(newData) === JSON.stringify(userProfile)}
+                            >
+                              Add Admin
+                            </button>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
+                      :
+                      <LockView />
+                  }
                 </div>
             }
           </div>

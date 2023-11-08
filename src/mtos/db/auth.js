@@ -14,6 +14,9 @@ export const SIGNUP = async (email, password, firstName, lastName) => {
             fullName: `${firstName} ${lastName}`,
             email: email,
             subscriptions: false,
+            ownerAccounts: 1,
+            adminAccounts: 0,
+            driverAccounts: 0,
         };
 
         await setDoc(userRef, userData);
@@ -83,6 +86,9 @@ export const SIGNUP_WITH_GOOGLE = async () => {
                 fullName: user.displayName,
                 email: user.email,
                 subscriptions: false,
+                ownerAccounts: 1,
+                adminAccounts: 0,
+                driverAccounts: 0,
             };
 
             await setDoc(userRef, userData);

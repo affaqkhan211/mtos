@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { GridComponent, ColumnsDirective, ColumnDirective, Page, Selection, Inject, Edit, Toolbar, Sort, Filter, CommandColumn } from '@syncfusion/ej2-react-grids';
 import { FiSettings } from "react-icons/fi";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
-import { Header, Navbar, Footer, Sidebar, ThemeSettings, CustomGridTemplate } from '../components';
+import { Header, Navbar, Footer, Sidebar, ThemeSettings, CustomGridTemplate, LockedView } from '../components';
 import { useStateContext } from "../contexts/ContextProvider";
 import { useNavigate } from 'react-router-dom';
-import { getAllAdmins, deleteAdmin, updateAdminById } from '../db/admin';
+import { deleteAdmin, updateAdminById } from '../db/admin';
 import { toast } from 'react-toastify';
 
 const Admins = () => {
@@ -19,7 +19,7 @@ const Admins = () => {
   { type: 'Cancel', buttonOption: { iconCss: 'e-icons e-cancel-icon', cssClass: 'e-flat' } }];
 
   const editing = { allowDeleting: true, allowEditing: true, allowAdding: true, allowEditOnDblClick: false };
-  const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings, allAdmins } = useStateContext();
+  const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings, allAdmins, userProfile } = useStateContext();
   useEffect(() => {
     const currentThemeColor = localStorage.getItem("colorMode");
     const currentThemeMode = localStorage.getItem("themeMode");
@@ -115,26 +115,31 @@ const Admins = () => {
 
             <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
               <Header category="Admins" title="View Admins" />
-              <GridComponent
-                dataSource={allAdmins}
-                allowPaging
-                pageSettings={{ pageCount: 5 }}
-                selectionSettings={selectionsettings}
-                toolbar={toolbarOptions}
-                editSettings={editing}
-                allowSorting
-                actionBegin={actionBegin}
-              >
-                <ColumnsDirective>
-                  <ColumnDirective template={CustomGridTemplate} headerText='Image' width='120' />
-                  <ColumnDirective field='fullName' headerText='Name' width='120' />
-                  <ColumnDirective field='phoneNumber' headerText='Phone' width='130' />
-                  <ColumnDirective field='email' headerText='Email' width='250' isIdentity={true} />
-                  <ColumnDirective field='address' headerText='Address' />
-                  <ColumnDirective headerText='Manage Records' width='160' commands={commands}></ColumnDirective>
-                </ColumnsDirective>
-                <Inject services={[Page, Selection, Toolbar, Edit, Sort, Filter, CommandColumn]} />
-              </GridComponent>
+              {
+                userProfile.subscriptions ?
+                  <GridComponent
+                    dataSource={allAdmins}
+                    allowPaging
+                    pageSettings={{ pageCount: 5 }}
+                    selectionSettings={selectionsettings}
+                    toolbar={toolbarOptions}
+                    editSettings={editing}
+                    allowSorting
+                    actionBegin={actionBegin}
+                  >
+                    <ColumnsDirective>
+                      <ColumnDirective template={CustomGridTemplate} headerText='Image' width='120' />
+                      <ColumnDirective field='fullName' headerText='Name' width='120' />
+                      <ColumnDirective field='phoneNumber' headerText='Phone' width='130' />
+                      <ColumnDirective field='email' headerText='Email' width='250' isIdentity={true} />
+                      <ColumnDirective field='address' headerText='Address' />
+                      <ColumnDirective headerText='Manage Records' width='160' commands={commands}></ColumnDirective>
+                    </ColumnsDirective>
+                    <Inject services={[Page, Selection, Toolbar, Edit, Sort, Filter, CommandColumn]} />
+                  </GridComponent>
+                  :
+                  <LockedView />
+              }
             </div>
           </div>
           <Footer />

@@ -5,6 +5,7 @@ import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { Header, Navbar, Footer, Sidebar, ThemeSettings } from '../components';
 import { useStateContext } from "../contexts/ContextProvider";
 import { useNavigate } from 'react-router-dom';
+import LockView from '../components/LockedView';
 
 const signatureTemplate = (props) => {
   return (
@@ -34,7 +35,7 @@ const Trips = () => {
   const toolbarOptions = ['Search', 'Print', 'ExcelExport', 'PdfExport'];
 
   const editing = { allowDeleting: false, allowEditing: false, allowAdding: false, allowEditOnDblClick: false };
-  const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings, pastTrips } = useStateContext();
+  const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings, pastTrips, userProfile } = useStateContext();
   useEffect(() => {
     const currentThemeColor = localStorage.getItem("colorMode");
     const currentThemeMode = localStorage.getItem("themeMode");
@@ -103,39 +104,44 @@ const Trips = () => {
 
             <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
               <Header category="Trips" title="Past Trips" />
-              <GridComponent
-                id='grid'
-                ref={g => grid = g}
-                dataSource={pastTrips}
-                allowPaging
-                pageSettings={{ pageCount: 5 }}
-                selectionSettings={selectionsettings}
-                toolbar={toolbarOptions}
-                editSettings={editing}
-                allowSorting
-                enableAdaptiveUI={true}
-                allowExcelExport={true}
-                toolbarClick={toolbarClick}
-                allowPdfExport={true}
-              >
-                <ColumnsDirective>
-                  <ColumnDirective template={signatureTemplate} headerText='Client Signature' width='150' />
-                  <ColumnDirective template={driverTemplate} headerText='Driver Image' width='130' />
-                  <ColumnDirective field='driverName' headerText='Driver Name' width='130' />
-                  <ColumnDirective field='PU Time Request' headerText='PU Time Request' width='150' />
-                  <ColumnDirective field='ApptTime' headerText='ApptTime' width='130' />
-                  <ColumnDirective field='Client Name' headerText='Client Name' width='130' />
-                  <ColumnDirective field='Client Mob' headerText='Client Mob' width='130' />
-                  <ColumnDirective field='Client Dis' headerText='Client Dis' width='130' />
-                  <ColumnDirective field='From Address' headerText='From Address' width='200'  />
-                  <ColumnDirective field='From Phone' headerText='From Phone' width='150'  />
-                  <ColumnDirective field='To Address' headerText='To Address' width='200'  />
-                  <ColumnDirective field='To Phone' headerText='To Phone' width='150'  />
-                  <ColumnDirective field='Miles' headerText='Miles'  width='100' />
-                  <ColumnDirective field='Booking Comments' headerText='Booking Comments'  width='250' />
-                </ColumnsDirective>
-                <Inject services={[Page, Selection, Toolbar, Sort, Filter, Resize, ExcelExport, PdfExport]} />
-              </GridComponent>
+              {
+                userProfile.subscriptions ?
+                  <GridComponent
+                    id='grid'
+                    ref={g => grid = g}
+                    dataSource={pastTrips}
+                    allowPaging
+                    pageSettings={{ pageCount: 5 }}
+                    selectionSettings={selectionsettings}
+                    toolbar={toolbarOptions}
+                    editSettings={editing}
+                    allowSorting
+                    enableAdaptiveUI={true}
+                    allowExcelExport={true}
+                    toolbarClick={toolbarClick}
+                    allowPdfExport={true}
+                  >
+                    <ColumnsDirective>
+                      <ColumnDirective template={signatureTemplate} headerText='Client Signature' width='150' />
+                      <ColumnDirective template={driverTemplate} headerText='Driver Image' width='130' />
+                      <ColumnDirective field='driverName' headerText='Driver Name' width='130' />
+                      <ColumnDirective field='PU Time Request' headerText='PU Time Request' width='150' />
+                      <ColumnDirective field='ApptTime' headerText='ApptTime' width='130' />
+                      <ColumnDirective field='Client Name' headerText='Client Name' width='130' />
+                      <ColumnDirective field='Client Mob' headerText='Client Mob' width='130' />
+                      <ColumnDirective field='Client Dis' headerText='Client Dis' width='130' />
+                      <ColumnDirective field='From Address' headerText='From Address' width='200' />
+                      <ColumnDirective field='From Phone' headerText='From Phone' width='150' />
+                      <ColumnDirective field='To Address' headerText='To Address' width='200' />
+                      <ColumnDirective field='To Phone' headerText='To Phone' width='150' />
+                      <ColumnDirective field='Miles' headerText='Miles' width='100' />
+                      <ColumnDirective field='Booking Comments' headerText='Booking Comments' width='250' />
+                    </ColumnsDirective>
+                    <Inject services={[Page, Selection, Toolbar, Sort, Filter, Resize, ExcelExport, PdfExport]} />
+                  </GridComponent>
+                  :
+                  <LockView />
+              }
             </div>
           </div>
           <Footer />

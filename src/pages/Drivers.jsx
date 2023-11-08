@@ -5,14 +5,15 @@ import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { Header, Navbar, Footer, Sidebar, ThemeSettings } from '../components';
 import { useStateContext } from "../contexts/ContextProvider";
 import { useNavigate } from 'react-router-dom';
+import LockView from '../components/LockedView';
 
 const CustomGridTemplate = (props) => {
   return (
-      <img
-          src={props.imageUri} // Make sure the field name is correct
-          alt="Customer Image"
-          style={{ width: '50px', height: '50px', borderRadius:'100px' }} // Adjust the size as needed
-      />
+    <img
+      src={props.imageUri} // Make sure the field name is correct
+      alt="Customer Image"
+      style={{ width: '50px', height: '50px', borderRadius: '100px' }} // Adjust the size as needed
+    />
   );
 };
 
@@ -23,7 +24,7 @@ const Drivers = () => {
   const toolbarOptions = ['Search', 'Print'];
 
   const editing = { allowDeleting: false, allowEditing: false, allowAdding: false, allowEditOnDblClick: false };
-  const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings, allDrivers } = useStateContext();
+  const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings, allDrivers, userProfile } = useStateContext();
   useEffect(() => {
     const currentThemeColor = localStorage.getItem("colorMode");
     const currentThemeMode = localStorage.getItem("themeMode");
@@ -84,25 +85,30 @@ const Drivers = () => {
 
             <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
               <Header category="More" title="View Drivers" />
-              <GridComponent
-                dataSource={allDrivers}
-                allowPaging
-                pageSettings={{ pageCount: 5 }}
-                selectionSettings={selectionsettings}
-                toolbar={toolbarOptions}
-                editSettings={editing}
-                allowSorting
-              >
-                <ColumnsDirective>
-                  <ColumnDirective template={CustomGridTemplate} headerText='Image' width='100' />
-                  <ColumnDirective field='fullName' headerText='Name' width='100' />
-                  <ColumnDirective field='phoneNumber' headerText='Phone' width='130' />
-                  <ColumnDirective field='email' headerText='Email' width='250' isIdentity={true} />
-                  <ColumnDirective field='idCard' headerText='ID' />
-                  <ColumnDirective field='address' headerText='Address' />
-                </ColumnsDirective>
-                <Inject services={[Page, Selection, Toolbar, Sort, Filter]} />
-              </GridComponent>
+              {
+                userProfile.subscriptions ?
+                  <GridComponent
+                    dataSource={allDrivers}
+                    allowPaging
+                    pageSettings={{ pageCount: 5 }}
+                    selectionSettings={selectionsettings}
+                    toolbar={toolbarOptions}
+                    editSettings={editing}
+                    allowSorting
+                  >
+                    <ColumnsDirective>
+                      <ColumnDirective template={CustomGridTemplate} headerText='Image' width='100' />
+                      <ColumnDirective field='fullName' headerText='Name' width='100' />
+                      <ColumnDirective field='phoneNumber' headerText='Phone' width='130' />
+                      <ColumnDirective field='email' headerText='Email' width='250' isIdentity={true} />
+                      <ColumnDirective field='idCard' headerText='ID' />
+                      <ColumnDirective field='address' headerText='Address' />
+                    </ColumnsDirective>
+                    <Inject services={[Page, Selection, Toolbar, Sort, Filter]} />
+                  </GridComponent>
+                  :
+                  <LockView />
+              }
             </div>
           </div>
           <Footer />

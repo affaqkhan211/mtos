@@ -30,6 +30,7 @@ const Subscriptions = () => {
     setThemeSettings,
     subscriptionData,
     setSubscriptionData,
+    userProfile
   } = useStateContext();
 
 
@@ -92,9 +93,7 @@ const Subscriptions = () => {
       ownerAccounts,
       adminAccounts,
       driverAccounts,
-      subscriptions: true,
     }
-
     try {
       setSubscriptionData(data);
       await addDocToCollection(attachedData, data, (result) => {
@@ -164,112 +163,119 @@ const Subscriptions = () => {
                 <div class='mt-10 pt-10 mx-10'>
                   <Header category="Payments" title="Subscriptions" />
 
-                  <section id="pricing" class="pricing-content section-padding justify ">
-                    <div class="container">
-                      <div class="section-title text-center mb-3">
-                      </div>
-                      <div class="row text-center justify-content-center">
-                        <div class="col-lg-5 col-sm-4 col-xs-12 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.2s" data-wow-offset="0">
-                          <div class="single-pricing">
-                            <div class="price-head">
-                              <h2>Basic</h2>
-                              <span></span>
-                              <span></span>
-                              <span></span>
-                              <span></span>
-                              <span></span>
-                              <span></span>
+                  {
+                    userProfile.subscriptions ?
+                      <div></div>
+                      :
+                      <div>
+                        <section id="pricing" class="pricing-content section-padding justify ">
+                          <div class="container">
+                            <div class="section-title text-center mb-3">
                             </div>
-                            <h1 class="price">$500</h1>
-                            <h5>Monthly</h5>
-                            <ul class='container-fluid' >
-                              <li>5 Accounts Creation</li>
-                              <li>Single Owner Account</li>
-                              <li>Single Admin Accounts</li>
-                              <li>Upto 3 Driver Accounts</li>
-                              <li>Owner Admin Dashboard</li>
-                              <li>Umlimited Access Monthly</li>
-                              <li>Admin + Driver Mobile App</li>
-                            </ul>
-                            <a href="#/">SUBSCRIBE NOW!</a>
-                          </div>
-                        </div>
-                        <div class="col-lg-5 col-sm-4 col-xs-12 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.3s" data-wow-offset="0">
-                          <div class="single-pricing single-pricing-white">
-                            <div class="price-head">
-                              <h2>Custom</h2>
-                              <span></span>
-                              <span></span>
-                              <span></span>
-                              <span></span>
-                              <span></span>
-                              <span></span>
+                            <div class="row text-center justify-content-center">
+                              <div class="col-lg-5 col-sm-4 col-xs-12 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.2s" data-wow-offset="0">
+                                <div class="single-pricing">
+                                  <div class="price-head">
+                                    <h2>Basic</h2>
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                  </div>
+                                  <h1 class="price">$500</h1>
+                                  <h5>Monthly</h5>
+                                  <ul class='container-fluid' >
+                                    <li>5 Accounts Creation</li>
+                                    <li>Single Owner Account</li>
+                                    <li>Single Admin Accounts</li>
+                                    <li>Upto 3 Driver Accounts</li>
+                                    <li>Owner Admin Dashboard</li>
+                                    <li>Umlimited Access Monthly</li>
+                                    <li>Admin + Driver Mobile App</li>
+                                  </ul>
+                                  <a href="#/">SUBSCRIBE NOW!</a>
+                                </div>
+                              </div>
+                              <div class="col-lg-5 col-sm-4 col-xs-12 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.3s" data-wow-offset="0">
+                                <div class="single-pricing single-pricing-white">
+                                  <div class="price-head">
+                                    <h2>Custom</h2>
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                  </div>
+                                  {/* <span class="price-label">Best</span> */}
+                                  <h1 class="price">${totalPrice}</h1>
+                                  <h5>Monthly</h5>
+                                  <ul className='container-fluid'>
+                                    <li>$100 Per Account</li>
+                                    <li>{totalAccounts} Accounts Creation</li>
+                                    <li>
+                                      <div className='round-button-container'>
+                                        <button className='decrementButton' onClick={() => decrementAccounts('owner')}
+                                          disabled={ownerAccounts === 1 ? true : false}
+                                        >
+                                          <IoMdRemove />
+                                        </button>
+                                        {`${ownerAccounts} Owner Account${ownerAccounts > 1 ? 's' : ''}`}
+                                        <button className='incrementButton' onClick={() => incrementAccounts('owner')}
+                                          disabled={true}
+                                        >
+                                          <IoMdAdd />
+                                        </button>
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <div className='round-button-container'>
+                                        <button className='decrementButton' onClick={() => decrementAccounts('admin')}
+                                          disabled={adminAccounts === 1 ? true : false}
+
+                                        >
+                                          <IoMdRemove />
+                                        </button>
+                                        {`${adminAccounts} Admin Account${adminAccounts > 1 ? 's' : ''}`}
+                                        <button className='incrementButton' onClick={() => incrementAccounts('admin')}>
+                                          <IoMdAdd />
+                                        </button>
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <div className='round-button-container'>
+                                        <button className='decrementButton' onClick={() => decrementAccounts('driver')}
+                                          disabled={driverAccounts < 4 ? true : false}
+
+                                        >
+                                          <IoMdRemove />
+                                        </button>
+                                        {`${driverAccounts} Driver Account${driverAccounts > 1 ? 's' : ''}`}
+                                        <button className='incrementButton' onClick={() => incrementAccounts('driver')}>
+                                          <IoMdAdd />
+                                        </button>
+                                      </div>
+                                    </li>
+                                    <li>Owner Admin Dashboard</li>
+                                    <li>Unlimited Access Monthly</li>
+                                    <li>Admin + Driver Mobile App</li>
+                                  </ul>
+                                  <a href="#/">SUBSCRIBE NOW!</a>
+                                </div>
+                              </div>
                             </div>
-                            {/* <span class="price-label">Best</span> */}
-                            <h1 class="price">${totalPrice}</h1>
-                            <h5>Monthly</h5>
-                            <ul className='container-fluid'>
-                              <li>$100 Per Account</li>
-                              <li>{totalAccounts} Accounts Creation</li>
-                              <li>
-                                <div className='round-button-container'>
-                                  <button className='decrementButton' onClick={() => decrementAccounts('owner')}
-                                    disabled={ownerAccounts === 1 ? true : false}
-                                  >
-                                    <IoMdRemove />
-                                  </button>
-                                  {`${ownerAccounts} Owner Account${ownerAccounts > 1 ? 's' : ''}`}
-                                  <button className='incrementButton' onClick={() => incrementAccounts('owner')}
-                                    disabled={true}
-                                  >
-                                    <IoMdAdd />
-                                  </button>
-                                </div>
-                              </li>
-                              <li>
-                                <div className='round-button-container'>
-                                  <button className='decrementButton' onClick={() => decrementAccounts('admin')}
-                                    disabled={adminAccounts === 1 ? true : false}
-
-                                  >
-                                    <IoMdRemove />
-                                  </button>
-                                  {`${adminAccounts} Admin Account${adminAccounts > 1 ? 's' : ''}`}
-                                  <button className='incrementButton' onClick={() => incrementAccounts('admin')}>
-                                    <IoMdAdd />
-                                  </button>
-                                </div>
-                              </li>
-                              <li>
-                                <div className='round-button-container'>
-                                  <button className='decrementButton' onClick={() => decrementAccounts('driver')}
-                                    disabled={driverAccounts < 4 ? true : false}
-
-                                  >
-                                    <IoMdRemove />
-                                  </button>
-                                  {`${driverAccounts} Driver Account${driverAccounts > 1 ? 's' : ''}`}
-                                  <button className='incrementButton' onClick={() => incrementAccounts('driver')}>
-                                    <IoMdAdd />
-                                  </button>
-                                </div>
-                              </li>
-                              <li>Owner Admin Dashboard</li>
-                              <li>Unlimited Access Monthly</li>
-                              <li>Admin + Driver Mobile App</li>
-                            </ul>
-                            <a href="#/">SUBSCRIBE NOW!</a>
                           </div>
+                        </section>
+                        <div className='text-center mt-3'>
+                          <StripeCheckout
+                            token={onToken}
+                            stripeKey={STRIPE_KEY}
+                          />
                         </div>
                       </div>
-                    </div>
-                  </section>
-                  <div className='text-center mt-3'>
-                    <StripeCheckout
-                      token={onToken}
-                      stripeKey={STRIPE_KEY}
-                    />
-                  </div>
+                  }
                 </div>
             }
           </div>

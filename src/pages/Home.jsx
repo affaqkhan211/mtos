@@ -34,7 +34,7 @@ const Home = () => {
     setTrips,
     setPastTrips,
     setClients,
-    clients
+    userProfile,
   } = useStateContext();
 
   useEffect(() => {
@@ -52,7 +52,8 @@ const Home = () => {
   }, [setCurrentColor, setCurrentMode, setToken]);
 
   // fetchData
-  const fetchData = (token, setter, amountIndex, endpoint, assignToEarning, assignClients) => {
+  const limitData = [userProfile.adminAccounts, userProfile.driverAccounts];
+  const fetchData = (token, setter, amountIndex, endpoint, assignToEarning, assignClients, assignLimit) => {
     if (token) {
       endpoint(token, (result) => {
         if (result.isSuccess) {
@@ -66,6 +67,9 @@ const Home = () => {
             earningData[3].amount = uniqueClients.size;
             setClients(uniqueClients.size);
           }
+          if (assignLimit) {
+            earningData[amountIndex].limit = limitData[amountIndex];
+          }
         } else {
           toast.error(result.message);
         }
@@ -74,10 +78,10 @@ const Home = () => {
   };
 
   useEffect(() => {
-    fetchData(token, setAllAdmins, 0, getAllAdmins, true, false);
-    fetchData(token, setAllDrivers, 1, getAllDrivers, true, false);
-    fetchData(token, setPastTrips, 2, getPastTrips, true, true);
-    fetchData(token, setTrips, 0, getTripsUploadedToday, false, false);
+    fetchData(token, setAllAdmins, 0, getAllAdmins, true, false, true);
+    fetchData(token, setAllDrivers, 1, getAllDrivers, true, false, true);
+    fetchData(token, setPastTrips, 2, getPastTrips, true, true, false);
+    fetchData(token, setTrips, 0, getTripsUploadedToday, false, false, false);
   }, [token, setAllAdmins, setAllDrivers, setTrips, setPastTrips]);
 
   if (token === null) {
@@ -137,7 +141,7 @@ const Home = () => {
                         {item.icon}
                       </button>
                       <p className="mt-3">
-                        <span className="text-lg font-semibold">{item.amount}</span>
+                        <span className="text-lg font-semibold">{item.amount}{item?.limit ? " of " + item.limit : ''}</span>
                       </p>
                       <p className="text-sm text-gray-400 mt-1">{item.title}</p>
                     </div>
