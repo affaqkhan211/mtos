@@ -13,7 +13,7 @@ export const SIGNUP = async (email, password, firstName, lastName) => {
         const userData = {
             fullName: `${firstName} ${lastName}`,
             email: email,
-            subscriptions: "none",
+            subscriptions: false,
         };
 
         await setDoc(userRef, userData);
@@ -82,7 +82,7 @@ export const SIGNUP_WITH_GOOGLE = async () => {
             const userData = {
                 fullName: user.displayName,
                 email: user.email,
-                subscriptions: "none",
+                subscriptions: false,
             };
 
             await setDoc(userRef, userData);

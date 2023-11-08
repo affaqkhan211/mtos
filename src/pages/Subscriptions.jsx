@@ -1,72 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { BsCurrencyDollar } from 'react-icons/bs';
-// import { GoPrimitiveDot } from 'react-icons/go';
-import { IoIosMore } from 'react-icons/io';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
-import StripeCheckout from 'react-stripe-checkout';
 import { IoMdAdd, IoMdRemove } from 'react-icons/io';
-
-import { Stacked, Pie, Button, LineChart, SparkLine } from '../components';
-import { earningData, medicalproBranding, recentTransactions, weeklyStats, dropdownData, SparklineAreaData, ecomPieChartData } from '../data/dummy';
+import { dropdownData } from '../data/dummy';
 import { useStateContext } from '../contexts/ContextProvider';
-import product9 from '../data/product9.jpg';
 import { FiSettings } from "react-icons/fi";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
-import { Header, Navbar, Footer, Sidebar, ThemeSettings } from '../components';
+import { Navbar, Footer, Sidebar, ThemeSettings, Header, Loader } from '../components';
+import StripeCheckout from 'react-stripe-checkout';
 import { useNavigate } from 'react-router-dom';
-
-const DropDown = ({ currentMode }) => (
-  <div className="w-28 border-1 border-color px-2 py-1 rounded-md">
-    <DropDownListComponent id="time" fields={{ text: 'Time', value: 'Id' }} style={{ border: 'none', color: (currentMode === 'Dark') && 'white' }} value="1" dataSource={dropdownData} popupHeight="220px" popupWidth="120px" />
-  </div>
-);
+import { addDocToCollection } from '../db/subscriptions';
+import { toast } from 'react-toastify';
 
 const Subscriptions = () => {
   const [ownerAccounts, setOwnerAccounts] = useState(2);
-    const [adminAccounts, setAdminAccounts] = useState(2);
-    const [driverAccounts, setDriverAccounts] = useState(3);
-
-    // Function to handle increment and decrement of accounts
-    const incrementAccounts = (type) => {
-        switch (type) {
-            case 'owner':
-                setOwnerAccounts(ownerAccounts + 1);
-                break;
-            case 'admin':
-                setAdminAccounts(adminAccounts + 1);
-                break;
-            case 'driver':
-                setDriverAccounts(driverAccounts + 1);
-                break;
-            default:
-                break;
-        }
-    };
-
-    const decrementAccounts = (type) => {
-        switch (type) {
-            case 'owner':
-                setOwnerAccounts(ownerAccounts > 1 ? ownerAccounts - 1 : 1);
-                break;
-            case 'admin':
-                setAdminAccounts(adminAccounts > 1 ? adminAccounts - 1 : 1);
-                break;
-            case 'driver':
-                setDriverAccounts(driverAccounts > 3 ? driverAccounts - 1 : 3);
-                break;
-            default:
-                break;
-        }
-    };
-
-    const totalAccounts = adminAccounts + ownerAccounts + driverAccounts;
-    const totalPrice = totalAccounts * 100;
-
-  const onToken = (token) => {
-    console.log(token)
-  }
-  const navigate = useNavigate();
+  const [adminAccounts, setAdminAccounts] = useState(2);
+  const [driverAccounts, setDriverAccounts] = useState(3);
+  const [loading, setLoading] = useState(false);
+  const STRIPE_KEY = 'pk_test_51O8uBnLqgG0cdoTuNoIF8SiD0BzNycZcwTaFsxHOCSXot0PojCwGTt1nYZ4wEl6sE15XlRNZbqXTdAdCrUYaByvT001F1W31ob';
   const [token, setToken] = useState(null);
+  const navigate = useNavigate();
+
   const {
     setCurrentColor,
     setCurrentMode,
@@ -75,7 +28,10 @@ const Subscriptions = () => {
     currentColor,
     themeSettings,
     setThemeSettings,
+    subscriptionData,
+    setSubscriptionData,
   } = useStateContext();
+
 
   useEffect(() => {
     const currentThemeColor = localStorage.getItem("colorMode");
@@ -92,6 +48,69 @@ const Subscriptions = () => {
       setToken(token);
     }
   });
+
+  // Function to handle increment and decrement of accounts
+  const incrementAccounts = (type) => {
+    switch (type) {
+      case 'owner':
+        setOwnerAccounts(ownerAccounts + 1);
+        break;
+      case 'admin':
+        setAdminAccounts(adminAccounts + 1);
+        break;
+      case 'driver':
+        setDriverAccounts(driverAccounts + 1);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const decrementAccounts = (type) => {
+    switch (type) {
+      case 'owner':
+        setOwnerAccounts(ownerAccounts > 1 ? ownerAccounts - 1 : 1);
+        break;
+      case 'admin':
+        setAdminAccounts(adminAccounts > 1 ? adminAccounts - 1 : 1);
+        break;
+      case 'driver':
+        setDriverAccounts(driverAccounts > 3 ? driverAccounts - 1 : 3);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const totalAccounts = adminAccounts + ownerAccounts + driverAccounts;
+  const totalPrice = totalAccounts * 100;
+
+  const onToken = async (data) => {
+    setLoading(true);
+    const attachedData = {
+      token,
+      ownerAccounts,
+      adminAccounts,
+      driverAccounts,
+      subscriptions: true,
+    }
+
+    try {
+      setSubscriptionData(data);
+      await addDocToCollection(attachedData, data, (result) => {
+        if (result.isSuccess) {
+          toast.success(result.message);
+        } else {
+          toast.error(result.message);
+        }
+      });
+    } catch (error) {
+      toast.error(error.message);
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   if (token === null) {
     navigate('/login');
@@ -136,115 +155,123 @@ const Subscriptions = () => {
           <div>
             {themeSettings && <ThemeSettings />}
 
-            
 
-          <div class='container-fluid my-1 py-1'>
-            <section id="pricing" class="pricing-content section-padding justify ">
-                <div class="container">
-                    <div class="section-title text-center mb-3">
-                        <h1>PRICING PLAN</h1>
-                    </div>
-                    <div class="row text-center justify-content-center">
-                        <div class="col-lg-4 col-sm-4 col-xs-12 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.2s" data-wow-offset="0">
-                            <div class="single-pricing">
-                                <div class="price-head">
-                                    <h2>Basic</h2>
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                </div>
-                                <h1 class="price">$500</h1>
-                                <h5>Monthly</h5>
-                                <ul class='container-fluid' >
-                                    <li>5 Accounts Creation</li>
-                                    <li>Single Owner Account</li>
-                                    <li>Single Admin Accounts</li>
-                                    <li>Upto 3 Driver Accounts</li>
-                                    <li>Owner Admin Dashboard</li>
-                                    <li>Umlimited Access Monthly</li>
-                                    <li>Admin + Driver Mobile App</li>
-                                </ul>
-                                <a href="#/">SUBSCRIBE NOW!</a>
+
+            {
+              loading ?
+                <Loader loading={loading} />
+                :
+                <div class='mt-10 pt-10 mx-10'>
+                  <Header category="Payments" title="Subscriptions" />
+
+                  <section id="pricing" class="pricing-content section-padding justify ">
+                    <div class="container">
+                      <div class="section-title text-center mb-3">
+                      </div>
+                      <div class="row text-center justify-content-center">
+                        <div class="col-lg-5 col-sm-4 col-xs-12 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.2s" data-wow-offset="0">
+                          <div class="single-pricing">
+                            <div class="price-head">
+                              <h2>Basic</h2>
+                              <span></span>
+                              <span></span>
+                              <span></span>
+                              <span></span>
+                              <span></span>
+                              <span></span>
                             </div>
+                            <h1 class="price">$500</h1>
+                            <h5>Monthly</h5>
+                            <ul class='container-fluid' >
+                              <li>5 Accounts Creation</li>
+                              <li>Single Owner Account</li>
+                              <li>Single Admin Accounts</li>
+                              <li>Upto 3 Driver Accounts</li>
+                              <li>Owner Admin Dashboard</li>
+                              <li>Umlimited Access Monthly</li>
+                              <li>Admin + Driver Mobile App</li>
+                            </ul>
+                            <a href="#/">SUBSCRIBE NOW!</a>
+                          </div>
                         </div>
-                        <div class="col-lg-4 col-sm-4 col-xs-12 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.3s" data-wow-offset="0">
-                            <div class="single-pricing single-pricing-white">
-                                <div class="price-head">
-                                    <h2>Custom</h2>
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                </div>
-                                <span class="price-label">Best</span>
-                                <h1 class="price">${totalPrice}</h1>
-                                <h5>Monthly</h5>
-                                <ul className='container-fluid'>
-                                    <li>$100 Per Account</li>
-                                    <li>{totalAccounts} Accounts Creation</li>
-                                    <li>
-                                        <div className='round-button-container'>
-                                            <button className='decrementButton' onClick={() => decrementAccounts('owner')}
-                                                disabled={ownerAccounts === 1 ? true : false}
-                                            >
-                                                <IoMdRemove />
-                                            </button>
-                                            {`${ownerAccounts} Owner Account${ownerAccounts > 1 ? 's' : ''}`}
-                                            <button className='incrementButton' onClick={() => incrementAccounts('owner')}>
-                                                <IoMdAdd />
-                                            </button>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div className='round-button-container'>
-                                            <button className='decrementButton' onClick={() => decrementAccounts('admin')}
-                                                disabled={adminAccounts === 1 ? true : false}
-
-                                            >
-                                                <IoMdRemove />
-                                            </button>
-                                            {`${adminAccounts} Admin Account${adminAccounts > 1 ? 's' : ''}`}
-                                            <button className='incrementButton' onClick={() => incrementAccounts('admin')}>
-                                                <IoMdAdd />
-                                            </button>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div className='round-button-container'>
-                                            <button className='decrementButton' onClick={() => decrementAccounts('driver')}
-                                                disabled={driverAccounts < 4 ? true : false}
-
-                                            >
-                                                <IoMdRemove />
-                                            </button>
-                                            {`${driverAccounts} Driver Account${driverAccounts > 1 ? 's' : ''}`}
-                                            <button className='incrementButton' onClick={() => incrementAccounts('driver')}>
-                                                <IoMdAdd />
-                                            </button>
-                                        </div>
-                                    </li>
-                                    <li>Owner Admin Dashboard</li>
-                                    <li>Unlimited Access Monthly</li>
-                                    <li>Admin + Driver Mobile App</li>
-                                </ul>
-                                <a href="#/">SUBSCRIBE NOW!</a>
+                        <div class="col-lg-5 col-sm-4 col-xs-12 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.3s" data-wow-offset="0">
+                          <div class="single-pricing single-pricing-white">
+                            <div class="price-head">
+                              <h2>Custom</h2>
+                              <span></span>
+                              <span></span>
+                              <span></span>
+                              <span></span>
+                              <span></span>
+                              <span></span>
                             </div>
+                            {/* <span class="price-label">Best</span> */}
+                            <h1 class="price">${totalPrice}</h1>
+                            <h5>Monthly</h5>
+                            <ul className='container-fluid'>
+                              <li>$100 Per Account</li>
+                              <li>{totalAccounts} Accounts Creation</li>
+                              <li>
+                                <div className='round-button-container'>
+                                  <button className='decrementButton' onClick={() => decrementAccounts('owner')}
+                                    disabled={ownerAccounts === 1 ? true : false}
+                                  >
+                                    <IoMdRemove />
+                                  </button>
+                                  {`${ownerAccounts} Owner Account${ownerAccounts > 1 ? 's' : ''}`}
+                                  <button className='incrementButton' onClick={() => incrementAccounts('owner')}
+                                    disabled={true}
+                                  >
+                                    <IoMdAdd />
+                                  </button>
+                                </div>
+                              </li>
+                              <li>
+                                <div className='round-button-container'>
+                                  <button className='decrementButton' onClick={() => decrementAccounts('admin')}
+                                    disabled={adminAccounts === 1 ? true : false}
+
+                                  >
+                                    <IoMdRemove />
+                                  </button>
+                                  {`${adminAccounts} Admin Account${adminAccounts > 1 ? 's' : ''}`}
+                                  <button className='incrementButton' onClick={() => incrementAccounts('admin')}>
+                                    <IoMdAdd />
+                                  </button>
+                                </div>
+                              </li>
+                              <li>
+                                <div className='round-button-container'>
+                                  <button className='decrementButton' onClick={() => decrementAccounts('driver')}
+                                    disabled={driverAccounts < 4 ? true : false}
+
+                                  >
+                                    <IoMdRemove />
+                                  </button>
+                                  {`${driverAccounts} Driver Account${driverAccounts > 1 ? 's' : ''}`}
+                                  <button className='incrementButton' onClick={() => incrementAccounts('driver')}>
+                                    <IoMdAdd />
+                                  </button>
+                                </div>
+                              </li>
+                              <li>Owner Admin Dashboard</li>
+                              <li>Unlimited Access Monthly</li>
+                              <li>Admin + Driver Mobile App</li>
+                            </ul>
+                            <a href="#/">SUBSCRIBE NOW!</a>
+                          </div>
                         </div>
+                      </div>
                     </div>
+                  </section>
+                  <div className='text-center mt-3'>
+                    <StripeCheckout
+                      token={onToken}
+                      stripeKey={STRIPE_KEY}
+                    />
+                  </div>
                 </div>
-            </section>
-        </div>
-        <div className='text-center mt-3'>
-            <StripeCheckout
-            token={onToken}
-            stripeKey="pk_test_51O8uBnLqgG0cdoTuNoIF8SiD0BzNycZcwTaFsxHOCSXot0PojCwGTt1nYZ4wEl6sE15XlRNZbqXTdAdCrUYaByvT001F1W31ob"
-          />
-          </div>
+            }
           </div>
           <Footer />
         </div>
