@@ -17,6 +17,7 @@ const OwnerSubscriptions = () => {
     currentColor,
     themeSettings,
     setThemeSettings,
+    subscriptionData
   } = useStateContext();
 
   useEffect(() => {
@@ -38,6 +39,8 @@ const OwnerSubscriptions = () => {
   if (token === null) {
     navigate('/login');
   }
+
+  console.log(subscriptionData);
 
   return (
     <div className={currentMode === "Dark" ? "dark" : ""}>

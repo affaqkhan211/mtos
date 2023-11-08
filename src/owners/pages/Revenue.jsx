@@ -32,6 +32,7 @@ const Revenue = () => {
     themeSettings,
     setThemeSettings,
     setUserProfile,
+    subscriptionData
   } = useStateContext();
 
 
@@ -54,6 +55,8 @@ const Revenue = () => {
   if (token === null) {
     navigate('/login');
   }
+
+  console.log(subscriptionData);
 
   return (
     <div className={currentMode === "Dark" ? "dark" : ""}>
