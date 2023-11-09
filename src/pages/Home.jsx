@@ -15,7 +15,6 @@ import { getSubscriptionDataByuid } from '../db/subscriptions';
 
 const Home = () => {
   const navigate = useNavigate();
-  const [token, setToken] = useState(null);
   const {
     setCurrentColor,
     setCurrentMode,
@@ -31,7 +30,9 @@ const Home = () => {
     setClients,
     userProfile,
     setSubscriptionData,
-    subscriptionData
+    subscriptionData,
+    setToken,
+    token,
   } = useStateContext();
 
   useEffect(() => {

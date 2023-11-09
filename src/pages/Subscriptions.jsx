@@ -10,20 +10,13 @@ import StripeCheckout from 'react-stripe-checkout';
 import { useNavigate } from 'react-router-dom';
 import { ChangeSubscriptionStatus } from '../db/subscriptions';
 import { toast } from 'react-toastify';
-import { createCheckoutSession } from '../db/Stripe/createCheckoutSession';
-import usePremiumStatus from '../db/Stripe/userPremiumStatus';
-import { auth } from '../mtos/db/config';
 
 const Subscriptions = () => {
-  const [user, userLoading] = useState(auth.currentUser)
-  const userIsPremium = usePremiumStatus(user);
-  console.log(userIsPremium);
   const [ownerAccounts, setOwnerAccounts] = useState(1);
   const [adminAccounts, setAdminAccounts] = useState(2);
   const [driverAccounts, setDriverAccounts] = useState(4);
   const [loading, setLoading] = useState(false);
   const STRIPE_KEY = 'pk_test_51O8uBnLqgG0cdoTuNoIF8SiD0BzNycZcwTaFsxHOCSXot0PojCwGTt1nYZ4wEl6sE15XlRNZbqXTdAdCrUYaByvT001F1W31ob';
-  const [token, setToken] = useState(null);
   const navigate = useNavigate();
 
   const {
@@ -36,9 +29,9 @@ const Subscriptions = () => {
     setThemeSettings,
     subscriptionData,
     setSubscriptionData,
-    userProfile
+    userProfile,
+    token
   } = useStateContext();
-
 
   useEffect(() => {
     const currentThemeColor = localStorage.getItem("colorMode");
@@ -48,13 +41,6 @@ const Subscriptions = () => {
       setCurrentMode(currentThemeMode);
     }
   }, []);
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      setToken(token);
-    }
-  });
 
   // Function to handle increment and decrement of accounts
   const incrementAccounts = (type) => {
@@ -90,7 +76,7 @@ const Subscriptions = () => {
   };
 
   const handleSubscriptions = () => {
-    createCheckoutSession(user.uid);
+
   }
 
   const totalAccounts = adminAccounts + ownerAccounts + driverAccounts;
@@ -124,7 +110,7 @@ const Subscriptions = () => {
     navigate('/login');
   }
 
-  console.log(subscriptionData);
+  // console.log(subscriptionData);
 
   return (
     <div className={currentMode === "Dark" ? "dark" : ""}>
@@ -176,8 +162,8 @@ const Subscriptions = () => {
 
                   {
                     userProfile.subscriptions ?
-                    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                      <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                        {/* <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                       <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                           <th class="py-2 px-4">Client IP</th>
@@ -196,8 +182,8 @@ const Subscriptions = () => {
                           </tr>
                         ))}
                       </tbody>
-                    </table>
-                  </div>
+                    </table> */}
+                      </div>
                       :
                       <div>
                         <section id="pricing" class="pricing-content section-padding justify ">
