@@ -14,11 +14,11 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
       type="button"
       onClick={() => customFunc()}
       style={{ color }}
-      className="relative text-xl rounded-full p-3 hover:bg-light-gray"
+      className="btn btn-light rounded-circle p-3"
     >
       <span
         style={{ background: dotColor }}
-        className="absolute inline-flex rounded-full h-2 w-2 right-2 top-2"
+        className="position-absolute rounded-circle h-2 w-2 top-2 end-2"
       />
       {icon}
     </button>
@@ -63,31 +63,24 @@ const Navbar = () => {
   const handleActiveMenu = () => setActiveMenu(!activeMenu);
 
   return (
-    <div className="flex justify-between p-2 md:ml-6 md:mr-6 relative">
-
+    <div className="container d-flex justify-content-end py-2">
       <NavButton title="Menu" customFunc={handleActiveMenu} color={currentColor} icon={<AiOutlineMenu />} />
-      <div className="flex self-center md:self-end">
-        {/* <NavButton title="Notification" dotColor="rgb(254, 201, 15)" customFunc={() => handleClick('notification')} color={currentColor} icon={<RiNotification3Line />} /> */}
+      <div className="d-flex align-items-center ms-3">
         <TooltipComponent content="Profile" position="BottomCenter">
           <div
-            className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
+            className="d-flex align-items-center cursor-pointer p-1 bg-light rounded-lg"
             onClick={() => handleClick('userProfile')}
           >
             <img
-              className="rounded-full w-8 h-8"
+              className="rounded-circle me-2"
               src={userProfile?.image ? userProfile.image : avatar}
               alt="user-profile"
+              style={{ width: '32px', height: '32px' }}
             />
-            <p>
-              <span className="text-gray-400 text-14">Hi,</span>{' '}
-              <span className="text-gray-400 font-bold ml-1 text-14">
-                {userProfile?.fullName}
-              </span>
-            </p>
+            <p className="m-0 text-gray-400 text-14">Hi, <span className="font-bold">{userProfile?.fullName}</span></p>
             <MdKeyboardArrowDown className="text-gray-400 text-14" />
           </div>
         </TooltipComponent>
-
         {isClicked.notification && (<Notification />)}
         {isClicked.userProfile && (<UserProfile userProfile={userProfile} />)}
       </div>
@@ -96,3 +89,110 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+
+
+
+
+
+
+
+// import React, { useEffect, useState } from 'react';
+// import { AiOutlineMenu } from 'react-icons/ai';
+// import { RiNotification3Line } from 'react-icons/ri';
+// import { MdKeyboardArrowDown } from 'react-icons/md';
+// import { TooltipComponent } from '@syncfusion/ej2-react-popups';
+// import avatar from '../data/avatar.jpg';
+// import { Notification, UserProfile } from '.';
+// import { useStateContext } from '../contexts/ContextProvider';
+// import { getSubOwnerById } from '../db/profile';
+
+// const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
+//   <TooltipComponent content={title} position="BottomCenter">
+//     <button
+//       type="button"
+//       onClick={() => customFunc()}
+//       style={{ color }}
+//       className="relative text-xl rounded-full p-3 hover:bg-light-gray"
+//     >
+//       <span
+//         style={{ background: dotColor }}
+//         className="absolute inline-flex rounded-full h-2 w-2 right-2 top-2"
+//       />
+//       {icon}
+//     </button>
+//   </TooltipComponent>
+// );
+
+// const Navbar = () => {
+//   const { currentColor, activeMenu, setActiveMenu, handleClick, isClicked, setScreenSize, screenSize, userProfile, setUserProfile } = useStateContext();
+//   const [token, setToken] = useState(null);
+
+//   useEffect(() => {
+//     const token = localStorage.getItem('token');
+//     setToken(token);
+//   }, []);
+
+//   useEffect(() => {
+//     if (token) {
+//       getSubOwnerById(token, (result) => {
+//         setUserProfile(result.data);
+//       })
+//     }
+//   }, [token]);
+
+//   useEffect(() => {
+//     const handleResize = () => setScreenSize(window.innerWidth);
+
+//     window.addEventListener('resize', handleResize);
+
+//     handleResize();
+
+//     return () => window.removeEventListener('resize', handleResize);
+//   }, []);
+
+//   useEffect(() => {
+//     if (screenSize <= 900) {
+//       setActiveMenu(false);
+//     } else {
+//       setActiveMenu(true);
+//     }
+//   }, [screenSize]);
+
+//   const handleActiveMenu = () => setActiveMenu(!activeMenu);
+
+//   return (
+//     <div className="flex justify-center p-2 md:ml-6 md:mr-6 mr-auto relative">
+
+//       <NavButton title="Menu" customFunc={handleActiveMenu} color={currentColor} icon={<AiOutlineMenu />} />
+//       <div className="flex self-center md:self-end">
+       
+//         <TooltipComponent content="Profile" position="BottomCenter">
+//           <div
+//             className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
+//             onClick={() => handleClick('userProfile')}
+//           >
+//             <img
+//               className="rounded-full w-8 h-8"
+//               src={userProfile?.image ? userProfile.image : avatar}
+//               alt="user-profile"
+//             />
+//             <p>
+//               <span className="text-gray-400 text-14">Hi,</span>{' '}
+//               <span className="text-gray-400 font-bold ml-1 text-14">
+//                 {userProfile?.fullName}
+//               </span>
+//             </p>
+//             <MdKeyboardArrowDown className="text-gray-400 text-14" />
+//           </div>
+//         </TooltipComponent>
+
+//         {isClicked.notification && (<Notification />)}
+//         {isClicked.userProfile && (<UserProfile userProfile={userProfile} />)}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Navbar;
+
