@@ -15,7 +15,7 @@ const Trips = () => {
   const toolbarOptions = ['Search', 'Print', 'ExcelExport', 'PdfExport'];
 
   const editing = { allowDeleting: false, allowEditing: false, allowAdding: false, allowEditOnDblClick: false };
-  const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings, trips, userProfile } = useStateContext();
+  const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings, trips, premiumStatus } = useStateContext();
 
   useEffect(() => {
     const currentThemeColor = localStorage.getItem("colorMode");
@@ -86,7 +86,7 @@ const Trips = () => {
             <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
               <Header category="Trips" title="Trips Today" />
               {
-                userProfile.subscriptions ?
+                premiumStatus ?
                   <GridComponent
                     id='grid'
                     ref={g => grid = g}

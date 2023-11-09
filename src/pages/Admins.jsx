@@ -19,7 +19,7 @@ const Admins = () => {
   { type: 'Cancel', buttonOption: { iconCss: 'e-icons e-cancel-icon', cssClass: 'e-flat' } }];
 
   const editing = { allowDeleting: true, allowEditing: true, allowAdding: true, allowEditOnDblClick: false };
-  const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings, allAdmins, userProfile } = useStateContext();
+  const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings, allAdmins, premiumStatus } = useStateContext();
   useEffect(() => {
     const currentThemeColor = localStorage.getItem("colorMode");
     const currentThemeMode = localStorage.getItem("themeMode");
@@ -116,7 +116,7 @@ const Admins = () => {
             <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
               <Header category="Admins" title="View Admins" />
               {
-                userProfile.subscriptions ?
+                premiumStatus ?
                   <GridComponent
                     dataSource={allAdmins}
                     allowPaging

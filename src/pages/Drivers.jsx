@@ -24,7 +24,7 @@ const Drivers = () => {
   const toolbarOptions = ['Search', 'Print'];
 
   const editing = { allowDeleting: false, allowEditing: false, allowAdding: false, allowEditOnDblClick: false };
-  const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings, allDrivers, userProfile } = useStateContext();
+  const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings, allDrivers, premiumStatus } = useStateContext();
   useEffect(() => {
     const currentThemeColor = localStorage.getItem("colorMode");
     const currentThemeMode = localStorage.getItem("themeMode");
@@ -86,7 +86,7 @@ const Drivers = () => {
             <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
               <Header category="More" title="View Drivers" />
               {
-                userProfile.subscriptions ?
+                premiumStatus ?
                   <GridComponent
                     dataSource={allDrivers}
                     allowPaging

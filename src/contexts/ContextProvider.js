@@ -24,6 +24,7 @@ export const ContextProvider = ({ children }) => {
   const [clients, setClients] = useState(null);
   const [subOwners, setSubOwners] = useState(null);
   const [subscriptionData, setSubscriptionData] = useState(null);
+  const [premiumStatus, setPremiumStatus] = useState(false);
   const [token, setToken] = useState(null);
 
   const setMode = (e) => {
@@ -43,6 +44,7 @@ export const ContextProvider = ({ children }) => {
     <StateContext.Provider value={{
       currentColor, currentMode, activeMenu, screenSize, setScreenSize, handleClick, isClicked, initialState, setIsClicked, setActiveMenu, setCurrentColor, setCurrentMode, setMode, setColor, themeSettings, setThemeSettings, userProfile, setUserProfile, allAdmins, setAllAdmins,
       allDrivers, setAllDrivers, trips, setTrips, pastTrips, setPastTrips, clients, setClients, setSubOwners, subOwners, subscriptionData, setSubscriptionData, token, setToken,
+      premiumStatus, setPremiumStatus,
     }}>
       {children}
     </StateContext.Provider>

@@ -7,6 +7,7 @@ import avatar from '../data/avatar.jpg';
 import { Notification, UserProfile } from '.';
 import { useStateContext } from '../contexts/ContextProvider';
 import { getSubOwnerById } from '../db/profile';
+import { getPremiumStatus } from '../db/stripePayments';
 
 const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
   <TooltipComponent content={title} position="BottomCenter">
@@ -26,7 +27,7 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
 );
 
 const Navbar = () => {
-  const { currentColor, activeMenu, setActiveMenu, handleClick, isClicked, setScreenSize, screenSize, userProfile, setUserProfile } = useStateContext();
+  const { currentColor, activeMenu, setActiveMenu, handleClick, isClicked, setScreenSize, screenSize, userProfile, setUserProfile, setPremiumStatus } = useStateContext();
   const [token, setToken] = useState(null);
 
   useEffect(() => {
@@ -35,10 +36,20 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    if (token) {
+    const getData = () => {
       getSubOwnerById(token, (result) => {
         setUserProfile(result.data);
       })
+    }
+
+    const getStatus = async () => {
+      const status = await getPremiumStatus();
+      setPremiumStatus(status);
+    }
+
+    if (token) {
+      getData();
+      getStatus();
     }
   }, [token]);
 

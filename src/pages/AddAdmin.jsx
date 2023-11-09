@@ -33,6 +33,7 @@ const AddAdmin = () => {
     setThemeSettings,
     userProfile,
     allAdmins,
+    premiumStatus
   } = useStateContext();
 
   useEffect(() => {
@@ -192,7 +193,7 @@ const AddAdmin = () => {
                 <div className="mt-10 pt-10 mx-10">
                   <Header category={"Admins (Remaining " + (userProfile?.adminAccounts - allAdmins?.length) + ")"} title="Add Admin " />
                   {
-                    userProfile.subscriptions ?
+                    premiumStatus ?
                       <div className="w-full">
                         <img
                           src={selectedImage ? selectedImage : newData.imageUrl ? newData.imageUrl : avatar}

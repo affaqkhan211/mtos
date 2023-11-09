@@ -10,6 +10,7 @@ import StripeCheckout from 'react-stripe-checkout';
 import { useNavigate } from 'react-router-dom';
 import { ChangeSubscriptionStatus } from '../db/subscriptions';
 import { toast } from 'react-toastify';
+import { getCheckoutUrl, getPortalUrl } from '../db/stripePayments';
 
 const Subscriptions = () => {
   const [ownerAccounts, setOwnerAccounts] = useState(1);
@@ -30,7 +31,8 @@ const Subscriptions = () => {
     subscriptionData,
     setSubscriptionData,
     userProfile,
-    token
+    token,
+    premiumStatus
   } = useStateContext();
 
   useEffect(() => {
@@ -75,8 +77,10 @@ const Subscriptions = () => {
     }
   };
 
-  const handleSubscriptions = () => {
-
+  const handleBasicSubscriptions = async () => {
+    const priceId = 'price_1OAYriLqgG0cdoTuWUcsXoBY';
+    const checkOutUrl = await getCheckoutUrl(priceId);
+    window.location.href = checkOutUrl;
   }
 
   const totalAccounts = adminAccounts + ownerAccounts + driverAccounts;
@@ -161,7 +165,7 @@ const Subscriptions = () => {
                   <Header category="Payments" title="Subscriptions" />
 
                   {
-                    userProfile.subscriptions ?
+                    premiumStatus ?
                       <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                         {/* <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                       <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -213,7 +217,7 @@ const Subscriptions = () => {
                                     <li>Umlimited Access Monthly</li>
                                     <li>Admin + Driver Mobile App</li>
                                   </ul>
-                                  <a href="#/" onClick={handleSubscriptions} >SUBSCRIBE NOW!</a>
+                                  <a href="#/" onClick={handleBasicSubscriptions} >SUBSCRIBE NOW!</a>
                                 </div>
                               </div>
                               <div class="col-lg-5 col-sm-4 col-xs-12 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.3s" data-wow-offset="0">
