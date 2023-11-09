@@ -43,7 +43,7 @@ const Navbar = () => {
     }
 
     const getStatus = async () => {
-      const status = await getPremiumStatus();
+      const status = await getPremiumStatus(token);
       setPremiumStatus(status);
     }
 

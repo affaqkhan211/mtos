@@ -6,7 +6,6 @@ import { useStateContext } from '../contexts/ContextProvider';
 import { FiSettings } from "react-icons/fi";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { Navbar, Footer, Sidebar, ThemeSettings, Header, Loader } from '../components';
-import StripeCheckout from 'react-stripe-checkout';
 import { useNavigate } from 'react-router-dom';
 import { ChangeSubscriptionStatus } from '../db/subscriptions';
 import { toast } from 'react-toastify';
@@ -17,7 +16,6 @@ const Subscriptions = () => {
   const [adminAccounts, setAdminAccounts] = useState(2);
   const [driverAccounts, setDriverAccounts] = useState(4);
   const [loading, setLoading] = useState(false);
-  const STRIPE_KEY = 'pk_test_51O8uBnLqgG0cdoTuNoIF8SiD0BzNycZcwTaFsxHOCSXot0PojCwGTt1nYZ4wEl6sE15XlRNZbqXTdAdCrUYaByvT001F1W31ob';
   const navigate = useNavigate();
 
   const {
@@ -77,7 +75,7 @@ const Subscriptions = () => {
 
   const handleBasicSubscriptions = async () => {
     const priceId = 'price_1OAYriLqgG0cdoTuWUcsXoBY';
-    const checkOutUrl = await getCheckoutUrl(priceId);
+    const checkOutUrl = await getCheckoutUrl(priceId, token);
     if (checkOutUrl) {
       window.location.href = checkOutUrl;
     }
@@ -309,12 +307,6 @@ const Subscriptions = () => {
                             </div>
                           </div>
                         </section>
-                        <div className='text-center mt-3'>
-                          <StripeCheckout
-                            token={onToken}
-                            stripeKey={STRIPE_KEY}
-                          />
-                        </div>
                       </div>
                   }
                 </div>
