@@ -35,23 +35,27 @@ export const addDocToCollection = async (attachedData, data, callback) => {
 
 // Listen for real-time updates to subscriptions for a specific UID
 export const getSubscriptionDataByuid = (uid, callback) => {
-    const subscriptionsCollectionRef = collection(db, 'subscriptions');
+    try {
+        const subscriptionsCollectionRef = collection(db, 'subscriptions');
 
-    // Create a query to retrieve subscriptions with a matching UID
-    const q = query(subscriptionsCollectionRef, where("uid", "==", uid));
+        // Create a query to retrieve subscriptions with a matching UID
+        const q = query(subscriptionsCollectionRef, where("uid", "==", uid));
 
-    // Create a real-time listener using onSnapshot
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        const subscriptions = [];
-        querySnapshot.forEach((doc) => {
-            // Extract subscription data from each document
-            subscriptions.push(doc.data());
+        // Create a real-time listener using onSnapshot
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            const subscriptions = [];
+            querySnapshot.forEach((doc) => {
+                // Extract subscription data from each document
+                subscriptions.push(doc.data());
+            });
+
+            // Call the callback function with the updated subscriptions
+            callback({ isSuccess: true, data: subscriptions });
         });
 
-        // Call the callback function with the updated subscriptions
-        callback(subscriptions);
-    });
-
-    // Return the unsubscribe function to stop listening for updates
-    return unsubscribe;
+        // Return the unsubscribe function to stop listening for updates
+        return unsubscribe;
+    } catch (error) {
+        callback({ isSuccess: false, message: error.message });
+    }
 };

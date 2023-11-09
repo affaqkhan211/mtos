@@ -38,7 +38,6 @@ const Navbar = () => {
     if (token) {
       getSubOwnerById(token, (result) => {
         setUserProfile(result.data);
-        console.log(result.data);
       })
     }
   }, [token]);

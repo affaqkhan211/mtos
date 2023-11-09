@@ -91,7 +91,6 @@ const AddAdmin = () => {
     setLoading(true);
     if (userProfile?.adminAccounts <= allAdmins?.length) {
       toast.error("Admins Account Limit Reached! \n Purchase more admin acoounts to add admin.");
-      console.log("possible");
       setLoading(false);
       return;
     }

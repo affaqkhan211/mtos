@@ -30,7 +30,8 @@ const Home = () => {
     setPastTrips,
     setClients,
     userProfile,
-    setSubscriptionData
+    setSubscriptionData,
+    subscriptionData
   } = useStateContext();
 
   useEffect(() => {
@@ -53,7 +54,6 @@ const Home = () => {
       endpoint(token, (result) => {
         if (result.isSuccess) {
           setter(result.data);
-          console.log(result.data)
           if (assignToEarning) {
             earningData[amountIndex].amount = result.data.length;
           }
@@ -89,7 +89,7 @@ const Home = () => {
     fetchData(token, setPastTrips, 2, getPastTrips, true, true, false);
     fetchData(token, setTrips, 0, getTripsUploadedToday, false, false, false);
     fetchData(token, setSubscriptionData, 0, getSubscriptionDataByuid, false, false, false);
-  }, [token, setAllAdmins, setAllDrivers, setTrips, setPastTrips, setSubscriptionData, userProfile]);
+  }, [token, setAllAdmins, setAllDrivers, setTrips, setPastTrips, setSubscriptionData, userProfile, subscriptionData]);
 
   if (token === null) {
     navigate('/login');

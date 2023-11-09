@@ -95,7 +95,6 @@ const Subscriptions = () => {
       driverAccounts,
     }
     try {
-      setSubscriptionData(data);
       await addDocToCollection(attachedData, data, (result) => {
         if (result.isSuccess) {
           toast.success(result.message);
