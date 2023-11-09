@@ -29,8 +29,6 @@ const Subscriptions = () => {
     themeSettings,
     setThemeSettings,
     subscriptionData,
-    setSubscriptionData,
-    userProfile,
     token,
     premiumStatus
   } = useStateContext();
@@ -80,7 +78,16 @@ const Subscriptions = () => {
   const handleBasicSubscriptions = async () => {
     const priceId = 'price_1OAYriLqgG0cdoTuWUcsXoBY';
     const checkOutUrl = await getCheckoutUrl(priceId);
-    window.location.href = checkOutUrl;
+    if (checkOutUrl) {
+      window.location.href = checkOutUrl;
+    }
+  }
+
+  const manageSubscriptions = async () => {
+    const portalUrl = await getPortalUrl();
+    if (portalUrl) {
+      window.location.href = portalUrl;
+    }
   }
 
   const totalAccounts = adminAccounts + ownerAccounts + driverAccounts;
@@ -110,11 +117,12 @@ const Subscriptions = () => {
     }
   }
 
+
   if (token === null) {
     navigate('/login');
   }
 
-  // console.log(subscriptionData);
+  console.log(subscriptionData);
 
   return (
     <div className={currentMode === "Dark" ? "dark" : ""}>
@@ -167,26 +175,37 @@ const Subscriptions = () => {
                   {
                     premiumStatus ?
                       <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                        {/* <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                      <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                        <tr>
-                          <th class="py-2 px-4">Client IP</th>
-                          <th class="py-2 px-4">Email</th>
-                          <th class="py-2 px-4">Exp Month</th>
-                          <th class="py-2 px-4">Exp Year</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {subscriptionData.map((data, index) => (
-                          <tr key={index} class="bg-white dark:bg-gray-800">
-                            <td class="py-2 px-4">{data.client_ip}</td>
-                            <td class="py-2 px-4">{data.email}</td>
-                            <td class="py-2 px-4">{data.card.exp_month}</td>
-                            <td class="py-2 px-4">{data.card.exp_year}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table> */}
+                        <button
+                          className='btn btn-rounded btn-dark ml-auto'
+                          onClick={manageSubscriptions}
+                        >
+                          Manage Subscriptions
+                        </button>
+
+                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr>
+                              <th class="py-2 px-4">#</th>
+                              <th class="py-2 px-4">Starting Date</th>
+                              <th class="py-2 px-4">Renewal Date</th>
+                              <th class="py-2 px-4">Amount</th>
+                              <th class="py-2 px-4">Status</th>
+                              <th class="py-2 px-4">Currency</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {subscriptionData.map((data, index) => (
+                              <tr key={index} class="bg-white dark:bg-gray-800">
+                                <td class="py-2 px-4">{index + 1}</td>
+                                <td class="py-2 px-4">{data?.current_period_start.toDate().toLocaleDateString()}</td>
+                                <td class="py-2 px-4">{data?.current_period_end.toDate().toLocaleDateString()}</td>
+                                <td class="py-2 px-4">{data?.items[0]?.price?.unit_amount_decimal / 100}</td>
+                                <td class="py-2 px-4">{data?.status.toUpperCase()}</td>
+                                <td class="py-2 px-4">{data?.items[0]?.price?.currency?.toUpperCase()}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
                       </div>
                       :
                       <div>

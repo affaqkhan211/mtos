@@ -34,19 +34,24 @@ export const ChangeSubscriptionStatus = async (attachedData, data, callback) => 
 };
 
 // Listen for real-time updates to subscriptions for a specific UID
-export const getSubscriptionDataByuid = (uid, callback) => {
+export const getSubscriptionDataByuid  = (uid, callback) => {
     try {
-        const subscriptionsCollectionRef = collection(db, 'subscriptions');
+        const subOwnersCollectionRef = collection(db, 'subOwners');
+        const userDocRef = doc(subOwnersCollectionRef, uid);
+        const subscriptionsCollectionRef = collection(userDocRef, 'subscriptions');
 
-        // Create a query to retrieve subscriptions with a matching UID
-        const q = query(subscriptionsCollectionRef, where("uid", "==", uid));
+        // Create a query to retrieve all subscriptions for the user
+        const q = query(subscriptionsCollectionRef);
 
         // Create a real-time listener using onSnapshot
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
             const subscriptions = [];
             querySnapshot.forEach((doc) => {
                 // Extract subscription data from each document
-                subscriptions.push(doc.data());
+                subscriptions.push({
+                    subscriptionId: doc.id,
+                    ...doc.data(),
+                });
             });
 
             // Call the callback function with the updated subscriptions
