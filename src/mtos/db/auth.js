@@ -89,6 +89,8 @@ export const SIGNUP_WITH_GOOGLE = async () => {
                 ownerAccounts: 1,
                 adminAccounts: 0,
                 driverAccounts: 0,
+                image: user.photoURL,
+                phone: user.phoneNumber,
             };
 
             await setDoc(userRef, userData);
