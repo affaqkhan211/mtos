@@ -8,13 +8,19 @@ import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { Navbar, Footer, Sidebar, ThemeSettings, Header, Loader } from '../components';
 import StripeCheckout from 'react-stripe-checkout';
 import { useNavigate } from 'react-router-dom';
-import { addDocToCollection } from '../db/subscriptions';
+import { ChangeSubscriptionStatus } from '../db/subscriptions';
 import { toast } from 'react-toastify';
+import { createCheckoutSession } from '../db/Stripe/createCheckoutSession';
+import usePremiumStatus from '../db/Stripe/userPremiumStatus';
+import { auth } from '../mtos/db/config';
 
 const Subscriptions = () => {
-  const [ownerAccounts, setOwnerAccounts] = useState(2);
+  const [user, userLoading] = useState(auth.currentUser)
+  const userIsPremium = usePremiumStatus(user);
+  console.log(userIsPremium);
+  const [ownerAccounts, setOwnerAccounts] = useState(1);
   const [adminAccounts, setAdminAccounts] = useState(2);
-  const [driverAccounts, setDriverAccounts] = useState(3);
+  const [driverAccounts, setDriverAccounts] = useState(4);
   const [loading, setLoading] = useState(false);
   const STRIPE_KEY = 'pk_test_51O8uBnLqgG0cdoTuNoIF8SiD0BzNycZcwTaFsxHOCSXot0PojCwGTt1nYZ4wEl6sE15XlRNZbqXTdAdCrUYaByvT001F1W31ob';
   const [token, setToken] = useState(null);
@@ -83,6 +89,10 @@ const Subscriptions = () => {
     }
   };
 
+  const handleSubscriptions = () => {
+    createCheckoutSession(user.uid);
+  }
+
   const totalAccounts = adminAccounts + ownerAccounts + driverAccounts;
   const totalPrice = totalAccounts * 100;
 
@@ -95,7 +105,7 @@ const Subscriptions = () => {
       driverAccounts,
     }
     try {
-      await addDocToCollection(attachedData, data, (result) => {
+      await ChangeSubscriptionStatus(attachedData, data, (result) => {
         if (result.isSuccess) {
           toast.success(result.message);
         } else {
@@ -228,7 +238,7 @@ const Subscriptions = () => {
                                     <li>Umlimited Access Monthly</li>
                                     <li>Admin + Driver Mobile App</li>
                                   </ul>
-                                  <a href="#/">SUBSCRIBE NOW!</a>
+                                  <a href="#/" onClick={handleSubscriptions} >SUBSCRIBE NOW!</a>
                                 </div>
                               </div>
                               <div class="col-lg-5 col-sm-4 col-xs-12 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.3s" data-wow-offset="0">

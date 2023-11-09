@@ -2,7 +2,7 @@ import { collection, addDoc, doc, setDoc, serverTimestamp, query, where, onSnaps
 import { db } from '../mtos/db/config';
 
 // Add a new document to a Firestore collection and update 'subOwners' collection
-export const addDocToCollection = async (attachedData, data, callback) => {
+export const ChangeSubscriptionStatus = async (attachedData, data, callback) => {
     const uid = attachedData.token;
     const subscriptionsCollectionRef = collection(db, 'subscriptions');
     const subOwnersDocRef = doc(db, 'subOwners', uid);
