@@ -147,7 +147,7 @@ const AddAdmin = () => {
   return (
     <div className={currentMode === "Dark" ? "dark" : ""}>
       <div className="flex relative dark:bg-main-dark-bg">
-        <div className="fixed right-4 bottom-4" style={{ zIndex: "1000" }}>
+        {/* <div className="fixed right-4 bottom-4" style={{ zIndex: "1000" }}>
           <TooltipComponent content="Settings" position="Top">
             <button
               type="button"
@@ -158,7 +158,7 @@ const AddAdmin = () => {
               <FiSettings />
             </button>
           </TooltipComponent>
-        </div>
+        </div> */}
         {activeMenu ? (
           <div className="w-72 fixed sidebar dark:bg-secondary-dark-bg bg-white">
             <Sidebar />
@@ -191,7 +191,7 @@ const AddAdmin = () => {
                       <div className="w-full">
                         <img
                           src={selectedImage ? selectedImage : newData.imageUrl ? newData.imageUrl : avatar}
-                          className="h-40 w-40 rounded-full mx-auto mb-3"
+                          className="h-40 w-40 rounded-full mx-auto mb-3 border shadow  transition-transform transform hover:-translate-y-1"
                           onClick={() => document.getElementById('imageInput').click()}
                           style={{ cursor: 'pointer' }}
                         />
@@ -203,7 +203,7 @@ const AddAdmin = () => {
                           onChange={handleImageChange}
                         />
 
-                        <div className="bg-white p-4">
+                        <div className="bg-white p-4 shadow">
                           <div className='mb-4' >
                             <label htmlFor="first_name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                               Admin Full Name

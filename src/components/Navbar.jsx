@@ -6,6 +6,7 @@ import avatar from '../data/avatar.jpg';
 import { useStateContext } from '../contexts/ContextProvider';
 import { getSubOwnerById } from '../db/profile';
 import { getPremiumStatus } from '../db/stripePayments';
+import { UserProfile } from '.';
 
 const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
   <TooltipComponent content={title} position="BottomCenter">
@@ -88,6 +89,7 @@ const Navbar = () => {
             <MdKeyboardArrowDown className="text-gray-400 text-14" />
           </div>
         </TooltipComponent>
+      {isClicked.userProfile && (<UserProfile userProfile={userProfile} />)}
       </div>
     </div>
   );

@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Sidebar = () => {
   const navigate = useNavigate();
-  const { currentColor, activeMenu, setActiveMenu, screenSize } = useStateContext();
+  const { currentColor, activeMenu, setActiveMenu, screenSize, setIsClicked, initialState } = useStateContext();
 
   const handleCloseSideBar = () => {
     if (activeMenu !== undefined && screenSize <= 900) {
@@ -18,6 +18,7 @@ const Sidebar = () => {
   };
 
   const handleLogout = () => {
+    setIsClicked(initialState);
     localStorage.removeItem('token');
     navigate('/');
   };

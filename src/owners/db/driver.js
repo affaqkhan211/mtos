@@ -7,7 +7,8 @@ export const getAllDrivers = (callback) => {
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const drivers = [];
         querySnapshot.forEach((doc) => {
-            if (doc.role === 'admin') {
+            const data = doc.data();
+            if (data.role === 'admin') {
                 drivers.push({ ...doc.data(), id: doc.id });
             }
         });

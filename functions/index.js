@@ -1,3 +1,7 @@
+const functions = require('firebase-functions');
+const admin = require('firebase-admin');
+admin.initializeApp();
+
 // Constants
 const SUBSCRIPTION_ITEM_ID = 'price_1OAg3vLqgG0cdoTuUIpkrJoW';
 const ACCOUNT_CREATION_AMOUNT = 10000;  // $100 in cents
@@ -65,3 +69,40 @@ async function updateFirestoreDocument(subownerId, token, usageRecordId) {
             usageRecordId: usageRecordId,
         });
 }
+
+
+// Trip Notifications
+// Cloud Function for sending notifications
+exports.sendTripNotification = functions.firestore
+  .document('trips/{tripId}')
+  .onCreate(async (snapshot, context) => {
+    try {
+      const tripData = snapshot.data();
+      const adminUid = tripData.adminUid;
+
+      // Get the list of drivers with the same adminUid
+      const driversSnapshot = await admin.firestore().collection('users')
+        .where('role', '==', 'driver')
+        .where('adminUid', '==', adminUid)
+        .get();
+
+      const driverTokens = driversSnapshot.docs.map(driverDoc => driverDoc.get('fcmToken'));
+
+      // Send FCM messages to drivers
+      if (driverTokens.length > 0) {
+        const payload = {
+          notification: {
+            title: 'New Trip Manifest Uploaded',
+            body: 'Get ready for your trip!',
+          },
+        };
+
+        await admin.messaging().sendToDevice(driverTokens, payload);
+        console.log('Notifications sent successfully');
+      } else {
+        console.log('No drivers to notify');
+      }
+    } catch (error) {
+      console.error('Error in sendTripNotification:', error);
+    }
+  });

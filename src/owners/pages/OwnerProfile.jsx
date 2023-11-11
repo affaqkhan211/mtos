@@ -141,7 +141,7 @@ const OwnerProfile = () => {
                   <div className="w-full">
                     <img
                       src={selectedImage ? selectedImage : newData.image ? newData.image : avatar}
-                      className="h-40 w-40 rounded-full mx-auto mb-3"
+                      className="h-40 w-40 rounded-full mx-auto mb-3 border shadow transition-transform transform hover:-translate-y-1"
                       onClick={() => document.getElementById('imageInput').click()}
                       style={{ cursor: 'pointer' }}
                     />

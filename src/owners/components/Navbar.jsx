@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { AiOutlineMenu } from 'react-icons/ai';
-import { RiNotification3Line } from 'react-icons/ri';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 import avatar from '../data/avatar.jpg';
-import { Notification, UserProfile } from '.';
+import { UserProfile } from '.';
 import { useStateContext } from '../../contexts/ContextProvider';
 import { getOwnerById } from '../db/profile';
+import { BsArrowBarLeft, BsArrowBarRight } from 'react-icons/bs';
 
 const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
   <TooltipComponent content={title} position="BottomCenter">
@@ -64,33 +63,25 @@ const Navbar = () => {
   const handleActiveMenu = () => setActiveMenu(!activeMenu);
 
   return (
-    <div className="flex justify-between p-2 md:ml-6 md:mr-6 relative">
-
-      <NavButton title="Menu" customFunc={handleActiveMenu} color={currentColor} icon={<AiOutlineMenu />} />
-      <div className="flex self-center md:self-end">
-        {/* <NavButton title="Notification" dotColor="rgb(254, 201, 15)" customFunc={() => handleClick('notification')} color={currentColor} icon={<RiNotification3Line />} /> */}
+    <div className="container d-flex justify-content-end py-2">
+      <NavButton title="Menu" customFunc={handleActiveMenu} color={currentColor} icon={activeMenu ? <BsArrowBarLeft /> : <BsArrowBarRight />} />
+      <div className="d-flex align-items-center ms-3">
         <TooltipComponent content="Profile" position="BottomCenter">
           <div
-            className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
+            className="d-flex align-items-center cursor-pointer p-1 bg-light rounded-lg"
             onClick={() => handleClick('userProfile')}
           >
             <img
-              className="rounded-full w-8 h-8"
+              className="rounded-circle me-2"
               src={userProfile?.image ? userProfile.image : avatar}
               alt="user-profile"
+              style={{ width: '32px', height: '32px' }}
             />
-            <p>
-              <span className="text-gray-400 text-14">Hi,</span>{' '}
-              <span className="text-gray-400 font-bold ml-1 text-14">
-                {userProfile?.fullName}
-              </span>
-            </p>
+            <p className="m-0 text-gray-400 text-14">Hi, <span className="font-bold">{userProfile?.fullName}</span></p>
             <MdKeyboardArrowDown className="text-gray-400 text-14" />
           </div>
         </TooltipComponent>
-
-        {isClicked.notification && (<Notification />)}
-        {isClicked.userProfile && (<UserProfile userProfile={userProfile} />)}
+      {isClicked.userProfile && (<UserProfile userProfile={userProfile} />)}
       </div>
     </div>
   );

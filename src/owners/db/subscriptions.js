@@ -11,7 +11,8 @@ export const getAllSubscriptions = (callback) => {
         const unsubscribe = onSnapshot(subscriptionsCollectionRef, (querySnapshot) => {
             const subscriptions = [];
             querySnapshot.forEach((doc) => {
-                if (doc.role === 'subOwner') {
+                const data = doc.data();
+                if (data.role === 'subOwner') {
                     subscriptions.push(doc.data());
                 }
             });

@@ -7,7 +7,8 @@ export const getAllSubOwners = (callback) => {
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const subowners = [];
         querySnapshot.forEach((doc) => {
-            if (doc.role === 'subOwner') {
+            const data = doc.data();
+            if (data.role == 'subOwner') {
                 subowners.push({ ...doc.data(), id: doc.id });
             }
         });

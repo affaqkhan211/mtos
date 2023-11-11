@@ -9,9 +9,10 @@ import { useNavigate } from 'react-router-dom';
 
 const UserProfile = ({ userProfile }) => {
   const navigate = useNavigate();
-  const { currentColor } = useStateContext();
+  const { setIsClicked, initialState  } = useStateContext();
 
   const handleLogout = () => {
+    setIsClicked(initialState);
     localStorage.removeItem('token');
     navigate('/');
   };
