@@ -1,9 +1,8 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { SiShopware } from 'react-icons/si';
-import { MdOutlineCancel, MdLogout } from 'react-icons/md';
+import { BiLogOut } from 'react-icons/bi';
+import { MdOutlineCancel } from 'react-icons/md';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
-
 import { links } from '../data/dummy';
 import { useStateContext } from '../contexts/ContextProvider';
 import { useNavigate } from 'react-router-dom';
@@ -121,7 +120,7 @@ const Sidebar = () => {
                 style={{ backgroundColor: 'red', color: 'white', borderRadius: '10px' }}
                 className={' text- p-3 w-half hover:drop-shadow-xl hover:bg-red mt-3'}
               >
-                <MdLogout />
+                <BiLogOut />
               </button>
             </div>
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai';
 import { MdKeyboardArrowDown } from 'react-icons/md';
+import { BsArrowBarLeft, BsArrowBarRight } from 'react-icons/bs';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 import avatar from '../data/avatar.jpg';
 import { useStateContext } from '../contexts/ContextProvider';
@@ -71,7 +71,7 @@ const Navbar = () => {
 
   return (
     <div className="container d-flex justify-content-end py-2">
-      <NavButton title="Menu" customFunc={handleActiveMenu} color={currentColor} icon={activeMenu ? <AiOutlineArrowLeft /> : <AiOutlineArrowRight />} />
+      <NavButton title="Menu" customFunc={handleActiveMenu} color={currentColor} icon={activeMenu ? <BsArrowBarLeft /> : <BsArrowBarRight />} />
       <div className="d-flex align-items-center ms-3">
         <TooltipComponent content="Profile" position="BottomCenter">
           <div
