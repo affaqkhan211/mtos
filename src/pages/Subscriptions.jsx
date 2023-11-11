@@ -177,7 +177,7 @@ const Subscriptions = () => {
                                     className='subButton'
                                     onClick={handleCustomSubscriptions}
                                   >
-                                    SUBSCRIBE NOW!
+                                    NO COST CHECKOUT!
                                   </button>
                                 </div>
                               </div>

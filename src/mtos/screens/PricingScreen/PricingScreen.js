@@ -38,7 +38,7 @@ const PricingScreen = () => {
                                     className='subButton'
                                     onClick={() => navigate('login')}
                                 >
-                                    SUBSCRIBE NOW!
+                                    REGISTER NOW!
                                 </button>                            </div>
                         </div>
                     </div>
