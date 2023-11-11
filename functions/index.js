@@ -1,67 +1,67 @@
-const functions = require('firebase-functions');
-const admin = require('firebase-admin');
-const stripe = require('stripe')('sk_test_51O8uBnLqgG0cdoTubKoVqnFDLUYVNmW7ID9fb2JxGArz7BIq04sb9PyoPkWNuD9LQV0J0U3CNIKSoXUINajSUbmR00BvQghRpx');
+// Constants
+const SUBSCRIPTION_ITEM_ID = 'price_1OAg3vLqgG0cdoTuUIpkrJoW';
+const ACCOUNT_CREATION_AMOUNT = 10000;  // $100 in cents
+const CURRENCY = 'usd';
 
-admin.initializeApp();
-
-// Your Cloud Function for creating a usage record
-exports.createUsageRecord = functions.firestore.document('{collection}/{token}/accounts/{accountId}')
+// Cloud Function for creating a usage record
+exports.createUsageRecord = functions.firestore
+    .document('users/{userId}')
     .onCreate(async (snapshot, context) => {
-        const accountId = context.params.accountId;
-        const token = context.params.token;
-        const collection = context.params.collection;
+        try {
+            const userId = context.params.userId;
+            const role = snapshot.get('role');
 
-        // Check if the document is in the drivers or admins collection
-        if (collection === 'drivers' || collection === 'admins') {
-            // Get the subowneruid from the driver or admin document
-            const subownerUid = snapshot.get('subowneruid');
-
-            // Charge the subowner
-            await chargeSubowner(subownerUid, token);
+            if (role === 'admin' || role === 'driver') {
+                const subownerId = snapshot.get('subowneruid');
+                const token = 'your_token'; // Replace with the appropriate token for your use case
+                await chargeSubowner(subownerId, token);
+            }
+        } catch (error) {
+            console.error('Error in createUsageRecord:', error);
         }
-
-        return null;
     });
 
-async function chargeSubowner(subownerUid, token) {
-    // Use subownerUid to fetch additional details if needed
-    // For example, you might have a 'subOwners' collection where you store additional information about subowners
+// Function to charge the subowner
+async function chargeSubowner(subownerId, token) {
+    try {
+        const subownerDoc = await admin.firestore().collection('users').doc(subownerId).get();
+        const subownerData = subownerDoc.data();
 
-    // Now charge the subowner using the Stripe API
-    const subowner = await admin.firestore().collection('subOwners').doc(token).get();
-    const subownerData = subowner.data();
-
-    if (subownerData && subownerData.stripeId) {
-        // Create a usage record in Stripe
-        const usageRecord = await stripe.usageRecords.create({
-            quantity: 1,  // Assuming you charge $100 for each account
-            subscription_item: 'price_1OAg3vLqgG0cdoTuUIpkrJoW',  // Replace with your actual subscription item ID
-            timestamp: Math.floor(Date.now() / 1000),
-        });
-
-        // Log the created usage record
-        console.log('Usage record created:', usageRecord);
-
-        // You can update your Firestore document to track the usage record if needed
-        await admin.firestore().collection('subOwners').doc(token).collection('accounts').doc(subownerUid)
-            .update({
-                usageRecordId: usageRecord.id,
+        if (subownerData && subownerData.stripeId) {
+            const usageRecord = await stripe.usageRecords.create({
+                quantity: 1,
+                subscription_item: SUBSCRIPTION_ITEM_ID,
+                timestamp: Math.floor(Date.now() / 1000),
             });
 
-        // Charge the subowner using the Stripe API
-        await stripe.paymentIntents.create({
-            amount: 10000,  // Amount in cents, adjust as needed
-            currency: 'usd',
-            customer: subownerData.stripeId,
-            description: 'Charge for creating an account',
-            metadata: {
-                accountId: subownerUid,
-                usageRecordId: usageRecord.id,
-            },
-        });
+            await updateFirestoreDocument(subownerId, token, usageRecord.id);
 
-        console.log('Subowner charged successfully');
-    } else {
-        console.error('Subowner not found or missing Stripe customer ID');
+            await stripe.paymentIntents.create({
+                amount: ACCOUNT_CREATION_AMOUNT,
+                currency: CURRENCY,
+                customer: subownerData.stripeId,
+                description: 'Charge for creating an account',
+                metadata: {
+                    accountId: subownerId,
+                    usageRecordId: usageRecord.id,
+                },
+            });
+
+            console.log('Subowner charged successfully');
+        } else {
+            console.error('Subowner not found or missing Stripe customer ID');
+        }
+    } catch (error) {
+        console.error('Error in chargeSubowner:', error);
     }
+}
+
+// Function to update Firestore document with usage record ID
+async function updateFirestoreDocument(subownerId, token, usageRecordId) {
+    await admin.firestore()
+        .collection('users')
+        .doc(subownerId)
+        .update({
+            usageRecordId: usageRecordId,
+        });
 }
