@@ -5,7 +5,7 @@ import { db } from '../mtos/db/config';
 export const ChangeSubscriptionStatus = async (attachedData, data, callback) => {
     const uid = attachedData.token;
     const subscriptionsCollectionRef = collection(db, 'subscriptions');
-    const subOwnersDocRef = doc(db, 'subOwners', uid);
+    const subOwnersDocRef = doc(db, 'users', uid);
 
     try {
         // Add the data to the 'subscriptions' collection
@@ -36,7 +36,7 @@ export const ChangeSubscriptionStatus = async (attachedData, data, callback) => 
 // Listen for real-time updates to subscriptions for a specific UID
 export const getSubscriptionDataByuid  = (uid, callback) => {
     try {
-        const subOwnersCollectionRef = collection(db, 'subOwners');
+        const subOwnersCollectionRef = collection(db, 'users');
         const userDocRef = doc(subOwnersCollectionRef, uid);
         const subscriptionsCollectionRef = collection(userDocRef, 'subscriptions');
 
@@ -63,4 +63,4 @@ export const getSubscriptionDataByuid  = (uid, callback) => {
     } catch (error) {
         callback({ isSuccess: false, message: error.message });
     }
-};
+}; 

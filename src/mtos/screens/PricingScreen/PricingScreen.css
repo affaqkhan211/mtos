@@ -78,7 +78,7 @@
 	line-height: 35px;
 }
 
-.single-pricing a {
+.subButton {
 	background: none;
 	border: 2px solid #40B491;
 	border-radius: 5000px;
@@ -93,8 +93,8 @@
 	text-decoration-line: none;
 }
 
-.single-pricing a:hover,
-.single-pricing a:focus {
+.subButton:hover,
+.subButton:focus {
 	background: #40B491;
 	color: #fff;
 	border: 2px solid #40B491;

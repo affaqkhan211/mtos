@@ -27,7 +27,6 @@ import {ForgotPassword} from "./mtos/screens";
 import colors from "./mtos/utils/colors";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import ScrollToTop from "react-scroll-to-top";
 import { OwnerAdmins, OwnerHome } from "./owners/pages";
 import { OwnerDrivers } from "./owners/pages";
 import { OwnerSubscriptions } from "./owners/pages";
@@ -75,7 +74,6 @@ const App = () => {
                                     <AboutScreen />
                                 </div>
                                 <MFooter />
-                                <ScrollToTop smooth color={colors.primary} />
                             </div>
 
                         }

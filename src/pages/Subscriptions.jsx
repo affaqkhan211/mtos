@@ -1,20 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
-import { IoMdAdd, IoMdRemove } from 'react-icons/io';
-import { recentTransactions } from '../data/dummy';
 import { useStateContext } from '../contexts/ContextProvider';
 import { FiSettings } from "react-icons/fi";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { Navbar, Footer, Sidebar, ThemeSettings, Header, Loader } from '../components';
 import { useNavigate } from 'react-router-dom';
-import { ChangeSubscriptionStatus } from '../db/subscriptions';
-import { toast } from 'react-toastify';
-import { getCheckoutUrl, getPortalUrl } from '../db/stripePayments';
+import { getCheckoutUrlForBasic, getPortalUrl, getCheckoutUrlForCustom } from '../db/stripePayments';
 
 const Subscriptions = () => {
-  const [ownerAccounts, setOwnerAccounts] = useState(1);
-  const [adminAccounts, setAdminAccounts] = useState(2);
-  const [driverAccounts, setDriverAccounts] = useState(4);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -40,42 +32,17 @@ const Subscriptions = () => {
     }
   }, []);
 
-  // Function to handle increment and decrement of accounts
-  const incrementAccounts = (type) => {
-    switch (type) {
-      case 'owner':
-        setOwnerAccounts(ownerAccounts + 1);
-        break;
-      case 'admin':
-        setAdminAccounts(adminAccounts + 1);
-        break;
-      case 'driver':
-        setDriverAccounts(driverAccounts + 1);
-        break;
-      default:
-        break;
-    }
-  };
+  // const handleBasicSubscriptions = async () => {
+  //   let priceId = 'price_1OAYriLqgG0cdoTuWUcsXoBY';
+  //   const checkOutUrl = await getCheckoutUrlForBasic(priceId, token);
+  //   if (checkOutUrl) {
+  //     window.location.href = checkOutUrl;
+  //   }
+  // }
 
-  const decrementAccounts = (type) => {
-    switch (type) {
-      case 'owner':
-        setOwnerAccounts(ownerAccounts > 1 ? ownerAccounts - 1 : 1);
-        break;
-      case 'admin':
-        setAdminAccounts(adminAccounts > 1 ? adminAccounts - 1 : 1);
-        break;
-      case 'driver':
-        setDriverAccounts(driverAccounts > 3 ? driverAccounts - 1 : 3);
-        break;
-      default:
-        break;
-    }
-  };
-
-  const handleBasicSubscriptions = async () => {
-    const priceId = 'price_1OAYriLqgG0cdoTuWUcsXoBY';
-    const checkOutUrl = await getCheckoutUrl(priceId, token);
+  const handleCustomSubscriptions = async () => {
+    let priceId = 'price_1OAg3vLqgG0cdoTuUIpkrJoW';
+    const checkOutUrl = await getCheckoutUrlForCustom(priceId, token);
     if (checkOutUrl) {
       window.location.href = checkOutUrl;
     }
@@ -87,34 +54,6 @@ const Subscriptions = () => {
       window.location.href = portalUrl;
     }
   }
-
-  const totalAccounts = adminAccounts + ownerAccounts + driverAccounts;
-  const totalPrice = totalAccounts * 100;
-
-  const onToken = async (data) => {
-    setLoading(true);
-    const attachedData = {
-      token,
-      ownerAccounts,
-      adminAccounts,
-      driverAccounts,
-    }
-    try {
-      await ChangeSubscriptionStatus(attachedData, data, (result) => {
-        if (result.isSuccess) {
-          toast.success(result.message);
-        } else {
-          toast.error(result.message);
-        }
-      });
-    } catch (error) {
-      toast.error(error.message);
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  }
-
 
   if (token === null) {
     navigate('/login');
@@ -209,38 +148,15 @@ const Subscriptions = () => {
                       <div>
                         <section id="pricing" class="pricing-content section-padding justify ">
                           <div class="container">
-                            <div class="section-title text-center mb-3">
+                            <div class="section-title text-center">
+                              <h1>PRICING PLAN</h1>
+                              <p className='price-p' >Use our best metered pricing plan. You will be charged as much as you create admin accounts or driver accounts.</p>
                             </div>
                             <div class="row text-center justify-content-center">
-                              <div class="col-lg-5 col-sm-4 col-xs-12 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.2s" data-wow-offset="0">
-                                <div class="single-pricing">
-                                  <div class="price-head">
-                                    <h2>Basic</h2>
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                  </div>
-                                  <h1 class="price">$500</h1>
-                                  <h5>Monthly</h5>
-                                  <ul class='container-fluid' >
-                                    <li>5 Accounts Creation</li>
-                                    <li>Single Owner Account</li>
-                                    <li>Single Admin Accounts</li>
-                                    <li>Upto 3 Driver Accounts</li>
-                                    <li>Owner Admin Dashboard</li>
-                                    <li>Umlimited Access Monthly</li>
-                                    <li>Admin + Driver Mobile App</li>
-                                  </ul>
-                                  <a href="#/" onClick={handleBasicSubscriptions} >SUBSCRIBE NOW!</a>
-                                </div>
-                              </div>
-                              <div class="col-lg-5 col-sm-4 col-xs-12 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.3s" data-wow-offset="0">
+                              <div class="col-lg-6 col-sm-4 col-xs-12 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.3s" data-wow-offset="0">
                                 <div class="single-pricing single-pricing-white">
                                   <div class="price-head">
-                                    <h2>Custom</h2>
+                                    <h2>Pay As Yo Go!</h2>
                                     <span></span>
                                     <span></span>
                                     <span></span>
@@ -248,60 +164,21 @@ const Subscriptions = () => {
                                     <span></span>
                                     <span></span>
                                   </div>
-                                  {/* <span class="price-label">Best</span> */}
-                                  <h1 class="price">${totalPrice}</h1>
-                                  <h5>Monthly</h5>
+                                  <h5>Starting From</h5>
+                                  <h1 class="price">$0</h1>
                                   <ul className='container-fluid'>
-                                    <li>$100 Per Account</li>
-                                    <li>{totalAccounts} Accounts Creation</li>
-                                    <li>
-                                      <div className='round-button-container'>
-                                        <button className='decrementButton' onClick={() => decrementAccounts('owner')}
-                                          disabled={ownerAccounts === 1 ? true : false}
-                                        >
-                                          <IoMdRemove />
-                                        </button>
-                                        {`${ownerAccounts} Owner Account${ownerAccounts > 1 ? 's' : ''}`}
-                                        <button className='incrementButton' onClick={() => incrementAccounts('owner')}
-                                          disabled={true}
-                                        >
-                                          <IoMdAdd />
-                                        </button>
-                                      </div>
-                                    </li>
-                                    <li>
-                                      <div className='round-button-container'>
-                                        <button className='decrementButton' onClick={() => decrementAccounts('admin')}
-                                          disabled={adminAccounts === 1 ? true : false}
-
-                                        >
-                                          <IoMdRemove />
-                                        </button>
-                                        {`${adminAccounts} Admin Account${adminAccounts > 1 ? 's' : ''}`}
-                                        <button className='incrementButton' onClick={() => incrementAccounts('admin')}>
-                                          <IoMdAdd />
-                                        </button>
-                                      </div>
-                                    </li>
-                                    <li>
-                                      <div className='round-button-container'>
-                                        <button className='decrementButton' onClick={() => decrementAccounts('driver')}
-                                          disabled={driverAccounts < 4 ? true : false}
-
-                                        >
-                                          <IoMdRemove />
-                                        </button>
-                                        {`${driverAccounts} Driver Account${driverAccounts > 1 ? 's' : ''}`}
-                                        <button className='incrementButton' onClick={() => incrementAccounts('driver')}>
-                                          <IoMdAdd />
-                                        </button>
-                                      </div>
-                                    </li>
-                                    <li>Owner Admin Dashboard</li>
+                                    <li>$100 Per Account </li>
+                                    <li>Free Owner Dashboard</li>
+                                    <li>Unlimited Admin Accounts</li>
+                                    <li>Unlimited Driver Accounts</li>
                                     <li>Unlimited Access Monthly</li>
-                                    <li>Admin + Driver Mobile App</li>
                                   </ul>
-                                  <a href="#/">SUBSCRIBE NOW!</a>
+                                  <button
+                                    className='subButton'
+                                    onClick={handleCustomSubscriptions}
+                                  >
+                                    SUBSCRIBE NOW!
+                                  </button>
                                 </div>
                               </div>
                             </div>

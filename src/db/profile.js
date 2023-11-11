@@ -3,7 +3,7 @@ import { db } from '../mtos/db/config';
 
 // get subowner about data
 export const getSubOwnerById = (subOwnerId, callback) => {
-    const subOwnersCollection = collection(db, "subOwners");
+    const subOwnersCollection = collection(db, "users");
     const subOwnerDoc = doc(subOwnersCollection, subOwnerId);
 
     try {
@@ -32,7 +32,7 @@ export const getSubOwnerById = (subOwnerId, callback) => {
 
 // update subowner about data
 export const updateSubOwnerById = async (subOwnerId, newData, callback) => {
-    const subOwnerRef = doc(db, "subOwners", subOwnerId);
+    const subOwnerRef = doc(db, "users", subOwnerId);
 
     // upload image
     try {

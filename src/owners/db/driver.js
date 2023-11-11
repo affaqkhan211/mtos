@@ -2,12 +2,14 @@ import { collection, onSnapshot, query } from "firebase/firestore";
 import { db } from '../../mtos/db/config';
 
 export const getAllDrivers = (callback) => {
-    const driversRef = collection(db, "drivers");
+    const driversRef = collection(db, "users");
     const q = query(driversRef);
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const drivers = [];
         querySnapshot.forEach((doc) => {
-            drivers.push({ ...doc.data(), id: doc.id });
+            if (doc.role === 'admin') {
+                drivers.push({ ...doc.data(), id: doc.id });
+            }
         });
         callback({ isSuccess: true, data: drivers });
     }, (error) => {

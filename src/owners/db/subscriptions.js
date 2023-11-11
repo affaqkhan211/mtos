@@ -1,17 +1,19 @@
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, doc } from "firebase/firestore";
 import { db } from '../../mtos/db/config';
 
 // Listen for real-time updates to all subscriptions
 export const getAllSubscriptions = (callback) => {
     try {
-        const subscriptionsCollectionRef = collection(db, 'subscriptions');
-
+        const subOwnersCollectionRef = collection(db, 'users');
+        const userDocRef = doc(subOwnersCollectionRef);
+        const subscriptionsCollectionRef = collection(userDocRef, 'subscriptions');
         // Create a real-time listener for the entire collection
         const unsubscribe = onSnapshot(subscriptionsCollectionRef, (querySnapshot) => {
             const subscriptions = [];
             querySnapshot.forEach((doc) => {
-                // Extract subscription data from each document
-                subscriptions.push(doc.data());
+                if (doc.role === 'subOwner') {
+                    subscriptions.push(doc.data());
+                }
             });
 
             // Call the callback function with the updated subscriptions

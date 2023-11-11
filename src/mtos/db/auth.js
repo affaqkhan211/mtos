@@ -9,7 +9,7 @@ export const SIGNUP = async (email, password, firstName, lastName) => {
         const user = userCredential.user;
         const uid = user.uid;
 
-        const userRef = doc(db, "subOwners", uid);
+        const userRef = doc(db, "users", uid);
         const userData = {
             fullName: `${firstName} ${lastName}`,
             email: email,
@@ -17,6 +17,7 @@ export const SIGNUP = async (email, password, firstName, lastName) => {
             ownerAccounts: 1,
             adminAccounts: 0,
             driverAccounts: 0,
+            role: 'subOwner',
         };
 
         await setDoc(userRef, userData);
@@ -46,7 +47,6 @@ export const SIGNIN = async (email, password) => {
             return { uid, isSuccess: true, isOwner: true };
         }
 
-        // User not found in subOwners or owners
         return { isSuccess: true, uid, isOwner: false };
 
     } catch (error) {
@@ -77,7 +77,7 @@ export const SIGNUP_WITH_GOOGLE = async () => {
         const user = userCredential.user;
 
         // Check if the user already exists in your Firestore users collection
-        const userRef = doc(db, "subOwners", user.uid);
+        const userRef = doc(db, "users", user.uid);
         const userSnapshot = await getDoc(userRef);
 
         if (!userSnapshot.exists()) {
@@ -91,6 +91,7 @@ export const SIGNUP_WITH_GOOGLE = async () => {
                 driverAccounts: 0,
                 image: user.photoURL,
                 phone: user.phoneNumber,
+                role: 'subOwner',
             };
 
             await setDoc(userRef, userData);

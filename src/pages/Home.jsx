@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
-import { Button } from '../components';
-import { earningData, recentTransactions, dropdownData } from '../data/dummy';
+import React, { useEffect } from 'react';
+import { earningData } from '../data/dummy';
 import { useStateContext } from '../contexts/ContextProvider';
 import { FiSettings } from "react-icons/fi";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
@@ -50,7 +48,7 @@ const Home = () => {
   }, [setCurrentColor, setCurrentMode, setToken]);
 
   // fetchData
-  const fetchData = (token, setter, amountIndex, endpoint, assignToEarning, assignClients, assignLimit) => {
+  const fetchData = (token, setter, amountIndex, endpoint, assignToEarning, assignClients) => {
     if (token) {
       endpoint(token, (result) => {
         if (result.isSuccess) {
@@ -63,20 +61,6 @@ const Home = () => {
             earningData[3].amount = uniqueClients.size;
             setClients(uniqueClients.size);
           }
-          if (assignLimit) {
-            switch (amountIndex) {
-              case 0:
-                earningData[amountIndex].limit = userProfile?.adminAccounts || '0';
-                break;
-              case 1:
-                earningData[amountIndex].limit = userProfile?.driverAccounts || '0';
-
-                break;
-
-              default:
-                break;
-            }
-          }
         } else {
           toast.error(result.message);
         }
@@ -85,11 +69,11 @@ const Home = () => {
   };
 
   useEffect(() => {
-    fetchData(token, setAllAdmins, 0, getAllAdmins, true, false, true);
-    fetchData(token, setAllDrivers, 1, getAllDrivers, true, false, true);
-    fetchData(token, setPastTrips, 2, getPastTrips, true, true, false);
-    fetchData(token, setTrips, 0, getTripsUploadedToday, false, false, false);
-    fetchData(token, setSubscriptionData, 0, getSubscriptionDataByuid, false, false, false);
+    fetchData(token, setAllAdmins, 0, getAllAdmins, true, false);
+    fetchData(token, setAllDrivers, 1, getAllDrivers, true, false);
+    fetchData(token, setPastTrips, 2, getPastTrips, true, true);
+    fetchData(token, setTrips, 0, getTripsUploadedToday, false, false);
+    fetchData(token, setSubscriptionData, 0, getSubscriptionDataByuid, false, false);
   }, [token, setAllAdmins, setAllDrivers, setTrips, setPastTrips, setSubscriptionData, userProfile, subscriptionData]);
 
   if (token === null) {
@@ -149,7 +133,7 @@ const Home = () => {
                         {item.icon}
                       </button>
                       <p className="mt-3">
-                        <span className="text-lg font-semibold">{item.amount}{item?.limit ? " of " + item.limit : ''}</span>
+                        <span className="text-lg font-semibold">{item.amount}</span>
                       </p>
                       <p className="text-sm text-gray-400 mt-1">{item.title}</p>
                     </div>

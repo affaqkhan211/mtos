@@ -2,8 +2,8 @@ import { collection, doc, onSnapshot, query, where, deleteDoc } from "firebase/f
 import { db } from "../mtos/db/config";
 
 export const getAllDrivers = (uid, callback) => {
-    const driversRef = collection(db, "drivers");
-    const q = query(driversRef, where("subOwneruid", "==", "" + uid));
+    const driversRef = collection(db, "users");
+    const q = query(driversRef, where("subOwneruid", "==", "" + uid), where("role", "==", "driver"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const drivers = [];
         querySnapshot.forEach((doc) => {

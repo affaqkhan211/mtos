@@ -8,7 +8,7 @@ const ContactScreen = () => {
         <section className="container-fluid custom-container my-4 p-4 justify-content-center align-item-center">
             <div className="container inner-container w-70">
                 <div className="row">
-                    <div className="col-md-9 mb-5">
+                    <div className="container w-90">
                         <h2 className="h1-responsive font-weight-bold text-center my-4">CONTACT US</h2>
                         <p className="text-center w-responsive mx-auto mb-5">
                             Do you have any questions? Please do not hesitate to contact us directly. Our team will come back to you within a matter of hours to help you.
@@ -43,22 +43,6 @@ const ContactScreen = () => {
                             </button>
                             <div className="status"></div>
                         </form>
-                    </div>
-                    <div className="col-md-3 py-5">
-                        <ul className="list-unstyled mb-0 d-flex flex-column mx-3">
-                            <li class='li-1 my-3' >
-                                <BiSolidMap size={50} className="mb-3" color='#000' />
-                                <p>San Francisco, CA 94126, USA</p>
-                            </li>
-                            <li class='li-1 my-3' >
-                                <BsFillTelephoneFill size={50} className="mb-3" color='#000' />
-                                <p>+ 1 (978) 918-6644</p>
-                            </li>
-                            <li className='li-1 my-3' >
-                                <BsEnvelopeAtFill size={50} className="mb-3" color='#000' />
-                                <p>contactwithmtos@gmail.com</p>
-                            </li>
-                        </ul>
                     </div>
                 </div>
             </div>

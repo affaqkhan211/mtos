@@ -10,11 +10,49 @@ import {
 import { getFunctions, httpsCallable } from "firebase/functions";
 import { app } from "../mtos/db/config";
 
-const getCheckoutUrl = async (priceId, token) => {
+const getCheckoutUrlForCustom = async (priceId, token) => {
     const db = getFirestore(app);
     const checkoutSessionRef = collection(
         db,
-        "subOwners",
+        "users",
+        token,
+        "checkout_sessions"
+    );
+
+    const docRef = await addDoc(checkoutSessionRef, {
+        mode: 'subscription',
+        success_url: window.location.origin,
+        cancel_url: window.location.origin,
+        line_items: [
+            {
+                price: priceId,
+            }
+        ],
+
+    });
+
+    return new Promise((resolve, reject) => {
+        const unsubscribe = onSnapshot(docRef, (snap) => {
+            const { error, url } = snap.data();
+            if (error) {
+                unsubscribe();
+
+                reject(error.message);
+            }
+            if (url) {
+                console.log("Stripe Checkout URL:", url);
+                unsubscribe();
+                resolve(url);
+            }
+        });
+    });
+};
+
+const getCheckoutUrlForBasic = async (priceId, token) => {
+    const db = getFirestore(app);
+    const checkoutSessionRef = collection(
+        db,
+        "users",
         token,
         "checkout_sessions"
     );
@@ -23,6 +61,7 @@ const getCheckoutUrl = async (priceId, token) => {
         price: priceId,
         success_url: window.location.origin,
         cancel_url: window.location.origin,
+
     });
 
     return new Promise((resolve, reject) => {
@@ -77,7 +116,7 @@ const getPortalUrl = async () => {
 const getPremiumStatus = async (token) => {
     try {
         const db = getFirestore(app);
-        const subscriptionsRef = collection(db, "subOwners", token, "subscriptions");
+        const subscriptionsRef = collection(db, "users", token, "subscriptions");
         const q = query(subscriptionsRef, where("status", "in", ["trialing", "active"]));
 
         return new Promise((resolve, reject) => {
@@ -103,4 +142,4 @@ const getPremiumStatus = async (token) => {
     }
 };
 
-export { getCheckoutUrl, getPortalUrl, getPremiumStatus };
+export { getCheckoutUrlForBasic, getPortalUrl, getPremiumStatus, getCheckoutUrlForCustom };

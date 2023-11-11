@@ -15,13 +15,14 @@ export const createAdmin = async (id, adminData, callback) => {
                     const imageUrl = await uploadImage(adminData.imageUrl, 'dc9brvvux', 'jbno94oi');
                     adminData.imageUrl = imageUrl;
                     const user = userCredential.user;
-                    const uid = user.uid; // Get the user's UID
+                    const uid = user.uid; // Get the user'
 
                     // Create a reference to the admin document with the same ID as the user's UID
-                    const adminRef = doc(db, "admins", uid);
+                    const adminRef = doc(db, "users", uid);
 
                     // Add timestamp fields
                     adminData.subOwneruid = id;
+                    adminData.role = 'admin';
                     adminData.createdOn = serverTimestamp();
 
                     // Set the document data
@@ -50,7 +51,7 @@ export const createAdmin = async (id, adminData, callback) => {
 
 // update admin
 export const updateAdminById = (adminId, adminData, callback) => {
-    const adminRef = doc(db, "admins", adminId);
+    const adminRef = doc(db, "users", adminId);
 
     // Update the document with new data (without overwriting existing data)
     setDoc(adminRef, adminData, { merge: true })
@@ -64,8 +65,8 @@ export const updateAdminById = (adminId, adminData, callback) => {
 
 // get all adfmins related to this subowner
 export const getAllAdmins = (subOwnerUid, callback) => {
-    const adminsCollection = collection(db, 'admins');
-    const adminsQuery = query(adminsCollection, where('subOwneruid', '==', subOwnerUid));
+    const adminsCollection = collection(db, 'users');
+    const adminsQuery = query(adminsCollection, where('subOwneruid', '==', subOwnerUid), where('role', '==', 'admin'));
 
     const unsubscribe = onSnapshot(adminsQuery, (adminsSnapshot) => {
         const adminsData = [];
@@ -86,7 +87,7 @@ export const getAllAdmins = (subOwnerUid, callback) => {
 };
 
 export const deleteAdmin = (adminId, callback) => {
-    const adminDocRef = doc(db, 'admins', adminId);
+    const adminDocRef = doc(db, 'users', adminId);
 
     deleteDoc(adminDocRef)
         .then(() => {
