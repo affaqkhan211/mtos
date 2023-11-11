@@ -53,13 +53,14 @@ const OwnerHome = () => {
   }, [setCurrentColor, setCurrentMode, setToken]);
 
   // fetchData
-  const fetchData = (token, setter, amountIndex, endpoint) => {
+  const fetchData = (token, setter, amountIndex, endpoint, assignValue) => {
     if (token) {
       endpoint((result) => {
         if (result.isSuccess) {
           setter(result.data);
-          console.log(result.data)
-          earningData[amountIndex].amount = result.data.length;
+          if (assignValue) {
+            earningData[amountIndex].amount = result.data.length;
+          }
         } else {
           toast.error(result.message);
         }
@@ -68,11 +69,11 @@ const OwnerHome = () => {
   };
 
   useEffect(() => {
-    fetchData(token, setSubOwners, 0, getAllSubOwners);
-    fetchData(token, setAllAdmins, 1, getAllAdmins);
-    fetchData(token, setAllDrivers, 2, getAllDrivers);
-    fetchData(token, setPastTrips, 3, getPastTrips);
-    fetchData(token, setSubscriptionData, 0, getAllSubscriptions, false, false, false);
+    fetchData(token, setSubOwners, 0, getAllSubOwners, true);
+    fetchData(token, setAllAdmins, 1, getAllAdmins, true);
+    fetchData(token, setAllDrivers, 2, getAllDrivers, true);
+    fetchData(token, setPastTrips, 3, getPastTrips, true);
+    fetchData(token, setSubscriptionData, 0, getAllSubscriptions, false);
   }, [token, setAllAdmins, setAllDrivers, setSubOwners, setPastTrips, setSubscriptionData]);
 
   if (token === null) {
@@ -101,7 +102,7 @@ const OwnerHome = () => {
             <Sidebar />
           </div>
         ) : (
-          <div className="w-0 dark:bg-secondary-dark-bg">
+          <div className="w-20 fixed sidebar dark:bg-secondary-dark-bg bg-white ">
             <Sidebar />
           </div>
         )}

@@ -112,11 +112,11 @@ const OwnerProfile = () => {
           </TooltipComponent>
         </div>
         {activeMenu ? (
-          <div className="w-72 fixed sidebar dark:bg-secondary-dark-bg bg-white">
+          <div className="w-72 fixed sidebar dark:bg-secondary-dark-bg bg-white ">
             <Sidebar />
           </div>
         ) : (
-          <div className="w-0 dark:bg-secondary-dark-bg">
+          <div className="w-20 fixed sidebar dark:bg-secondary-dark-bg bg-white ">
             <Sidebar />
           </div>
         )}

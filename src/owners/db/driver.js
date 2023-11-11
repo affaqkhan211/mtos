@@ -8,7 +8,7 @@ export const getAllDrivers = (callback) => {
         const drivers = [];
         querySnapshot.forEach((doc) => {
             const data = doc.data();
-            if (data.role === 'admin') {
+            if (data.role === 'driver') {
                 drivers.push({ ...doc.data(), id: doc.id });
             }
         });

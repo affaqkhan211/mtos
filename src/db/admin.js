@@ -24,6 +24,7 @@ export const createAdmin = async (id, adminData, callback) => {
                     adminData.subOwneruid = id;
                     adminData.role = 'admin';
                     adminData.createdOn = serverTimestamp();
+                    adminData.isCounted = false;
 
                     // Set the document data
                     setDoc(adminRef, adminData)

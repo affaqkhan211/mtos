@@ -34,7 +34,7 @@ export const ChangeSubscriptionStatus = async (attachedData, data, callback) => 
 };
 
 // Listen for real-time updates to subscriptions for a specific UID
-export const getSubscriptionDataByuid  = (uid, callback) => {
+export const getSubscriptionDataByuid = (uid, callback) => {
     try {
         const subOwnersCollectionRef = collection(db, 'users');
         const userDocRef = doc(subOwnersCollectionRef, uid);
