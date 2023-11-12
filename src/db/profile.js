@@ -31,15 +31,17 @@ export const getSubOwnerById = (subOwnerId, callback) => {
 };
 
 // update subowner about data
-export const updateSubOwnerById = async (subOwnerId, newData, callback) => {
+export const updateSubOwnerById = async (subOwnerId, newData, userProfile, callback) => {
     const subOwnerRef = doc(db, "users", subOwnerId);
 
-    // upload image
     try {
-        const imageUrl = await uploadImage(newData.image, 'dc9brvvux', 'jbno94oi');
-        newData.image = imageUrl;
+        if (userProfile.image !== newData.image) {
+            const imageUrl = await uploadImage(newData.image, 'dc9brvvux', 'jbno94oi');
+            newData.image = imageUrl;
+        }
     } catch (error) {
         callback({ isSuccess: false, message: error.message });
+        console.log(error);
     }
 
 
@@ -80,12 +82,10 @@ const uploadImage = async (base64, cloudName, uploadPreset) => {
         if (data.secure_url) {
             return data.secure_url; // Return the URL of the uploaded image
         } else {
-            console.error('Image upload failed. Cloudinary response:', data);
-            throw new Error('Image upload failed');
+            console.log('Image upload failed. Cloudinary response:', data);
         }
     } catch (error) {
         console.error('Error uploading image:', error);
-        throw error;
     }
 };
 

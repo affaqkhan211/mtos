@@ -64,12 +64,12 @@ const AddAdmin = () => {
 
   useEffect(() => {
     if (userProfile) {
-      if(userProfile?.organization){
+      if (userProfile?.organization) {
         setOwnerProfileComplete(true);
         setNewData({
           organization: userProfile?.organization
         });
-      }else{
+      } else {
         setOwnerProfileComplete(false);
       }
       setLoading(false);
@@ -97,7 +97,7 @@ const AddAdmin = () => {
   const handleSave = async () => {
     setLoading(true);
     try {
-      if(!ownerProfileComplete){
+      if (!ownerProfileComplete) {
         toast.error("Complete your profile to add admin!");
         navigate('/profile');
         return;
@@ -120,7 +120,7 @@ const AddAdmin = () => {
         // Simulate an asynchronous operation with a timeout (replace this with your actual async call)
         await new Promise(resolve => setTimeout(resolve, 1000));
 
-        createAdmin(token, newData, (result) => {
+        await createAdmin(token, newData, (result) => {
           if (result.isSuccess) {
             setNewData({
               fullName: '',

@@ -4,7 +4,7 @@ import { FiSettings } from "react-icons/fi";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { Navbar, Footer, Sidebar, ThemeSettings, Header, Loader } from '../components';
 import { useNavigate } from 'react-router-dom';
-import { getCheckoutUrlForBasic, getPortalUrl, getCheckoutUrlForCustom } from '../db/stripePayments';
+import { getCheckoutUrlForCustom } from '../db/stripePayments';
 
 const Subscriptions = () => {
   const [loading, setLoading] = useState(false);
@@ -32,14 +32,6 @@ const Subscriptions = () => {
     }
   }, []);
 
-  // const handleBasicSubscriptions = async () => {
-  //   let priceId = 'price_1OAYriLqgG0cdoTuWUcsXoBY';
-  //   const checkOutUrl = await getCheckoutUrlForBasic(priceId, token);
-  //   if (checkOutUrl) {
-  //     window.location.href = checkOutUrl;
-  //   }
-  // }
-
   const handleCustomSubscriptions = async () => {
     let priceId = 'price_1OAg3vLqgG0cdoTuUIpkrJoW';
     const checkOutUrl = await getCheckoutUrlForCustom(priceId, token);
@@ -48,12 +40,12 @@ const Subscriptions = () => {
     }
   }
 
-  const manageSubscriptions = async () => {
-    const portalUrl = await getPortalUrl();
-    if (portalUrl) {
-      window.location.href = portalUrl;
-    }
-  }
+  // const manageSubscriptions = async () => {
+  //   const portalUrl = await getPortalUrl();
+  //   if (portalUrl) {
+  //     window.location.href = portalUrl;
+  //   }
+  // }
 
   if (token === null) {
     navigate('/login');
@@ -111,12 +103,12 @@ const Subscriptions = () => {
                   {
                     premiumStatus ?
                       <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                        <button
+                        {/* <button
                           className='btn btn-rounded btn-dark ml-auto'
                           onClick={manageSubscriptions}
                         >
                           Manage Subscriptions
-                        </button>
+                        </button> */}
 
                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                           <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

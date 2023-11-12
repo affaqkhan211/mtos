@@ -16,9 +16,10 @@ const Admins = () => {
   const commands = [{ type: 'Edit', buttonOption: { iconCss: ' e-icons e-edit', cssClass: 'e-flat' } },
   { type: 'Delete', buttonOption: { iconCss: 'e-icons e-delete', cssClass: 'e-flat' } },
   { type: 'Save', buttonOption: { iconCss: 'e-icons e-update', cssClass: 'e-flat' } },
-  { type: 'Cancel', buttonOption: { iconCss: 'e-icons e-cancel-icon', cssClass: 'e-flat' } }];
+  { type: 'Cancel', buttonOption: { iconCss: 'e-icons e-cancel-icon', cssClass: 'e-flat' } 
+}];
 
-  const editing = { allowDeleting: true, allowEditing: true, allowAdding: true, allowEditOnDblClick: false };
+  const editing = { allowDeleting: false, allowEditing: true, allowAdding: true, allowEditOnDblClick: false };
   const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings, allAdmins, premiumStatus } = useStateContext();
   useEffect(() => {
     const currentThemeColor = localStorage.getItem("colorMode");

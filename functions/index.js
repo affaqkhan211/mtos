@@ -72,18 +72,26 @@ exports.sendTripNotification = functions.firestore
   .onCreate(async (snapshot, context) => {
     try {
       const tripData = snapshot.data();
-      const adminUid = tripData.adminUid;
+      const adminUid = tripData.adminuid;
+
+      // Check if adminUid is defined
+      if (!adminUid) {
+        console.warn('Admin UID is undefined. Cannot send notifications.');
+        return;
+      }
 
       // Get the list of drivers with the same adminUid
       const driversSnapshot = await admin.firestore().collection('users')
         .where('role', '==', 'driver')
-        .where('adminUid', '==', adminUid)
+        .where('adminuid', '==', adminUid)
         .get();
 
-      const driverTokens = driversSnapshot.docs.map(driverDoc => driverDoc.get('fcmToken'));
+      const validDriverTokens = driversSnapshot.docs
+        .map(driverDoc => driverDoc.get('FCMToken'))
+        .filter(fcmToken => fcmToken); // Filter out undefined or falsy values
 
-      // Send FCM messages to drivers
-      if (driverTokens.length > 0) {
+      // Send FCM messages to drivers with valid tokens
+      if (validDriverTokens.length > 0) {
         const payload = {
           notification: {
             title: 'New Trip Manifest Uploaded',
@@ -91,12 +99,13 @@ exports.sendTripNotification = functions.firestore
           },
         };
 
-        await admin.messaging().sendToDevice(driverTokens, payload);
+        await admin.messaging().sendToDevice(validDriverTokens, payload);
         console.log('Notifications sent successfully');
       } else {
-        console.log('No drivers to notify');
+        console.log('No drivers with valid FCM tokens to notify');
       }
     } catch (error) {
       console.error('Error in sendTripNotification:', error);
     }
   });
+

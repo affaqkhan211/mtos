@@ -31,13 +31,15 @@ export const getOwnerById = (ownerId, callback) => {
 };
 
 // update subowner about data
-export const updateOwnerById = async (subOwnerId, newData, callback) => {
+export const updateOwnerById = async (subOwnerId, newData, userProfile, callback) => {
     const subOwnerRef = doc(db, "owners", subOwnerId);
 
     // upload image
     try {
-        const imageUrl = await uploadImage(newData.image, 'dc9brvvux', 'jbno94oi');
-        newData.image = imageUrl;
+        if (userProfile.image !== newData.image) {
+            const imageUrl = await uploadImage(newData.image, 'dc9brvvux', 'jbno94oi');
+            newData.image = imageUrl;
+        }
     } catch (error) {
         callback({ isSuccess: false, message: error.message });
     }

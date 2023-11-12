@@ -3,7 +3,7 @@ import { MDBBtn, MDBContainer, MDBRow, MDBCol, MDBCard, MDBCardBody, MDBInput } 
 import { FaFacebook, FaGoogle, FaArrowLeft, FaHome } from 'react-icons/fa';
 import { NavHashLink as NavLink } from 'react-router-hash-link';
 import './LoginScreen.css';
-import { SIGNIN, SIGNIN_WITH_GOOGLE } from '../../../db/auth';
+import { SIGNIN, SIGNUP_WITH_GOOGLE } from '../../../db/auth';
 import PulseLoader from 'react-spinners/PulseLoader';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
@@ -65,7 +65,7 @@ const LoginScreen = () => {
 
     const GoogleSignIn = async () => {
         setLoading(true);
-        const data = await SIGNIN_WITH_GOOGLE();
+        const data = await SIGNUP_WITH_GOOGLE();
         if (data.isSuccess) {
             toast.success("Logged in successfully")
             localStorage.setItem('token', data.uid);

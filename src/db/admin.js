@@ -10,7 +10,7 @@ export const createAdmin = async (id, adminData, callback) => {
     try {
 
         if (id) {
-            createUserWithEmailAndPassword(auth, adminData.email, adminData.password)
+            await createUserWithEmailAndPassword(auth, adminData.email, adminData.password)
                 .then(async (userCredential) => {
                     const imageUrl = await uploadImage(adminData.imageUrl, 'dc9brvvux', 'jbno94oi');
                     adminData.imageUrl = imageUrl;
@@ -27,7 +27,7 @@ export const createAdmin = async (id, adminData, callback) => {
                     adminData.isCounted = false;
 
                     // Set the document data
-                    setDoc(adminRef, adminData)
+                    await setDoc(adminRef, adminData)
                         .then(() => {
                             callback({ isSuccess: true, message: "Admin Created Successfully!" });
                         })
@@ -89,16 +89,17 @@ export const getAllAdmins = (subOwnerUid, callback) => {
 };
 
 export const deleteAdmin = (adminId, callback) => {
-    const adminDocRef = doc(db, 'users', adminId);
+    // const adminDocRef = doc(db, 'users', adminId);
+    callback({ isSuccess: false, message: 'Contact MTOS to delete any admin!' });
 
-    deleteDoc(adminDocRef)
-        .then(() => {
-            callback({ isSuccess: true, message: 'Admin deleted successfully' });
-        })
-        .catch((error) => {
-            console.error('Error deleting admin: ', error);
-            callback({ isSuccess: false, message: error.message });
-        });
+    // deleteDoc(adminDocRef)
+    //     .then(() => {
+    //         callback({ isSuccess: true, message: 'Admin deleted successfully' });
+    //     })
+    //     .catch((error) => {
+    //         console.error('Error deleting admin: ', error);
+    //         callback({ isSuccess: false, message: error.message });
+    //     });
 };
 
 const uploadImage = async (base64, cloudName, uploadPreset) => {

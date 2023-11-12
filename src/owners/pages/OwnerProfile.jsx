@@ -83,7 +83,7 @@ const OwnerProfile = () => {
       newData.phone !== userProfile.phone ||
       newData.image !== userProfile.image
     ) {
-      updateOwnerById(token, newData, (result) => {
+      updateOwnerById(token, newData, userProfile, (result) => {
         if (result.isSuccess) {
           toast.success(result.message);
         } else {

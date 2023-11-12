@@ -13,14 +13,10 @@ export const SIGNUP = async (email, password, firstName, lastName) => {
         const userData = {
             fullName: `${firstName} ${lastName}`,
             email: email,
-            subscriptions: false,
-            ownerAccounts: 1,
-            adminAccounts: 0,
-            driverAccounts: 0,
             role: 'subOwner',
         };
 
-        await setDoc(userRef, userData);
+        await setDoc(userRef, userData, { merge: true });
         console.log(userData);
 
         return { uid: uid, isSuccess: true };
@@ -55,21 +51,7 @@ export const SIGNIN = async (email, password) => {
 };
 
 // GOOGLE
-
-// Function to sign in a user with Google
-export const SIGNIN_WITH_GOOGLE = async () => {
-    try {
-        const provider = new GoogleAuthProvider();
-        const userCredential = await signInWithPopup(auth, provider);
-        const user = userCredential.user;
-        return { uid: user.uid, isSuccess: true };
-    } catch (error) {
-        console.error("Error signing in with Google:", error);
-        return { message: error.message, isSuccess: false };
-    }
-};
-
-// Create a signup function with Google
+// Create a signup/signin function with Google
 export const SIGNUP_WITH_GOOGLE = async () => {
     try {
         const provider = new GoogleAuthProvider();
@@ -78,26 +60,16 @@ export const SIGNUP_WITH_GOOGLE = async () => {
 
         // Check if the user already exists in your Firestore users collection
         const userRef = doc(db, "users", user.uid);
-        const userSnapshot = await getDoc(userRef);
 
-        if (!userSnapshot.exists()) {
-            // User doesn't exist, create a new user document in Firestore
-            const userData = {
-                fullName: user.displayName,
-                email: user.email,
-                subscriptions: false,
-                ownerAccounts: 1,
-                adminAccounts: 0,
-                driverAccounts: 0,
-                image: user.photoURL,
-                phone: user.phoneNumber,
-                role: 'subOwner',
-            };
+        const userData = {
+            fullName: user.displayName,
+            email: user.email,
+            image: user.photoURL,
+            phone: user.phoneNumber,
+            role: 'subOwner',
+        };
 
-            await setDoc(userRef, userData);
-        } else {
-            return { message: "User Already Exists!", isSuccess: false };
-        }
+        await setDoc(userRef, userData, { merge: true });
         return { uid: user.uid, isSuccess: true };
     } catch (error) {
         console.error("Error signing up with Google:", error);

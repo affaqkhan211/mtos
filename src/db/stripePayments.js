@@ -48,70 +48,37 @@ const getCheckoutUrlForCustom = async (priceId, token) => {
     });
 };
 
-const getCheckoutUrlForBasic = async (priceId, token) => {
-    const db = getFirestore(app);
-    const checkoutSessionRef = collection(
-        db,
-        "users",
-        token,
-        "checkout_sessions"
-    );
+// const getPortalUrl = async () => {
+//     const auth = getAuth(app);
+//     const user = auth.currentUser;
 
-    const docRef = await addDoc(checkoutSessionRef, {
-        price: priceId,
-        success_url: window.location.origin,
-        cancel_url: window.location.origin,
+//     let dataWithUrl;
+//     try {
+//         const functions = getFunctions(app, "us-central1");
+//         const functionRef = httpsCallable(
+//             functions,
+//             "ext-firestore-stripe-payments-createPortalLink"
+//         );
+//         const { data } = await functionRef({
+//             customerId: user?.uid,
+//             returnUrl: window.location.origin,
+//         });
 
-    });
+//         // Add a type to the data
+//         dataWithUrl = data;
+//         console.log("Reroute to Stripe portal: ", dataWithUrl.url);
+//     } catch (error) {
+//         console.log(error);
+//     }
 
-    return new Promise((resolve, reject) => {
-        const unsubscribe = onSnapshot(docRef, (snap) => {
-            const { error, url } = snap.data();
-            if (error) {
-                unsubscribe();
-
-                reject(error.message);
-            }
-            if (url) {
-                console.log("Stripe Checkout URL:", url);
-                unsubscribe();
-                resolve(url);
-            }
-        });
-    });
-};
-
-const getPortalUrl = async () => {
-    const auth = getAuth(app);
-    const user = auth.currentUser;
-
-    let dataWithUrl;
-    try {
-        const functions = getFunctions(app, "us-central1");
-        const functionRef = httpsCallable(
-            functions,
-            "ext-firestore-stripe-payments-createPortalLink"
-        );
-        const { data } = await functionRef({
-            customerId: user?.uid,
-            returnUrl: window.location.origin,
-        });
-
-        // Add a type to the data
-        dataWithUrl = data;
-        console.log("Reroute to Stripe portal: ", dataWithUrl.url);
-    } catch (error) {
-        console.log(error);
-    }
-
-    return new Promise((resolve, reject) => {
-        if (dataWithUrl.url) {
-            resolve(dataWithUrl.url);
-        } else {
-            reject(new Error("No url returned"));
-        }
-    });
-};
+//     return new Promise((resolve, reject) => {
+//         if (dataWithUrl.url) {
+//             resolve(dataWithUrl.url);
+//         } else {
+//             reject(new Error("No url returned"));
+//         }
+//     });
+// };
 
 const getPremiumStatus = async (token) => {
     try {
@@ -142,4 +109,4 @@ const getPremiumStatus = async (token) => {
     }
 };
 
-export { getCheckoutUrlForBasic, getPortalUrl, getPremiumStatus, getCheckoutUrlForCustom };
+export { getPremiumStatus, getCheckoutUrlForCustom };

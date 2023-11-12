@@ -81,7 +81,7 @@ const Profile = () => {
       newData.phone !== userProfile.phone ||
       newData.image !== userProfile.image
     ) {
-      updateSubOwnerById(token, newData, (result) => {
+      updateSubOwnerById(token, newData, userProfile, (result) => {
         if (result.isSuccess) {
           toast.success(result.message);
         } else {
