@@ -86,9 +86,17 @@ exports.sendTripNotification = functions.firestore
         .where('adminuid', '==', adminUid)
         .get();
 
+      const uniqueTokensSet = new Set();
+      // Iterate through driver documents and filter out duplicates
       const validDriverTokens = driversSnapshot.docs
         .map(driverDoc => driverDoc.get('FCMToken'))
-        .filter(fcmToken => fcmToken); // Filter out undefined or falsy values
+        .filter(fcmToken => {
+          if (fcmToken && !uniqueTokensSet.has(fcmToken)) {
+            uniqueTokensSet.add(fcmToken);
+            return true;
+          }
+          return false;
+        });
 
       // Send FCM messages to drivers with valid tokens
       if (validDriverTokens.length > 0) {
@@ -109,3 +117,43 @@ exports.sendTripNotification = functions.firestore
     }
   });
 
+// Trip Assigning Notifications
+// Cloud Function for sending notifications
+exports.notifyDriverForActiveTrip = functions.firestore
+  .document('trips/{tripId}')
+  .onUpdate(async (change, context) => {
+    try {
+      const newTripData = change.after.data();
+      const oldTripData = change.before.data();
+
+      // Check if the trip status is updated to 'active' and isPickedUp is false
+      if (
+        newTripData.status === 'active' &&
+        newTripData.pickedUp === false &&
+        oldTripData.status !== 'active' // Ensure it wasn't active before the update
+      ) {
+        const driverId = newTripData.driverId;
+
+        // Retrieve driver data from Firestore
+        const driverDoc = await admin.firestore().collection('users').doc(driverId).get();
+        const driverData = driverDoc.data();
+
+        if (driverData && driverData.FCMToken) {
+          // Notify the driver with FCMToken
+          const payload = {
+            notification: {
+              title: 'Hurry Up! You Got a Trip!',
+              body: `Pick client in ${newTripData['PU Time Request']} from ${newTripData['From Address']}`,
+            },
+          };
+
+          await admin.messaging().sendToDevice(driverData.FCMToken, payload);
+          console.log('Notification sent to the driver successfully');
+        } else {
+          console.log('Driver not found or missing FCMToken');
+        }
+      }
+    } catch (error) {
+      console.error('Error in notifyDriverForActiveTrip:', error);
+    }
+  });
