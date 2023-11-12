@@ -14,6 +14,7 @@ const AddAdmin = () => {
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [ownerProfileComplete, setOwnerProfileComplete] = useState(false);
   const [newData, setNewData] = useState({
     fullName: '',
     organization: '',
@@ -63,9 +64,14 @@ const AddAdmin = () => {
 
   useEffect(() => {
     if (userProfile) {
-      setNewData({
-        organization: userProfile?.organization
-      });
+      if(userProfile?.organization){
+        setOwnerProfileComplete(true);
+        setNewData({
+          organization: userProfile?.organization
+        });
+      }else{
+        setOwnerProfileComplete(false);
+      }
       setLoading(false);
     }
   }, [userProfile]);
@@ -91,6 +97,11 @@ const AddAdmin = () => {
   const handleSave = async () => {
     setLoading(true);
     try {
+      if(!ownerProfileComplete){
+        toast.error("Complete your profile to add admin!");
+        navigate('/profile');
+        return;
+      }
       const isFullNameValid = newData?.fullName?.length > 3; // Name length check
       const isPhoneNumberValid = newData?.phoneNumber?.length > 4; // Phone number check
       const isEmailValid = /\S+@\S+\.\S+/.test(newData?.email); // Email format check

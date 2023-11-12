@@ -11,7 +11,7 @@ export const createAdmin = async (id, adminData, callback) => {
 
         if (id) {
             createUserWithEmailAndPassword(auth, adminData.email, adminData.password)
-                .then( async (userCredential) => {
+                .then(async (userCredential) => {
                     const imageUrl = await uploadImage(adminData.imageUrl, 'dc9brvvux', 'jbno94oi');
                     adminData.imageUrl = imageUrl;
                     const user = userCredential.user;
@@ -44,6 +44,7 @@ export const createAdmin = async (id, adminData, callback) => {
             callback({ isSuccess: false, message: "User not authenticated." });
         }
     } catch (error) {
+        console.log("Error creating Admin: ", error);
         callback({ isSuccess: false, message: error.message });
     }
 

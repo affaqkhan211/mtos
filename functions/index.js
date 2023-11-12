@@ -6,9 +6,6 @@ admin.initializeApp();
 const stripe = require('stripe')(stripeSecretKey);
 const { v4: uuid } = require('uuid');
 
-// Constants
-const SUBSCRIPTION_ITEM_ID = 'si_OzKPy8bEBkH8Jz';
-
 // Cloud Function for creating a usage record
 exports.createUsageRecord = functions.firestore
   .document('users/{userId}')
@@ -20,33 +17,47 @@ exports.createUsageRecord = functions.firestore
       if (isCounted) {
         console.log('Already counted. Skipping business logic.');
         return null;
-      }
+      } else {
+        if (role === 'admin' || role === 'driver') {
+          const subownerId = snapshot.after.get('subOwneruid');
 
-      if (role === 'admin' || role === 'driver') {
-        const subownerId = snapshot.after.get('subOwneruid');
+          // Retrieve subowner's data from Firestore
+          const subownerDoc = await admin.firestore().collection('users').doc(subownerId).get();
+          const subownerData = subownerDoc.data();
 
-        // Retrieve subowner's data from Firestore
-        const subownerDoc = await admin.firestore().collection('users').doc(subownerId).get();
-        const subownerData = subownerDoc.data();
+          const timestamp = parseInt(Date.now() / 1000);
 
-        const timestamp = parseInt(Date.now() / 1000);
+          if (subownerData && subownerData.stripeId) {
+            // Retrieve the latest subscription document
+            const latestSubscriptionDoc = await admin.firestore()
+              .collection(`users/${subownerId}/subscriptions`)
+              .orderBy('created', 'desc')
+              .limit(1)
+              .get();
 
-        if (subownerData && subownerData.stripeId) {
-          // Charge the subowner for account creation
-          const idempotencyKey = uuid();
-          const usageRecord = await stripe.subscriptionItems.createUsageRecord(
-            SUBSCRIPTION_ITEM_ID,
-            {
-              quantity: 1,
-              timestamp: timestamp
-            },
-          );
+            if (!latestSubscriptionDoc.empty) {
+              const latestSubscription = latestSubscriptionDoc.docs[0].data();
+              const subscriptionItemId = latestSubscription.items[0].id; // Assuming the 'id' field is at the third position
 
-          await snapshot.after.ref.update({ isCounted: true, usageRecord });
+              // Charge the subowner for account creation
+              const idempotencyKey = uuid();
+              const usageRecord = await stripe.subscriptionItems.createUsageRecord(
+                subscriptionItemId,
+                {
+                  quantity: 1,
+                  timestamp: timestamp
+                },
+              );
 
-          console.log('Subowner charged successfully');
-        } else {
-          console.error('Subowner not found or missing Stripe customer ID');
+              await snapshot.after.ref.update({ isCounted: true, usageRecord });
+
+              console.log('Subowner charged successfully');
+            } else {
+              console.error('No subscription found for the subowner');
+            }
+          } else {
+            console.error('Subowner not found or missing Stripe customer ID');
+          }
         }
       }
     } catch (error) {

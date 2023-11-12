@@ -15,9 +15,9 @@ const Subscriptions = () => {
     setCurrentMode,
     currentMode,
     activeMenu,
-    currentColor,
+    allDrivers,
     themeSettings,
-    setThemeSettings,
+    allAdmins,
     subscriptionData,
     token,
     premiumStatus
@@ -59,6 +59,7 @@ const Subscriptions = () => {
     navigate('/login');
   }
 
+  const ACCOUNTS_SUM = allAdmins.length + allDrivers.length;
   return (
     <div className={currentMode === "Dark" ? "dark" : ""}>
 
@@ -124,8 +125,8 @@ const Subscriptions = () => {
                               <th class="py-2 px-4">Starting Date</th>
                               <th class="py-2 px-4">Renewal Date</th>
                               <th class="py-2 px-4">Amount</th>
-                              <th class="py-2 px-4">Status</th>
                               <th class="py-2 px-4">Currency</th>
+                              <th class="py-2 px-4">Status</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -134,9 +135,9 @@ const Subscriptions = () => {
                                 <td class="py-2 px-4">{index + 1}</td>
                                 <td class="py-2 px-4">{data?.current_period_start.toDate().toLocaleDateString()}</td>
                                 <td class="py-2 px-4">{data?.current_period_end.toDate().toLocaleDateString()}</td>
-                                <td class="py-2 px-4">{data?.items[0]?.price?.unit_amount_decimal / 100}</td>
-                                <td class="py-2 px-4">{data?.status.toUpperCase()}</td>
+                                <td class="py-2 px-4">{(data?.items[0]?.price?.unit_amount_decimal / 100) * ACCOUNTS_SUM}</td>
                                 <td class="py-2 px-4">{data?.items[0]?.price?.currency?.toUpperCase()}</td>
+                                <td class="py-2 px-4">{data?.status.toUpperCase()}</td>
                               </tr>
                             ))}
                           </tbody>
