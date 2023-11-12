@@ -514,16 +514,16 @@ export const links = [
       },
     ],
   },
-  {
-    title: 'Insights',
-    links: [
-      {
-        name: "revenue",
-        title: "Revenue",
-        icon: <FaChartLine />,
-      },
-    ],
-  },
+  // {
+  //   title: 'Insights',
+  //   links: [
+  //     {
+  //       name: "revenue",
+  //       title: "Revenue",
+  //       icon: <FaChartLine />,
+  //     },
+  //   ],
+  // },
 
   {
     title: 'Accounts',
