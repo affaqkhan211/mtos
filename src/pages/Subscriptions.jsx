@@ -33,7 +33,7 @@ const Subscriptions = () => {
   }, []);
 
   const handleCustomSubscriptions = async () => {
-    let priceId = 'price_1OAg3vLqgG0cdoTuUIpkrJoW';
+    let priceId = 'price_1OCwehLqgG0cdoTuftsjScQ5';
     const checkOutUrl = await getCheckoutUrlForCustom(priceId, token);
     if (checkOutUrl) {
       window.location.href = checkOutUrl;

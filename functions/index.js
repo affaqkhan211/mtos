@@ -1,6 +1,7 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
-const stripeSecretKey = 'sk_test_51O8uBnLqgG0cdoTuE35iUqdSEYDpMj1iultj3MWFLMkUAOknrlPDT2IEA9kVbRupPfT1icGCcMwYKLUhFf7iRtYD00ZoBR0Eai';
+// const stripeSecretKey = 'sk_test_51O8uBnLqgG0cdoTuE35iUqdSEYDpMj1iultj3MWFLMkUAOknrlPDT2IEA9kVbRupPfT1icGCcMwYKLUhFf7iRtYD00ZoBR0Eai';
+const stripeSecretKey = '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';
 
 admin.initializeApp();
 const stripe = require('stripe')(stripeSecretKey);
